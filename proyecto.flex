@@ -34,8 +34,11 @@ numassignation = (number){espacio}+({letras}|{numeros})+{espacio}+{asignacion}{e
 
 // =====> Array
 // arrayassignation = (array<){letras}+(>){espacio}+({letras}|{numeros})+{espacio}+{asignacion}{espacio}+
-numlist = {espacio}*{numeros}+{espacio}*(,)
-numarrayassignation = (array<number>){espacio}+({letras}|{numeros})+{espacio}+{asignacion}{espacio}+{corcheteizq}({numlist}+{espacio}*{numeros}+{espacio}*)*{corcheteder}
+numlist = ({espacio}*{numeros}+{espacio}*(,))+{espacio}*{numeros}+{espacio}*
+numarrayassignation = (array<number>){espacio}+({letras}|{numeros})+{espacio}+{asignacion}{espacio}+{corcheteizq}{numlist}*{corcheteder}
+
+boolist = ( {espacio}*((true)|(false)|(0)|(1)){espacio}*(,) )+{espacio}*((true)|(false)|(0)|(1))+{espacio}*
+boolarrayassignation = (array<boolean>){espacio}+({letras}|{numeros})+{espacio}+{asignacion}{espacio}+{corcheteizq}{boolist}*{corcheteder}
 
 
 ifstate = (if){saltos}*{parentesisizq}{saltos}*{letras}*{saltos}*{parentesisder}{saltos}*{corcheteizq}
@@ -44,6 +47,7 @@ ifstate = (if){saltos}*{parentesisizq}{saltos}*{letras}*{saltos}*{parentesisder}
 
 <YYINITIAL>{
     {numassignation}    {System.out.println("An number assignation detected");}
-    {numarrayassignation}   {System.out.println("An array number detected");}
+    {numarrayassignation}   {System.out.println("A number array detected");}
+    {boolarrayassignation}  {System.out.println("A boolean array detected ");}
     {ifstate}   {System.out.println("State if detected");}
 }

@@ -1,1 +1,1 @@
-array<number> array1 = {    123231, 112313 ,    123         , 1231231}
+array<number> array = {2, 2, 3 3}
