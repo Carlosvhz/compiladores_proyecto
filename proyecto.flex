@@ -40,14 +40,15 @@ numarrayassignation = (array<number>){espacio}+({letras}|{numeros})+{espacio}+{a
 boolist = ( {espacio}*((true)|(false)|(0)|(1)){espacio}*(,) )+{espacio}*((true)|(false)|(0)|(1))+{espacio}*
 boolarrayassignation = (array<boolean>){espacio}+({letras}|{numeros})+{espacio}+{asignacion}{espacio}+{corcheteizq}{boolist}*{corcheteder}
 
+charlist = ({espacio}*('){letras}('){espacio}*(,))+{espacio}*('){letras}('){espacio}*
+chararrayassignation = (array<character>){espacio}+({letras}|{numeros})+{espacio}+{asignacion}{espacio}+{corcheteizq}{charlist}*{corcheteder}
 
 ifstate = (if){saltos}*{parentesisizq}{saltos}*{letras}*{saltos}*{parentesisder}{saltos}*{corcheteizq}
 
 %%
 
 <YYINITIAL>{
-    {numassignation}    {System.out.println("An number assignation detected");}
     {numarrayassignation}   {System.out.println("A number array detected");}
     {boolarrayassignation}  {System.out.println("A boolean array detected ");}
-    {ifstate}   {System.out.println("State if detected");}
+    {chararrayassignation}  {System.out.println("A character array detected ");}
 }
