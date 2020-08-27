@@ -32,5 +32,5 @@ ifstate = (if){saltos}*{parentesisizq}{saltos}*{letras}*{saltos}*{parentesisder}
 
 <YYINITIAL>{
     {ifstate}   {System.out.println("State if detected");}
-    {assignation}    {System.out.println("An assignation has been detected");}
+    {assignation}    {System.out.println("An assignation detected");}
 }

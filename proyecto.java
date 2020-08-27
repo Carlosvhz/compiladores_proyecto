@@ -681,7 +681,7 @@ class proyecto {
             // fall through
           case 5: break;
           case 3:
-            { System.out.println("An assignation has been detected");
+            { System.out.println("An assignation detected");
             }
             // fall through
           case 6: break;
