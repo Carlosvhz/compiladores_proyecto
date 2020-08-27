@@ -1,2 +1,1 @@
 number nummber1 = 20;
-if (true) {

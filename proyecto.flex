@@ -22,15 +22,21 @@ corcheteizq = [{]
 
 asignacion = [=]
 
-
 delimitador = [;]
 
-assignation = {letras}+{espacio}+({letras}|{numeros})+{espacio}+{asignacion}{espacio}+{numeros}+{delimitador} 
+
+
+// ====> Asignación generalizada (Quien sabe que la utilicemos)
+// assignation = {letras}+{espacio}+({letras}|{numeros})+{espacio}+{asignacion}{espacio}+{numeros}+{delimitador} 
+
+numassignation = (number){espacio}+({letras}|{numeros})+{espacio}+{asignacion}{espacio}+{numeros}+{delimitador}
+
 ifstate = (if){saltos}*{parentesisizq}{saltos}*{letras}*{saltos}*{parentesisder}{saltos}*{corcheteizq}
 
 %%
 
 <YYINITIAL>{
+    // {assignation}    {System.out.println("An assignation detected");}
+    {numassignation}    {System.out.println("An number assignation detected");}
     {ifstate}   {System.out.println("State if detected");}
-    {assignation}    {System.out.println("An assignation detected");}
 }
