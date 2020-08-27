@@ -11,7 +11,7 @@ letras = [a-zA-z]
 saltos = [ \n\t\r]+
 espacio = [" "]
 
-apar = [+|-|*|/]
+opar = [+|-|*|/]
 opre = [>|<|>=|<=|=/=]
 
 parentesisder = [)]
@@ -30,6 +30,7 @@ delimitador = [;]
 // assignation = {letras}+{espacio}+({letras}|{numeros})+{espacio}+{asignacion}{espacio}+{numeros}+{delimitador} 
 
 numassignation = (number){espacio}+({letras}|{numeros})+{espacio}+{asignacion}{espacio}+{numeros}+{delimitador}
+
 
 ifstate = (if){saltos}*{parentesisizq}{saltos}*{letras}*{saltos}*{parentesisder}{saltos}*{corcheteizq}
 
