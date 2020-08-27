@@ -8,7 +8,8 @@
 
 numeros = [0-9]
 letras = [a-zA-z]
-espacio = [ \n\t\r]+
+saltos = [ \n\t\r]+
+espacio = [" "]
 
 apar = [+|-|*|/]
 opre = [>|<|>=|<=|=/=]
@@ -22,10 +23,14 @@ corcheteizq = [{]
 asignacion = [=]
 
 
-ifstate = (if){espacio}*{parentesisizq}{espacio}*{letras}*{espacio}*{parentesisder}{espacio}*{corcheteizq}
+delimitador = [;]
+
+assignation = {letras}+{espacio}+({letras}|{numeros})+{espacio}+{asignacion}{espacio}+{numeros}+{delimitador} 
+ifstate = (if){saltos}*{parentesisizq}{saltos}*{letras}*{saltos}*{parentesisder}{saltos}*{corcheteizq}
 
 %%
 
 <YYINITIAL>{
     {ifstate}   {System.out.println("State if detected");}
+    {assignation}    {System.out.println("An assignation has been detected");}
 }
