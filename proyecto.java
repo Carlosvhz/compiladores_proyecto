@@ -61,10 +61,11 @@ class proyecto {
 
   private static final String ZZ_CMAP_BLOCKS_PACKED_0 =
     "\11\0\2\1\2\0\1\1\22\0\1\2\7\0\1\3"+
-    "\1\4\6\0\12\5\1\0\1\6\1\0\1\7\3\0"+
-    "\41\10\1\11\2\10\1\12\1\13\2\10\1\14\3\10"+
-    "\1\15\1\16\3\10\1\17\2\10\1\20\5\10\1\21"+
-    "\u0184\0";
+    "\1\4\2\0\1\5\3\0\12\6\1\0\1\7\1\10"+
+    "\1\11\1\12\2\0\40\13\1\14\1\15\2\13\1\16"+
+    "\1\17\2\13\1\20\3\13\1\21\1\22\3\13\1\23"+
+    "\2\13\1\24\3\13\1\25\1\13\1\26\1\0\1\27"+
+    "\u0182\0";
 
   private static int [] zzUnpackcmap_blocks() {
     int [] result = new int[512];
@@ -91,10 +92,11 @@ class proyecto {
   private static final int [] ZZ_ACTION = zzUnpackAction();
 
   private static final String ZZ_ACTION_PACKED_0 =
-    "\1\0\3\1\7\0\1\2\11\0\1\3";
+    "\1\0\4\1\13\0\1\2\21\0\1\3\10\0\1\4"+
+    "\4\0";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[22];
+    int [] result = new int[48];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -119,12 +121,15 @@ class proyecto {
   private static final int [] ZZ_ROWMAP = zzUnpackRowMap();
 
   private static final String ZZ_ROWMAP_PACKED_0 =
-    "\0\0\0\22\0\44\0\66\0\110\0\132\0\154\0\176"+
-    "\0\220\0\242\0\264\0\22\0\306\0\330\0\352\0\374"+
-    "\0\u010e\0\u0120\0\u0132\0\u0144\0\u0156\0\22";
+    "\0\0\0\30\0\60\0\110\0\140\0\170\0\220\0\250"+
+    "\0\300\0\330\0\360\0\u0108\0\u0120\0\u0138\0\u0150\0\u0168"+
+    "\0\30\0\u0180\0\u0198\0\u01b0\0\u01c8\0\u01e0\0\u01f8\0\u0210"+
+    "\0\u0228\0\u0240\0\u0258\0\u0270\0\u0288\0\u02a0\0\u02b8\0\u02d0"+
+    "\0\u02e8\0\u0300\0\30\0\u0318\0\u0330\0\u0348\0\u0360\0\u0378"+
+    "\0\u0390\0\u03a8\0\u03c0\0\30\0\u03d8\0\u03f0\0\u0408\0\u0420";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[22];
+    int [] result = new int[48];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -147,18 +152,29 @@ class proyecto {
   private static final int [] ZZ_TRANS = zzUnpackTrans();
 
   private static final String ZZ_TRANS_PACKED_0 =
-    "\14\2\1\3\1\2\1\4\3\2\35\0\1\5\26\0"+
-    "\1\6\2\0\2\5\1\7\33\0\1\10\5\0\2\7"+
-    "\1\0\1\11\3\0\11\12\12\0\1\13\11\0\2\11"+
-    "\16\0\1\14\1\0\2\15\1\0\1\11\3\0\11\12"+
-    "\13\0\1\16\10\0\2\15\1\0\1\11\34\0\1\17"+
-    "\4\0\1\20\21\0\1\20\2\0\1\21\2\0\11\21"+
-    "\3\0\1\22\2\0\1\21\2\0\11\21\3\0\1\22"+
-    "\4\0\1\23\14\0\1\24\21\0\1\24\2\0\1\25"+
-    "\21\0\1\25\1\26\13\0";
+    "\14\2\1\3\3\2\1\4\1\2\1\5\5\2\53\0"+
+    "\1\6\23\0\1\7\34\0\1\10\26\0\1\11\5\0"+
+    "\2\7\1\12\45\0\1\13\22\0\1\14\14\0\2\12"+
+    "\1\0\1\15\6\0\13\16\17\0\1\17\37\0\1\20"+
+    "\3\0\2\15\23\0\1\21\2\0\2\22\1\0\1\15"+
+    "\6\0\13\16\20\0\1\23\21\0\1\24\20\0\2\22"+
+    "\1\0\1\15\46\0\1\25\26\0\1\26\7\0\1\27"+
+    "\51\0\1\30\5\0\1\27\3\0\1\31\4\0\13\31"+
+    "\23\0\1\32\10\0\1\33\3\0\1\31\4\0\13\31"+
+    "\17\0\1\34\14\0\1\33\6\0\1\35\34\0\1\36"+
+    "\13\0\1\37\50\0\1\40\6\0\1\37\3\0\1\41"+
+    "\33\0\1\42\23\0\1\41\1\43\22\0\1\44\27\0"+
+    "\1\44\3\0\1\45\4\0\13\45\4\0\1\46\3\0"+
+    "\1\45\4\0\13\45\4\0\1\46\6\0\1\47\20\0"+
+    "\1\50\27\0\1\50\23\0\1\51\3\0\1\52\3\0"+
+    "\1\53\20\0\1\54\2\0\1\52\3\0\1\53\23\0"+
+    "\1\55\2\0\1\56\1\53\23\0\1\55\2\0\1\56"+
+    "\24\0\1\56\3\0\1\57\23\0\1\60\2\0\1\56"+
+    "\1\57\20\0\1\54\2\0\1\60\2\0\1\56\1\53"+
+    "\20\0\1\54";
 
   private static int [] zzUnpackTrans() {
-    int [] result = new int[360];
+    int [] result = new int[1080];
     int offset = 0;
     offset = zzUnpackTrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -201,10 +217,11 @@ class proyecto {
   private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
-    "\1\0\1\11\2\1\7\0\1\11\11\0\1\11";
+    "\1\0\1\11\3\1\13\0\1\11\21\0\1\11\10\0"+
+    "\1\11\4\0";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[22];
+    int [] result = new int[48];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -675,17 +692,22 @@ class proyecto {
             { System.out.print(yytext());
             }
             // fall through
-          case 4: break;
+          case 5: break;
           case 2:
             { System.out.println("State if detected");
             }
             // fall through
-          case 5: break;
+          case 6: break;
           case 3:
             { System.out.println("An number assignation detected");
             }
             // fall through
-          case 6: break;
+          case 7: break;
+          case 4:
+            { System.out.println("An array number detected");
+            }
+            // fall through
+          case 8: break;
           default:
             zzScanError(ZZ_NO_MATCH);
         }
