@@ -32,7 +32,7 @@ delimitador = [;]
 numassignation = (number){espacio}+({letras}|{numeros})+{espacio}+{asignacion}{espacio}+{numeros}+{delimitador}
 
 
-// =====> Array
+// =====> Arrays de una dimensión
 // arrayassignation = (array<){letras}+(>){espacio}+({letras}|{numeros})+{espacio}+{asignacion}{espacio}+
 numlist = ({espacio}*{numeros}+{espacio}*(,))+{espacio}*{numeros}+{espacio}*
 numarrayassignation = (array<number>){espacio}+({letras}|{numeros})+{espacio}+{asignacion}{espacio}+{corcheteizq}{numlist}*{corcheteder}
