@@ -1,3 +1,1 @@
-array<number> array = {2, 2, 3, 3}
-array<boolean> array2 = {true, true, false  , 1}
-array<character> array3 = { } 
+number id1 = 123;
