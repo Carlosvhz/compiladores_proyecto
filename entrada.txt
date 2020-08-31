@@ -1,1 +1,0 @@
-number nummber1 = 20;
