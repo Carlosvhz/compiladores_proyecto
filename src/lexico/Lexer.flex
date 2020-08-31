@@ -1,7 +1,7 @@
 %%
 
 %unicode
-%class proyecto
+%class Lexer
 %int
 %line
 %standalone
