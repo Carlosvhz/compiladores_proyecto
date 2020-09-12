@@ -16,9 +16,18 @@ identifier = [a-zA-Z][A-Za-z_0-9]*
 character = [a-zA-Z]
 number = [0-9]+
 space = [" "]
+breaks = [ \n\t\r]+
 
 assignation = [=]
 delimiter = [;]
+
+//Arithmetic Operators
+sum_sub = "+"|"-"
+mult_div = "*"|"/"
+mod = "%"
+
+//Relational Operators
+opre = [>|<|>=|<=|=/=|==]
 
 
 %%
@@ -68,7 +77,7 @@ delimiter = [;]
     ">="    { return symbil(sym.MAE, yytext()); }
     "=" { return symbil(sym.ASSIGN, yytext()); } */
 
-     "if"    { System.out.println("If"); }
+    "if"    { System.out.println("If"); }
     "else"  { System.out.println("Else"); }
     "for"   { System.out.println("For"); }
     "while" { System.out.println("While");  }
@@ -78,7 +87,7 @@ delimiter = [;]
     "boolean"   { System.out.println("Boolean");   }
     "number"    { System.out.println("Number");  }
     "character"    { System.out.println("Character");  }
-    "array" { System.out.println("Attay");  }
+    "array" { System.out.println("Array");  }
 
     // Booleans
     "false" { System.out.println("False"); }
@@ -96,7 +105,7 @@ delimiter = [;]
     "," { System.out.println(",");  }
     ";" { System.out.println(";");  }
 
-    // Aritmetic Operators
+    // Arithmetic Operators
     "+" { System.out.println("+");  }
     "-" {  System.out.println("-"); }
     "/" {  System.out.println("/"); }
