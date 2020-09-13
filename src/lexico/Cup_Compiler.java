@@ -15,8 +15,8 @@ public class Cup_Compiler {
         String SyntacticFile = "";
         
         System.out.println("\n*** Procesando archivo default ***\n");
-        LexicFile = "./src/lexico/FlexFile.flex";
-        SyntacticFile = "./src/lexico/CupFile.cup";
+        LexicFile = "./src/lexico/Lexer.flex";
+        SyntacticFile = "./src/sintactico/Parser.cup";
         
         String[] LexicArray = {LexicFile};
         String[] SyntacticArray = {"-parser", "SyntacticAnalizer", SyntacticFile};

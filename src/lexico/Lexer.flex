@@ -1,132 +1,123 @@
-package proyecto;
-
-import java_cup.runtime.Symbol;
-import java.io.Reader;
+import java_cup.runtime.*;
 
 %%
 
+%class LexicalElements
+%standalone
 %unicode
-%class Lexer
+%integer
+%ignorecase
 %line
 %column
-%standalone
-%ignorecase
-%char
-%public
 %cup
 
-identifier = [a-zA-Z][A-Za-z_0-9]*
-
-//Basic characters
-characters = [a-zA-Z]
-number = [0-9]+
-breaks = \r|\n|\r\n
-space = {breaks}|[ \t\f]
-
-//Assignment and delimiter
-assignation = "="
-delimiter = ";"
-
-//Comment character
-comment = "#"
-
-//Relational Operators
-opre = ">"|"<"|">="|"<="|"=/="|"=="
-
-//Special chars
-lparenthesis = "("
-rparenthesis = ")"
-lbracket = "["
-rbracket = "]"
-lkey = "{"
-rkey = "}"
-colon = ":"
-comma = ","
-special_ones = @|#|&|"'"|"$"|"^"|"?"|"!"|"%"
-
-//Decisions 
-and = "&&"
-or = "||"
-
 %{
-    public static int errores = 0;
-    public static String texto = "";
-  
-    private Symbol symbol(String name, int sym) {
-	//System.out.println("name: " + name + " sym: " + sym);
-        return new Symbol(sym, yyline, yycolumn);
-    }
-    
-    private Symbol symbol(String name, int sym, Object val) {
-        //System.out.println("name: " + name + " sym: " + sym + " val: " + val);
-        return new Symbol(sym, yyline, yycolumn, val);
-    }
-}%
+	public static int errores = 0;
+%}
 
+
+special_characters = "^"|@|"$"|#|&|"%"|"'"|"?"|"!"|"_"
+
+
+// Values
+digit = [0-9]
+int = {digit}+
+characters = [a-z]|[A-Z]|"_"
+character = '({characters}|{digit}|{special_characters}|" ")'
+bool = true|false
+
+// Identifier 
+identifier = {characters}({digit}|{characters})*
+
+
+semicolon = ";"
+comma = ","
+colon = ":"
+
+parder = "("
+parizq = ")"
+bracketder = "{"
+bracketizq = "}"
+sbracketder = "["
+sbracketizq = "]"
+
+
+// Operadores 
+oprel = "=="|"=/="|">"|"<"|">="|"<="|"&"|"<>"
+opsum = "+"
+opres = "-"
+opmult = "*"
+opdiv = "/"
+opmod = "%"
+assignment = "="
+
+space = " "|\n|\t
+comment = "#"
+%state BLOCK_COMMENT
 
 %%
 
-<YYINITIAL>{
+<YYINITIAL>
+{
+        // States
+        "if"			{return new Symbol(sym.IF, yycolumn, yyline, yytext());}
+        "else"			{return new Symbol(sym.ELSE, yycolumn, yyline, yytext());}
+        "or"			{return new Symbol(sym.ORELSE, yycolumn, yyline, yytext());}
+        "for"			{return new Symbol(sym.FOR, yycolumn, yyline, yytext());}
+        "while"		        {return new Symbol(sym.WHILE, yycolumn, yyline, yytext());}
+        "switch"		{return new Symbol(sym.SWITCH, yycolumn, yyline, yytext());}
+        // Palabras reservadas
+        "case"			{return new Symbol(sym.CASE, yycolumn, yyline, yytext());}  
+        "default"		{return new Symbol(sym.DEFAULT, yycolumn, yyline, yytext());}
+        "function"		{return new Symbol(sym.FUNCTION, yycolumn, yyline, yytext());}
+        "comeBack"		{return new Symbol(sym.COMEBACK, yycolumn, yyline, yytext());}
+        "break"		        {return new Symbol(sym.BREAK, yycolumn, yyline, yytext());}
+        // Tipo de variable
+        "number"		{return new Symbol(sym.NUMBER, yycolumn, yyline, yytext());}
+        "boolean"		{return new Symbol(sym.BOOLEAN, yycolumn, yyline, yytext());}
+        "character"		{return new Symbol(sym.CHARACTER, yycolumn, yyline, yytext());}
+        "array"			{return new Symbol(sym.ARRAY, yycolumn, yyline, yytext());}
+        // Input y output
+        "input"			{return new Symbol(sym.INPUT, yycolumn, yyline, yytext());}
+        "output"		{return new Symbol(sym.OUTPUT, yycolumn, yyline, yytext());}
 
-    // States
-    "if"    { return symbol("IF", sym.IF); }
-    "else"  { return symbol("ELSE", sym.ELSE); }
-    "for"   { return symbol("FOR", sym.FOR); }
-    "while" { return symbol("WHILE", sym.WHILE); }
-    "switch"    { return symbol("SWITCH", sym.SWITCH); }
+	{int}		        { return new Symbol(sym.INT,yycolumn,yyline,yytext()); }
+        {character}		{ return new Symbol(sym.CHAR,yycolumn,yyline,yytext()); }
+	{bool}			{ return new Symbol(sym.BOOL,yycolumn,yyline,yytext()); }
+	{oprel}	                { return new Symbol(sym.OPREL,yycolumn,yyline,yytext()); }
+	{opsum}	                { return new Symbol(sym.SUM,yycolumn,yyline,yytext()); }
+        {opres}	                { return new Symbol(sym.RES,yycolumn,yyline,yytext()); }
+	{opmult}	        { return new Symbol(sym.MULT,yycolumn,yyline,yytext()); }
+        {opdiv}	                { return new Symbol(sym.DIV,yycolumn,yyline,yytext()); }
+        {opmod}	                { return new Symbol(sym.MOD,yycolumn,yyline,yytext()); }
 
-    // Variables
-    "boolean"   { return symbol("BOOLEAN", sym.BOOLEAN);  }
-    "number"    { return symbol("NUMBER", sym.NUMBER); }
-    "character"    { return symbol("CHARACTER", sym.CHARACTER); }
-    "array" { return symbol("ARRAY", sym.ARRAY); }
+	{semicolon}		{ return new Symbol(sym.SEMICOLON,yycolumn,yyline,yytext()); }
+	{colon}		        { return new Symbol(sym.COLON,yycolumn,yyline,yytext()); }
+	{comma}			{ return new Symbol(sym.COMMA,yycolumn,yyline,yytext()); }
+	
+        {parder}		{ return new Symbol(sym.PARDER,yycolumn,yyline,yytext()); }
+        {parizq}		{ return new Symbol(sym.PARIZQ,yycolumn,yyline,yytext()); }
+        {bracketder}		{ return new Symbol(sym.BRACKETDER,yycolumn,yyline,yytext()); }
+        {bracketizq}		{ return new Symbol(sym.BRACKETIZQ,yycolumn,yyline,yytext()); }
+        {sbracketder}		{ return new Symbol(sym.SBRACKETDER,yycolumn,yyline,yytext()); }
+        {sbracketizq}		{ return new Symbol(sym.SBRACKETIZQ,yycolumn,yyline,yytext()); }
+	{assignment}		{ return new Symbol(sym.ASSIGNMENT,yycolumn,yyline,yytext()); }
 
-    // Values
-    {identifier}    { return symbol("ID", sym.ID); }
-    {int}    { return symbol("INTEGER", sym.INT); }   
-    
-    // Booleans
-    "false" { return symbol("FALSE", sym.FALSE); }
-    "true"  { return symbol("TRUE", sym.TRUE); }
-    "empty" { return symbol("EMPTY", sym.EMPTY); }
-    
-    // Keyboards
-    "output"   { return symbol("OUTPUT", sym.OUTPUT); }
-    "input" { return symbol("INPUT", sym.INPUT); }
+	{identifier}	        { return new Symbol(sym.ID,yycolumn,yyline,yytext()); }
 
-    // Special characters
-    "(" { return symbol("PARENTESISIZQUIERDO", sym.PARENTHESISIZQ) }
-    ")" { return symbol("PARENTESISDERECHO", sym.PARENTHESISDER); }
-    "{" { return symbol("CORCHETEIZQUIERDO", sym.CORCHETEIZQ); }
-    "}" { return symbol("CORCHETEDERECHO", sym.CORCHETEDER); }
-    "," { return symbol("COMA", sym.COMMA); }
-    ";" { return symbol("PUNTOYCOMA", sym.SEMI); }
+	/* Comments */
+	{comment}		{ yybegin(BLOCK_COMMENT); }
 
-    // Aritmetic Operators
-    "+" { return symbol("SUMA", sym.ADD); }
-    "-" { return symbol("RESTA", sym.SUB); }
-    "/" { return symbol("DIVISION", sym.DIV); }
-    "*" { return symbol("MULTIPLICACION", sym.MULT); }
-    "&"    { return symbol("AND"; sym.AND); }
-    "<>"    { return symbol("OR", sym.OR); }
-    "=="    { return symbol("IGUAL", sym.EQUAL); }
-    "=/="   { return symbol("DISTINTO", sym.NEQUAL); }
-    "<"    { return symbol("MENOR", sym.ME); }
-    "<="    { return symbol("MENORIGUAL", sym.MEE); }
-    ">" { return symbol("MAYOR", sym.MA); }
-    ">="    { return symbol("MAYORIGUAL", sym.MAE); }
-    "=" { return symbol("ASIGNACION", sym.ASSIGN); }
+	{space}			{}
 
-    // Comentarios
-    {comment}   { yybegin(COMMENT); }
-
-    {space} {/*Se ignora*/}
-
-    .   { System.out.println("ERROR, simbolo desconocido <" + yytext() + "> | linea: " + (yyline + 1) + " | Columna: " + (yycolumn + 1));
-            errores++;}
+	.			{
+				        System.out.println("Error. Caracter illegal: " + yytext() + "en Línea: " + (yyline + 1) + ", Columna: " + (yycolumn + 1));
+					errores++;
+				}
 }
 
-<COMMENT>{
-    {comentario} {yybegin(YYINIYIAL);}
-    .   {}
+<BLOCK_COMMENT>
+{
+	{comment}		{ yybegin(YYINITIAL); }
+	.		        {}
 }
