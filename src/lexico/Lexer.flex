@@ -13,13 +13,13 @@
 
 identifier = [a-zA-Z][A-Za-z_0-9]*
 
-character = [a-zA-Z]
+characters = [a-zA-Z]
 number = [0-9]+
-space = [" "]
 breaks = [ \n\t\r]+
 
-assignation = [=]
-delimiter = [;]
+//Assignment and delimiter
+assignation = "="
+delimiter = ";"
 
 //Arithmetic Operators
 sum_sub = "+"|"-"
@@ -27,8 +27,25 @@ mult_div = "*"|"/"
 mod = "%"
 
 //Relational Operators
-opre = [>|<|>=|<=|=/=|==]
+opre = ">"|"<"|">="|"<="|"=/="|"=="
 
+//Special chars
+lparenthesis = "("
+rparenthesis = ")"
+lbracket = "["
+rbracket = "]"
+lkey = "{"
+rkey = "}"
+colon = ":"
+comma = ","
+special_ones = @|#|&|"'"|"$"|"^"|"?"|"!"|"%"
+
+//Decisions 
+and = "&&"
+or = "||"
+
+//Comment character
+comment = "~~"
 
 %%
 
@@ -86,7 +103,7 @@ opre = [>|<|>=|<=|=/=|==]
     // Variables
     "boolean"   { System.out.println("Boolean");   }
     "number"    { System.out.println("Number");  }
-    "character"    { System.out.println("Character");  }
+    "characters"    { System.out.println("Characters");  }
     "array" { System.out.println("Array");  }
 
     // Booleans
@@ -126,6 +143,4 @@ opre = [>|<|>=|<=|=/=|==]
     {number}    { System.out.println("A number"); }
     {identifier}    { System.out.println("An identifier"); }
     {character} { System.out.println("A character"); }
-
-    {space} {}
 }
