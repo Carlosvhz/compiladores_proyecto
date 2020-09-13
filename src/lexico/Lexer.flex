@@ -23,13 +23,16 @@ space = {salto}|[ \t\f]
 assignation = [=]
 comment = "#"
 
+
 %{
     public static int errores = 0;
 }%
 
+
 %%
 
 <YYINITIAL>{
+
     // States
     "if"    { return symbol(sym.IF,yycolumn,yyline,yytext()); }
     "else"  { return symbol(sym.ELSE,yycolumn,yyline,yytext()); }
