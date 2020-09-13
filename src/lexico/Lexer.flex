@@ -60,6 +60,7 @@ comment = "#"
 <YYINITIAL>
 {
         // States
+        "Main"			{return new Symbol(sym.MAIN, yycolumn, yyline, yytext());}
         "if"			{return new Symbol(sym.IF, yycolumn, yyline, yytext());}
         "else"			{return new Symbol(sym.ELSE, yycolumn, yyline, yytext());}
         "or"			{return new Symbol(sym.ORELSE, yycolumn, yyline, yytext());}
@@ -81,10 +82,12 @@ comment = "#"
         "input"			{return new Symbol(sym.INPUT, yycolumn, yyline, yytext());}
         "output"		{return new Symbol(sym.OUTPUT, yycolumn, yyline, yytext());}
 
-	{int}		        { return new Symbol(sym.INT,yycolumn,yyline,yytext()); }
+        "empty"		        { return new Symbol(sym.EMPTY,yycolumn,yyline,yytext()); }   
+        {int}		        { return new Symbol(sym.INT,yycolumn,yyline,yytext()); }
         {character}		{ return new Symbol(sym.CHAR,yycolumn,yyline,yytext()); }
 	{bool}			{ return new Symbol(sym.BOOL,yycolumn,yyline,yytext()); }
-	{oprel}	                { return new Symbol(sym.OPREL,yycolumn,yyline,yytext()); }
+	
+        {oprel}	                { return new Symbol(sym.OPREL,yycolumn,yyline,yytext()); }
 	{opsum}	                { return new Symbol(sym.SUM,yycolumn,yyline,yytext()); }
         {opres}	                { return new Symbol(sym.RES,yycolumn,yyline,yytext()); }
 	{opmult}	        { return new Symbol(sym.MULT,yycolumn,yyline,yytext()); }
