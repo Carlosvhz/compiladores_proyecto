@@ -1,30 +1,34 @@
+package proyecto;
+
+import java_cup.runtime.Symbol;
+import java.io.Reader;
+
 %%
 
 %unicode
 %class Lexer
-%int
 %line
-%standalone
 %column
+%standalone
 %ignorecase
 %char
 %public
-
+%cup
 
 identifier = [a-zA-Z][A-Za-z_0-9]*
 
+//Basic characters
 characters = [a-zA-Z]
 number = [0-9]+
-breaks = [ \n\t\r]+
+breaks = \r|\n|\r\n
+space = {breaks}|[ \t\f]
 
 //Assignment and delimiter
 assignation = "="
 delimiter = ";"
 
-//Arithmetic Operators
-sum_sub = "+"|"-"
-mult_div = "*"|"/"
-mod = "%"
+//Comment character
+comment = "#"
 
 //Relational Operators
 opre = ">"|"<"|">="|"<="|"=/="|"=="
@@ -44,103 +48,85 @@ special_ones = @|#|&|"'"|"$"|"^"|"?"|"!"|"%"
 and = "&&"
 or = "||"
 
-//Comment character
-comment = "~~"
+%{
+    public static int errores = 0;
+    public static String texto = "";
+  
+    private Symbol symbol(String name, int sym) {
+	//System.out.println("name: " + name + " sym: " + sym);
+        return new Symbol(sym, yyline, yycolumn);
+    }
+    
+    private Symbol symbol(String name, int sym, Object val) {
+        //System.out.println("name: " + name + " sym: " + sym + " val: " + val);
+        return new Symbol(sym, yyline, yycolumn, val);
+    }
+}%
+
 
 %%
 
 <YYINITIAL>{
-    /* // States
-    "if"    { return symbil(sym.IF, yytext()); }
-    "else"  { return symbil(sym.ELSE, yytext()); }
-    "for"   { return symbil(sym.FOR, yytext()); }
-    "while" { return symbil(sym.WHILE, yytext()); }
-    "switch"    { return symbil(sym.SWITCH, yytext()); }
+
+    // States
+    "if"    { return symbol("IF", sym.IF); }
+    "else"  { return symbol("ELSE", sym.ELSE); }
+    "for"   { return symbol("FOR", sym.FOR); }
+    "while" { return symbol("WHILE", sym.WHILE); }
+    "switch"    { return symbol("SWITCH", sym.SWITCH); }
 
     // Variables
-    "boolean"   { return symbil(sym.BOOLEAN, yytext());  }
-    "number"    { return symbil(sym.NUMBER, yytext()); }
-    "character"    { return symbil(sym.CHARACTER, yytext()); }
-    "array" { return symbil(sym.ARRAY, yytext()); }
+    "boolean"   { return symbol("BOOLEAN", sym.BOOLEAN);  }
+    "number"    { return symbol("NUMBER", sym.NUMBER); }
+    "character"    { return symbol("CHARACTER", sym.CHARACTER); }
+    "array" { return symbol("ARRAY", sym.ARRAY); }
 
+    // Values
+    {identifier}    { return symbol("ID", sym.ID); }
+    {int}    { return symbol("INTEGER", sym.INT); }   
+    
     // Booleans
-    "false" { return symbil(sym.FALSE, yytext()); }
-    "true"  { return symbil(sym.TRUE, yytext()); }
-
+    "false" { return symbol("FALSE", sym.FALSE); }
+    "true"  { return symbol("TRUE", sym.TRUE); }
+    "empty" { return symbol("EMPTY", sym.EMPTY); }
+    
     // Keyboards
-    "output"   { return symbil(sym.SHOW, yytext()); }
-    "input" { return symbil(sym.INPUT, yytext()); }
+    "output"   { return symbol("OUTPUT", sym.OUTPUT); }
+    "input" { return symbol("INPUT", sym.INPUT); }
 
     // Special characters
-    "(" { return symbil(sym.PARENTHESISIZQ, yytext()); }
-    ")" { return symbil(sym.PARENTHESISDER, yytext()); }
-    "{" { return symbil(sym.CORCHETEIZQ, yytext()); }
-    "}" { return symbil(sym.CORCHETEDER, yytext()); }
-    "," { return symbil(sym.COMMA, yytext()); }
-    ";" { return symbil(sym.SEMI, yytext()); }
+    "(" { return symbol("PARENTESISIZQUIERDO", sym.PARENTHESISIZQ) }
+    ")" { return symbol("PARENTESISDERECHO", sym.PARENTHESISDER); }
+    "{" { return symbol("CORCHETEIZQUIERDO", sym.CORCHETEIZQ); }
+    "}" { return symbol("CORCHETEDERECHO", sym.CORCHETEDER); }
+    "," { return symbol("COMA", sym.COMMA); }
+    ";" { return symbol("PUNTOYCOMA", sym.SEMI); }
 
     // Aritmetic Operators
-    "+" { return symbil(sym.ADD, yytext()); }
-    "-" { return symbil(sym.SUB, yytext()); }
-    "/" { return symbil(sym.DIV, yytext()); }
-    "*" { return symbil(sym.MULT, yytext()); }
-    "&&"    { return symbil(sym.AND, yytext()); }
-    "||"    { return symbil(sym.OR, yytext()); }
-    "=="    { return symbil(sym.EQUAL, yytext()); }
-    "=/="   { return symbil(sym.NEQUAL, yytext()); }
-    "<"    { return symbil(sym.ME, yytext()); }
-    "<="    { return symbil(sym.MEE, yytext()); }
-    ">" { return symbil(sym.MA, yytext()); }
-    ">="    { return symbil(sym.MAE, yytext()); }
-    "=" { return symbil(sym.ASSIGN, yytext()); } */
+    "+" { return symbol("SUMA", sym.ADD); }
+    "-" { return symbol("RESTA", sym.SUB); }
+    "/" { return symbol("DIVISION", sym.DIV); }
+    "*" { return symbol("MULTIPLICACION", sym.MULT); }
+    "&"    { return symbol("AND"; sym.AND); }
+    "<>"    { return symbol("OR", sym.OR); }
+    "=="    { return symbol("IGUAL", sym.EQUAL); }
+    "=/="   { return symbol("DISTINTO", sym.NEQUAL); }
+    "<"    { return symbol("MENOR", sym.ME); }
+    "<="    { return symbol("MENORIGUAL", sym.MEE); }
+    ">" { return symbol("MAYOR", sym.MA); }
+    ">="    { return symbol("MAYORIGUAL", sym.MAE); }
+    "=" { return symbol("ASIGNACION", sym.ASSIGN); }
 
-    "if"    { System.out.println("If"); }
-    "else"  { System.out.println("Else"); }
-    "for"   { System.out.println("For"); }
-    "while" { System.out.println("While");  }
-    "switch"    { System.out.println("Switch");  }
+    // Comentarios
+    {comment}   { yybegin(COMMENT); }
 
-    // Variables
-    "boolean"   { System.out.println("Boolean");   }
-    "number"    { System.out.println("Number");  }
-    "characters"    { System.out.println("Characters");  }
-    "array" { System.out.println("Array");  }
+    {space} {/*Se ignora*/}
 
-    // Booleans
-    "false" { System.out.println("False"); }
-    "true"  { System.out.println("True");  }
+    .   { System.out.println("ERROR, simbolo desconocido <" + yytext() + "> | linea: " + (yyline + 1) + " | Columna: " + (yycolumn + 1));
+            errores++;}
+}
 
-    // Keyboards
-    "output"   { System.out.println("Output"); }
-    "input" { System.out.println("Input"); }
-
-    // Special characters
-    "(" { System.out.println(")");  }
-    ")" { System.out.println("(");  }
-    "{" { System.out.println("}"); }
-    "}" { System.out.println("{"); }
-    "," { System.out.println(",");  }
-    ";" { System.out.println(";");  }
-
-    // Arithmetic Operators
-    "+" { System.out.println("+");  }
-    "-" {  System.out.println("-"); }
-    "/" {  System.out.println("/"); }
-    "*" {  System.out.println("*"); }
-    "&&"    {  System.out.println("&&"); } 
-    "||"    {   System.out.println("||"); }
-    "=="    {  System.out.println("==");  }
-    "=/="   {  System.out.println("=/="); }
-    "<"    {  System.out.println("<"); }
-    "<="    {  System.out.println("<="); }
-    ">" {  System.out.println(">"); }
-    ">="    {  System.out.println(">="); }
-    "'" { System.out.println(" ' ' "); }
-    {assignation}    { System.out.println("Assignation"); }
-    {delimiter} { System.out.println("Delimiter"); }
-    
-    // 
-    {number}    { System.out.println("A number"); }
-    {identifier}    { System.out.println("An identifier"); }
-    {character} { System.out.println("A character"); }
+<COMMENT>{
+    {comentario} {yybegin(YYINIYIAL);}
+    .   {}
 }
