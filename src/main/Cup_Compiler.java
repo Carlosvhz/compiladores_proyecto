@@ -1,13 +1,37 @@
-package lexico;
+package main;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.StringReader;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class Cup_Compiler {
+    
     public static void main(String[] args) {
-        Cup_Compiler compiler = new Cup_Compiler();
+        /* Cup_Compiler compiler = new Cup_Compiler();
         compiler.compile_files();
+        boolean mvAL = move_file("Lexer.java");
+        boolean mvAS = move_file("AnalizadorSintactico.java");
+        boolean mvSym = move_file("sym.java"); */
+        probandoLenguaje();
+    }
+     
+    public static void probandoLenguaje(){
+        File archivo = new File("./src/test/test.txt");
+        try {
+            String ST = new String(Files.readAllBytes(archivo.toPath()));
+            System.out.println(ST);
+            int cont = 1;
+            Lexer lexico = new Lexer(new BufferedReader(new StringReader(ST)));
+            AnalizadorSintactico sintactico = new AnalizadorSintactico(lexico);
+            
+            sintactico.parse();
+        } catch (Exception e) {
+            System.out.println("Hubo un pedo en el parser ewe");
+            System.out.println(e);
+        }
     }
     
     public void compile_files() {
@@ -15,11 +39,11 @@ public class Cup_Compiler {
         String SyntacticFile = "";
         
         System.out.println("\n*** Procesando archivo default ***\n");
-        LexicFile = "./src/lexico/Lexer.flex";
-        SyntacticFile = "./src/sintactico/Parser.cup";
+        LexicFile = "./src/main/Lexer.flex";
+        SyntacticFile = "./src/main/Parser.cup";
         
         String[] LexicArray = {LexicFile};
-        String[] SyntacticArray = {"-parser", "SyntacticAnalizer", SyntacticFile};
+        String[] SyntacticArray = {"-parser", "AnalizadorSintactico", SyntacticFile};
         jflex.Main.main(LexicArray);
         try {
             java_cup.Main.main(SyntacticArray);

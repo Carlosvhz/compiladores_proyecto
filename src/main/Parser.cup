@@ -1,0 +1,56 @@
+package main;
+
+import java_cup.runtime.*;
+import java.io.*;
+import java.util.*;
+
+parser code 
+{:
+    public static Node root;
+
+    public int cont = 0;
+
+    public void syntax_error(Symbol s) {
+        System.out.println("CUP detecto un error de syntaxis en " + s.left + " column " + s.right);
+    }
+    
+    public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{
+        System.out.println("CUP detecto un error de syntaxis en " + s.left + " column " + s.right);
+    }
+:}
+
+
+terminal String BOOL, CHAR, INT, EMPTY;
+terminal MAIN, IF, ELSE, ORELSE, FOR, WHILE, SWITCH, CASE, DEFAULT, FUNCTION, COMEBACK; 
+terminal BREAK, NUMBER, BOOLEAN, CHARACTER, ARRAY, INPUT, OUTPUT, OPREL, SUM, RES, MULT; 
+terminal DIV, MOD, SEMICOLON, COLON, COMMA, PARDER, PARIZQ, BRACKETDER, BRACKETIZQ; 
+terminal SBRACKETDER, SBRACKETIZQ, ASSIGNMENT, ID;
+
+
+non terminal programa, main, body;
+non terminal proposition;
+non terminal functions;
+non terminal ifStatement;
+non terminal forStatement;
+non terminal switchStatement;
+non terminal declaration;
+non terminal simpleDeclaration;
+non terminal expression;
+
+
+start with programa;
+
+programa ::= main ;
+main ::= FUNCTION MAIN PARIZQ PARDER ASSIGNMENT BRACKETIZQ body BRACKETDER {::};
+
+functions ::= FUNCTION ID PARIZQ PARDER ASSIGNMENT BRACKETIZQ body BRACKETDER {::};
+
+body ::= proposition 
+         | functions;
+
+proposition ::= WHILE PARIZQ expression PARDER BRACKETIZQ proposition BRACKETDER
+        | ifStatement
+        | forStatement
+        | switchStatement
+        | declaration
+        | simpleDeclaration;
