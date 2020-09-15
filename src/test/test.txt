@@ -1,2 +1,21 @@
+
+
 function main() = {   
+
+}
+
+function owo() = {
+
+}
+
+function ewe() = {
+
+}
+
+function uwu() = {
+
+}
+
+function awa() = {
+
 }

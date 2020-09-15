@@ -1,3 +1,4 @@
+package main;
 import java_cup.runtime.*;
 
 %%
@@ -49,7 +50,7 @@ opdiv = "/"
 opmod = "%"
 assignment = "="
 
-space = " "|\n|\t
+space = [ \n\r\t]+
 comment = "#"
 %state BLOCK_COMMENT
 
@@ -104,12 +105,12 @@ comment = "#"
         {sbracketizq}		{ System.out.println("SBRACKETIZQ"); return new Symbol(sym.SBRACKETIZQ,yycolumn,yyline,yytext()); }
 	{assignment}		{ System.out.println("ASSIGMENT"); return new Symbol(sym.ASSIGNMENT,yycolumn,yyline,yytext()); }
 
-	{identifier}	        { System.out.println("WHILE"); return new Symbol(sym.ID,yycolumn,yyline,yytext()); }
+	{identifier}	        { System.out.println("ID"); return new Symbol(sym.ID,yycolumn,yyline,yytext()); }
 
 	/* Comments */
 	{comment}		{ yybegin(BLOCK_COMMENT); }
 
-	{space}			{}
+	{space}			{/*Ignora uwu*/}
 
 	.			{
 				    System.out.println("Error. Caracter illegal: " + yytext() + "en Línea: " + (yyline + 1) + ", Columna: " + (yycolumn + 1));

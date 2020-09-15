@@ -10,12 +10,12 @@ import java.nio.file.Paths;
 public class Cup_Compiler {
     
     public static void main(String[] args) {
-        /* Cup_Compiler compiler = new Cup_Compiler();
+        Cup_Compiler compiler = new Cup_Compiler();
         compiler.compile_files();
         boolean mvAL = move_file("Lexer.java");
         boolean mvAS = move_file("AnalizadorSintactico.java");
-        boolean mvSym = move_file("sym.java"); */
-        probandoLenguaje();
+        boolean mvSym = move_file("sym.java"); 
+        probandoLenguaje(); 
     }
      
     public static void probandoLenguaje(){

@@ -11,12 +11,13 @@ parser code
     public int cont = 0;
 
     public void syntax_error(Symbol s) {
-        System.out.println("CUP detecto un error de syntaxis en " + s.left + " column " + s.right);
+        System.out.println("compiler has detected a syntax error at column " + s.left 
+                + " line " + s.right);
     }
     
-    public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{
+    /* public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{
         System.out.println("CUP detecto un error de syntaxis en " + s.left + " column " + s.right);
-    }
+    } */
 :}
 
 
@@ -27,9 +28,10 @@ terminal DIV, MOD, SEMICOLON, COLON, COMMA, PARDER, PARIZQ, BRACKETDER, BRACKETI
 terminal SBRACKETDER, SBRACKETIZQ, ASSIGNMENT, ID;
 
 
-non terminal programa, main, body;
+non terminal program, main, body;
 non terminal proposition;
-non terminal functions;
+non terminal function;
+non terminal function_list;
 non terminal ifStatement;
 non terminal forStatement;
 non terminal switchStatement;
@@ -38,15 +40,18 @@ non terminal simpleDeclaration;
 non terminal expression;
 
 
-start with programa;
+start with program;
 
-programa ::= main functions;
-main ::= FUNCTION MAIN PARIZQ PARDER ASSIGNMENT BRACKETIZQ body BRACKETDER {::};
 
-functions ::= FUNCTION ID PARIZQ PARDER ASSIGNMENT BRACKETIZQ body BRACKETDER {::};
+program ::= main function_list | main;
 
-body ::= proposition 
-         | functions;
+main ::= FUNCTION MAIN PARIZQ PARDER ASSIGNMENT BRACKETIZQ body BRACKETDER;
+
+function_list ::= FUNCTION ID PARIZQ PARDER ASSIGNMENT BRACKETIZQ body BRACKETDER function;
+function ::= function_list
+            |/*vacío*/;
+
+body ::= /*vacío*/;
 
 proposition ::= WHILE PARIZQ expression PARDER BRACKETIZQ proposition BRACKETDER
         | ifStatement
@@ -54,3 +59,5 @@ proposition ::= WHILE PARIZQ expression PARDER BRACKETIZQ proposition BRACKETDER
         | switchStatement
         | declaration
         | simpleDeclaration;
+
+declaration ::= NUMBER ID ASSIGNMENT INT;
