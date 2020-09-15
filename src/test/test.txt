@@ -1,7 +1,5 @@
 function main() = {
-    number holis
-}
-
-function fun() = {
-    number owo
+    number hola = 12
+    number hele
+    hele = 20
 }

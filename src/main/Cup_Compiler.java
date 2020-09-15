@@ -14,7 +14,7 @@ public class Cup_Compiler {
         compiler.compile_files();
         boolean mvAL = move_file("Lexer.java");
         boolean mvAS = move_file("AnalizadorSintactico.java");
-        boolean mvSym = move_file("sym.java"); 
+        boolean mvSym = move_file("sym.java");
         probandoLenguaje(); 
     }
      

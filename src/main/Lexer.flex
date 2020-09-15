@@ -103,7 +103,7 @@ comment = "#"
         {bracketizq}		{ System.out.println("BRACKETIZQ"); return new Symbol(sym.BRACKETIZQ,yycolumn,yyline,yytext()); }
         {sbracketder}		{ System.out.println("SBRACKETDER"); return new Symbol(sym.SBRACKETDER,yycolumn,yyline,yytext()); }
         {sbracketizq}		{ System.out.println("SBRACKETIZQ"); return new Symbol(sym.SBRACKETIZQ,yycolumn,yyline,yytext()); }
-	{assignment}		{ System.out.println("ASSIGMENT"); return new Symbol(sym.ASSIGNMENT,yycolumn,yyline,yytext()); }
+	{assignment}		{ System.out.println("ASSIGNMENT"); return new Symbol(sym.ASSIGNMENT,yycolumn,yyline,yytext()); }
 
 	{identifier}	        { System.out.println("ID"); return new Symbol(sym.ID,yycolumn,yyline,yytext()); }
 

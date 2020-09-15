@@ -29,7 +29,7 @@ terminal SBRACKETDER, SBRACKETIZQ, ASSIGNMENT, ID;
 
 
 // Principals non terminals
-non terminal program, main, body;
+non terminal program, main, body, b_body;
 non terminal proposition;
 non terminal function;
 non terminal function_list;
@@ -40,6 +40,7 @@ non terminal type;
 non terminal simpleDeclaration;
 non terminal declaration_assign;
 non terminal assignment;
+non terminal value;
 
 // Statements
 non terminal whileStatement;
@@ -56,13 +57,14 @@ program ::= main function_list | main;
 main ::= FUNCTION MAIN PARIZQ PARDER ASSIGNMENT BRACKETIZQ body BRACKETDER;
 
 function_list ::= FUNCTION ID PARIZQ parameter PARDER ASSIGNMENT BRACKETIZQ body BRACKETDER function;
+
 function ::= function_list
             |/*vacío*/;
 
 parameter ::= /*vacío*/;
 
-body ::= proposition
-        | /*vacío*/;
+body ::= proposition b_body;    // Este GLC permite
+b_body ::= body | /*vacío*/;    // múltiples proposiciones
 
 proposition ::= simpleDeclaration
         | declaration_assign
@@ -72,9 +74,21 @@ proposition ::= simpleDeclaration
         | forStatement
         | switchStatement;
 
+
+// => Formas de declaración de variables
 simpleDeclaration ::= type ID;
+
+declaration_assign ::= type ID ASSIGNMENT value;
+
+assignment ::= ID ASSIGNMENT value;
+
+value ::= INT
+        | BOOL
+        | CHAR;
+
 type ::= NUMBER
         | BOOLEAN
         | CHARACTER;
 
-
+// => Statements
+ifStatement ::= IF PARIZQ PARDER BRACKETIZQ body BRACKETDER;
