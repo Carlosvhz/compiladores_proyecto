@@ -32,12 +32,13 @@ semicolon = ";"
 comma = ","
 colon = ":"
 
-parder = "("
-parizq = ")"
-bracketder = "{"
-bracketizq = "}"
-sbracketder = "["
-sbracketizq = "]"
+parder = ")"
+parizq = "("
+bracketizq = "{"
+bracketder = "}"
+sbracketizq = "["
+sbracketder = "]"
+
 
 // Operadores 
 oprel = "=="|"=/="|">"|"<"|">="|"<="|"&"|"<>"

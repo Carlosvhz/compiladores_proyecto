@@ -22,7 +22,7 @@ public class Cup_Compiler {
         File archivo = new File("./src/test/test.txt");
         try {
             String ST = new String(Files.readAllBytes(archivo.toPath()));
-            System.out.println(ST);
+            System.out.println("Texto: \n"+ST);
             int cont = 1;
             Lexer lexico = new Lexer(new BufferedReader(new StringReader(ST)));
             AnalizadorSintactico sintactico = new AnalizadorSintactico(lexico);

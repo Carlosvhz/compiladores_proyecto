@@ -834,12 +834,12 @@ class Lexer implements java_cup.runtime.Scanner {
             // fall through
           case 50: break;
           case 7:
-            { System.out.println("PARDER"); return new Symbol(sym.PARDER,yycolumn,yyline,yytext());
+            { System.out.println("PARIZQ"); return new Symbol(sym.PARIZQ,yycolumn,yyline,yytext());
             }
             // fall through
           case 51: break;
           case 8:
-            { System.out.println("PARIZQ"); return new Symbol(sym.PARIZQ,yycolumn,yyline,yytext());
+            { System.out.println("PARDER"); return new Symbol(sym.PARDER,yycolumn,yyline,yytext());
             }
             // fall through
           case 52: break;
@@ -894,22 +894,22 @@ class Lexer implements java_cup.runtime.Scanner {
             // fall through
           case 62: break;
           case 19:
-            { System.out.println("SBRACKETDER"); return new Symbol(sym.SBRACKETDER,yycolumn,yyline,yytext());
+            { System.out.println("SBRACKETIZQ"); return new Symbol(sym.SBRACKETIZQ,yycolumn,yyline,yytext());
             }
             // fall through
           case 63: break;
           case 20:
-            { System.out.println("SBRACKETIZQ"); return new Symbol(sym.SBRACKETIZQ,yycolumn,yyline,yytext());
+            { System.out.println("SBRACKETDER"); return new Symbol(sym.SBRACKETDER,yycolumn,yyline,yytext());
             }
             // fall through
           case 64: break;
           case 21:
-            { System.out.println("BRACKETDER"); return new Symbol(sym.BRACKETDER,yycolumn,yyline,yytext());
+            { System.out.println("BRACKETIZQ"); return new Symbol(sym.BRACKETIZQ,yycolumn,yyline,yytext());
             }
             // fall through
           case 65: break;
           case 22:
-            { System.out.println("BRACKETIZQ"); return new Symbol(sym.BRACKETIZQ,yycolumn,yyline,yytext());
+            { System.out.println("BRACKETDER"); return new Symbol(sym.BRACKETDER,yycolumn,yyline,yytext());
             }
             // fall through
           case 66: break;

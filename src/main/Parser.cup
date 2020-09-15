@@ -40,7 +40,7 @@ non terminal expression;
 
 start with programa;
 
-programa ::= main ;
+programa ::= main functions;
 main ::= FUNCTION MAIN PARIZQ PARDER ASSIGNMENT BRACKETIZQ body BRACKETDER {::};
 
 functions ::= FUNCTION ID PARIZQ PARDER ASSIGNMENT BRACKETIZQ body BRACKETDER {::};
