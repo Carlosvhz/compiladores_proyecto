@@ -113,7 +113,7 @@ comment = "#"
 	{space}			{/*Ignora uwu*/}
 
 	.			{
-				    System.out.println("Error. Caracter illegal: " + yytext() + "en Línea: " + (yyline + 1) + ", Columna: " + (yycolumn + 1));
+				    System.out.println("Error léxico, caracter illegal: " + yytext() + "en Línea: " + (yyline + 1) + ", Columna: " + (yycolumn + 1));
                                     errores++;
 				}
 }

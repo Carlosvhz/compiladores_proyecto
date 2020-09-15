@@ -1,21 +1,7 @@
-
-
-function main() = {   
-
+function main() = {
+    number holis
 }
 
-function owo() = {
-
-}
-
-function ewe() = {
-
-}
-
-function uwu() = {
-
-}
-
-function awa() = {
-
+function fun() = {
+    number owo
 }
