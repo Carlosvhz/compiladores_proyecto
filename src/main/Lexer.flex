@@ -11,6 +11,10 @@ import java_cup.runtime.*;
 %column
 %standalone
 %cup
+%eofval{
+        System.out.println("FIN DEL ARCHIVO");
+        System.exit(0);
+%eofval}
 
 %{
 	public static int errores = 0;
@@ -40,6 +44,7 @@ bracketder = "}"
 sbracketizq = "["
 sbracketder = "]"
 
+delimeter = "|"
 
 // Operadores 
 oprel = "=="|"=/="|">"|"<"|">="|"<="|"&"|"<>"
@@ -61,6 +66,7 @@ comment = "#"
         // States
         "Main"			{ System.out.println("MAIN"); return new Symbol(sym.MAIN, yycolumn, yyline, yytext());}
         "if"			{ System.out.println("IF"); return new Symbol(sym.IF, yycolumn, yyline, yytext());}
+        "then"                  { System.out.println("THEN"); return new Symbol(sym.THEN, yycolumn, yyline, yytext());}
         "else"			{ System.out.println("ELSE"); return new Symbol(sym.ELSE, yycolumn, yyline, yytext());}
         "or"			{ System.out.println("OR"); return new Symbol(sym.ORELSE, yycolumn, yyline, yytext());}
         "for"			{ System.out.println("FOR"); return new Symbol(sym.FOR, yycolumn, yyline, yytext());}
@@ -106,7 +112,7 @@ comment = "#"
 	{assignment}		{ System.out.println("ASSIGNMENT"); return new Symbol(sym.ASSIGNMENT,yycolumn,yyline,yytext()); }
 
 	{identifier}	        { System.out.println("ID"); return new Symbol(sym.ID,yycolumn,yyline,yytext()); }
-
+        {delimeter}             { System.out.println("DELIMETER"); return new Symbol(sym.DELIMETER,yycolumn,yyline,yytext()); }
 	/* Comments */
 	{comment}		{ yybegin(BLOCK_COMMENT); }
 

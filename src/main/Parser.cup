@@ -10,11 +10,12 @@ parser code
 
     public int cont = 0;
 
-    public void syntax_error(Symbol s) {
-        System.out.println("compiler has detected a syntax error at column " + s.left 
-                + " line " + s.right);
-    }
-    
+    public void syntax_error(Symbol s){ 
+       System.out.println("Error Sintáctico en la Línea " + (s.left) +
+        " Columna "+s.right+ ". No se esperaba este componente: " +s.value+".");
+       System.out.println("Sintaxis truena");
+    } 
+
     /* public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{
         System.out.println("CUP detecto un error de syntaxis en " + s.left + " column " + s.right);
     } */
@@ -22,10 +23,10 @@ parser code
 
 
 terminal String BOOL, CHAR, INT, EMPTY;
-terminal MAIN, IF, ELSE, ORELSE, FOR, WHILE, SWITCH, CASE, DEFAULT, FUNCTION, COMEBACK; 
+terminal MAIN, IF, THEN, ELSE, ORELSE, FOR, WHILE, SWITCH, CASE, DEFAULT, FUNCTION, COMEBACK; 
 terminal BREAK, NUMBER, BOOLEAN, CHARACTER, ARRAY, INPUT, OUTPUT, OPREL, SUM, RES, MULT; 
 terminal DIV, MOD, SEMICOLON, COLON, COMMA, PARDER, PARIZQ, BRACKETDER, BRACKETIZQ; 
-terminal SBRACKETDER, SBRACKETIZQ, ASSIGNMENT, ID;
+terminal SBRACKETDER, SBRACKETIZQ, ASSIGNMENT, ID, DELIMETER;
 
 
 // Principals non terminals
@@ -45,6 +46,7 @@ non terminal value;
 // Statements
 non terminal whileStatement;
 non terminal ifStatement;
+non terminal desicion; // Desición para While y If
 non terminal forStatement;
 non terminal switchStatement;
 
@@ -52,43 +54,55 @@ non terminal switchStatement;
 start with program;
 
 
-program ::= main function_list | main;
+program ::= main function_list | main;  // SI FUNCIONA >:C
 
 main ::= FUNCTION MAIN PARIZQ PARDER ASSIGNMENT BRACKETIZQ body BRACKETDER;
 
-function_list ::= FUNCTION ID PARIZQ parameter PARDER ASSIGNMENT BRACKETIZQ body BRACKETDER function;
-
+function_list ::= FUNCTION ID PARIZQ parameter PARDER ASSIGNMENT BRACKETIZQ body BRACKETDER function;   // Este GLC permite
 function ::= function_list
-            |/*vacío*/;
+            |/*vacío*/;                                                                                 // múltiples funciones
 
-parameter ::= /*vacío*/;
+parameter ::= /*vacío*/;        // GLC para el parámetro que contienen las funciones  
 
-body ::= proposition b_body;    // Este GLC permite
-b_body ::= body | /*vacío*/;    // múltiples proposiciones
+body ::= proposition b_body | {::};    // Este GLC permite
+b_body ::= body;    // múltiples proposiciones
 
-proposition ::= simpleDeclaration
+proposition ::= simpleDeclaration      
         | declaration_assign
         | assignment
         | ifStatement
         | whileStatement
         | forStatement
-        | switchStatement;
+        | switchStatement;      // Este GLC contiene los diferentes statements
 
 
-// => Formas de declaración de variables
-simpleDeclaration ::= type ID;
+simpleDeclaration ::= type ID;  // Declaración simple con el tipo de variable y la ID
 
-declaration_assign ::= type ID ASSIGNMENT value;
+declaration_assign ::= type ID ASSIGNMENT value;        // Declaración con asignación incluida
 
-assignment ::= ID ASSIGNMENT value;
+assignment ::= ID ASSIGNMENT value;     // Solamente asignación
 
 value ::= INT
         | BOOL
-        | CHAR;
+        | CHAR
+        | EMPTY;                // Tipo de valor que pueda contener una variable
 
 type ::= NUMBER
-        | BOOLEAN
-        | CHARACTER;
+        | BOOLEAN       
+        | CHARACTER;            // Tipo de variable que pude ser una variable
 
-// => Statements
-ifStatement ::= IF PARIZQ PARDER BRACKETIZQ body BRACKETDER;
+ifStatement ::= IF PARIZQ desicion PARDER THEN BRACKETIZQ body BRACKETDER; 
+whileStatement ::= WHILE PARIZQ desicion PARDER BRACKETIZQ body BRACKETDER;
+desicion ::= BOOL
+        | INT
+        | ID
+        | ID OPREL INT
+        | ID OPREL CHAR
+        | ID OPREL BOOL
+        | ID OPREL ID
+        | /*vacío*/;
+
+forStatement ::= FOR PARIZQ ID ASSIGNMENT INT DELIMETER ID OPREL INT DELIMETER INT PARDER BRACKETIZQ body BRACKETDER
+        | FOR PARIZQ ID ASSIGNMENT INT DELIMETER ID OPREL ID DELIMETER INT PARDER BRACKETIZQ body BRACKETDER
+        | FOR PARIZQ ID DELIMETER ID OPREL INT DELIMETER INT PARDER BRACKETIZQ body BRACKETDER
+        | FOR PARIZQ ID DELIMETER ID OPREL ID DELIMETER INT PARDER BRACKETIZQ body BRACKETDER;

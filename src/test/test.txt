@@ -1,5 +1,17 @@
 function main() = {
-    number hola = 12
-    number hele
-    hele = 20
+	number id = 
+	if (id == 'C') then {
+		if() then {
+			if() then {
+				while (){
+					if () then {
+					
+					}
+				}
+			}
+		}
+	}
+	
+	for (id | id < id | 2){} 
 }
+
