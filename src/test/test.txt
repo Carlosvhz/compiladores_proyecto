@@ -1,26 +1,25 @@
 function main() = {
-	array[array[number]] matriz = empty
-	if (id == 'C') then {
-		if() then {
-			if() then {
-				while (){
-					if () then {
-					
-					}
-				}
-			}
+	number numero
+	numero = 3+(3+3)
+	character caracter = 'c'
+	boolean booleano
+	array[character] arreglo
+	array[array[number]] matriz 
+
+	if (numero == 10) then{
+		while (numero > 0){
+			number temp = numero
+			temp = 3+3+3+3+3+3	
 		}
 	}else{
 	}
-	
-	for (id | id < id | 2){} 
+	for (id = 0 to 10 | 1){}
 }
 
 function funcion1(numero:number, numero2:number, numero3:number) = number {
-
+	comeBack numero
 }
 
 function funcion2(letra:character)={
 
-}
-
+}          

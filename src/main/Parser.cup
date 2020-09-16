@@ -23,7 +23,7 @@ parser code
 
 
 terminal String BOOL, CHAR, INT, EMPTY;
-terminal MAIN, IF, THEN, ELSE, ORELSE, FOR, WHILE, SWITCH, CASE, DEFAULT, FUNCTION, COMEBACK; 
+terminal MAIN, IF, THEN, ELSE, ORELSE, FOR, TO, WHILE, SWITCH, CASE, DEFAULT, FUNCTION, COMEBACK; 
 terminal BREAK, NUMBER, BOOLEAN, CHARACTER, INPUT, OUTPUT, OPREL, SUM, RES, MULT; 
 terminal DIV, MOD, SEMICOLON, COLON, COMMA, PARDER, PARIZQ, BRACKETDER, BRACKETIZQ; 
 terminal SBRACKETDER, SBRACKETIZQ, ASSIGNMENT, ID, DELIMETER, ARRAY;
@@ -45,6 +45,11 @@ non terminal simpleDeclaration;
 non terminal declaration_assign;
 non terminal assignment;
 non terminal value;
+non terminal aritmetic_expression ;
+non terminal b_aritmetic_expression;
+non terminal c_aritmetic_expression;
+non terminal signo;
+non terminal array_value;
 
 // Statements
 non terminal whileStatement;
@@ -52,7 +57,7 @@ non terminal ifStatement;
 non terminal desicion; // Desición para While y If
 non terminal forStatement;
 non terminal switchStatement;
-
+non terminal return;
 
 start with program;
 
@@ -64,18 +69,21 @@ main ::= FUNCTION MAIN PARIZQ PARDER ASSIGNMENT BRACKETIZQ body BRACKETDER;
 function_list ::= FUNCTION ID PARIZQ parameter PARDER ASSIGNMENT BRACKETIZQ body BRACKETDER function |
                   FUNCTION ID PARIZQ parameter PARDER ASSIGNMENT type BRACKETIZQ body BRACKETDER function;   // Este GLC permite múltiples funciones
 function ::= function_list
-        |/*vacío*/;
+        | /*vacío*/;
 
-parameter ::= b_parameter | /*vacío*/;        // GLC para el parámetro que contienen las funciones  
+parameter ::= b_parameter 
+        | /*vacío*/;        // GLC para el parámetro que contienen las funciones  
 b_parameter ::= ID COLON type 
         | ID COLON type COMMA parameter;
 
-body ::= proposition b_body | {::};    // Este GLC permite
+body ::= proposition b_body 
+        | {::};    // Este GLC permite
 b_body ::= body;    // múltiples proposiciones
 
 proposition ::= simpleDeclaration      
         | declaration_assign
         | assignment
+        | return
         | ifStatement
         | whileStatement
         | forStatement
@@ -88,16 +96,31 @@ declaration_assign ::= type ID ASSIGNMENT value;        // Declaración con asig
 
 assignment ::= ID ASSIGNMENT value;     // Solamente asignación
 
-value ::= INT
+signo ::= SUM
+        | RES
+        | DIV
+        | MULT
+        | MOD;
+value ::= ID
+        | INT
         | BOOL
         | CHAR
-        | EMPTY;                // Tipo de valor que pueda contener una variable
+        | EMPTY                
+        | array_value
+        | aritmetic_expression;              // Tipo de valor que pueda contener una expresión
+aritmetic_expression ::= INT b_aritmetic_expression
+        | PARIZQ INT b_aritmetic_expression PARDER;
+b_aritmetic_expression ::= signo aritmetic_expression
+        | /*vacío*/;
+
 
 type ::= NUMBER
         | array_type
         | BOOLEAN       
         | CHARACTER;           // Tipo de variable que pude ser una variable
 array_type ::= ARRAY SBRACKETIZQ type SBRACKETDER;
+
+return ::= COMEBACK value;
 
 ifStatement ::= IF PARIZQ desicion PARDER THEN BRACKETIZQ body BRACKETDER
         | IF PARIZQ desicion PARDER THEN BRACKETIZQ body BRACKETDER ELSE BRACKETIZQ body BRACKETDER; 
@@ -109,10 +132,8 @@ desicion ::= BOOL
         | ID OPREL INT
         | ID OPREL CHAR
         | ID OPREL BOOL
-        | ID OPREL ID
-        | /*vacío*/;
+        | ID OPREL ID;
 
-forStatement ::= FOR PARIZQ ID ASSIGNMENT INT DELIMETER ID OPREL INT DELIMETER INT PARDER BRACKETIZQ body BRACKETDER
-        | FOR PARIZQ ID ASSIGNMENT INT DELIMETER ID OPREL ID DELIMETER INT PARDER BRACKETIZQ body BRACKETDER
-        | FOR PARIZQ ID DELIMETER ID OPREL INT DELIMETER INT PARDER BRACKETIZQ body BRACKETDER
-        | FOR PARIZQ ID DELIMETER ID OPREL ID DELIMETER INT PARDER BRACKETIZQ body BRACKETDER;
+forStatement ::= FOR PARIZQ ID ASSIGNMENT INT TO INT DELIMETER INT PARDER BRACKETIZQ body BRACKETDER
+        | FOR PARIZQ ID ASSIGNMENT ID TO INT DELIMETER INT PARDER BRACKETIZQ body BRACKETDER
+        | FOR PARIZQ ID ASSIGNMENT ID TO ID DELIMETER INT PARDER BRACKETIZQ body BRACKETDER;
