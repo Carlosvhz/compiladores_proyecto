@@ -1,5 +1,5 @@
 function main() = {
-	array[array[number]] matriz
+	array[array[number]] matriz = empty
 	if (id == 'C') then {
 		if() then {
 			if() then {
@@ -10,7 +10,17 @@ function main() = {
 				}
 			}
 		}
+	}else{
 	}
 	
 	for (id | id < id | 2){} 
 }
+
+function funcion1(numero:number, numero2:number, numero3:number) = number {
+
+}
+
+function funcion2(letra:character)={
+
+}
+

@@ -34,11 +34,13 @@ non terminal program, main, body, b_body;
 non terminal proposition;
 non terminal function;
 non terminal function_list;
-non terminal parameter;
 
-non terminal array_type;
+non terminal parameter;
+non terminal b_parameter;
+
 // Asignation and declaration
 non terminal type;
+non terminal array_type;
 non terminal simpleDeclaration;
 non terminal declaration_assign;
 non terminal assignment;
@@ -59,11 +61,14 @@ program ::= main function_list | main;  // SI FUNCIONA >:C
 
 main ::= FUNCTION MAIN PARIZQ PARDER ASSIGNMENT BRACKETIZQ body BRACKETDER;
 
-function_list ::= FUNCTION ID PARIZQ parameter PARDER ASSIGNMENT BRACKETIZQ body BRACKETDER function;   // Este GLC permite
+function_list ::= FUNCTION ID PARIZQ parameter PARDER ASSIGNMENT BRACKETIZQ body BRACKETDER function |
+                  FUNCTION ID PARIZQ parameter PARDER ASSIGNMENT type BRACKETIZQ body BRACKETDER function;   // Este GLC permite múltiples funciones
 function ::= function_list
-            |/*vacío*/;                                                                                 // múltiples funciones
+        |/*vacío*/;
 
-parameter ::= /*vacío*/;        // GLC para el parámetro que contienen las funciones  
+parameter ::= b_parameter | /*vacío*/;        // GLC para el parámetro que contienen las funciones  
+b_parameter ::= ID COLON type 
+        | ID COLON type COMMA parameter;
 
 body ::= proposition b_body | {::};    // Este GLC permite
 b_body ::= body;    // múltiples proposiciones
@@ -94,7 +99,9 @@ type ::= NUMBER
         | CHARACTER;           // Tipo de variable que pude ser una variable
 array_type ::= ARRAY SBRACKETIZQ type SBRACKETDER;
 
-ifStatement ::= IF PARIZQ desicion PARDER THEN BRACKETIZQ body BRACKETDER; 
+ifStatement ::= IF PARIZQ desicion PARDER THEN BRACKETIZQ body BRACKETDER
+        | IF PARIZQ desicion PARDER THEN BRACKETIZQ body BRACKETDER ELSE BRACKETIZQ body BRACKETDER; 
+
 whileStatement ::= WHILE PARIZQ desicion PARDER BRACKETIZQ body BRACKETDER;
 desicion ::= BOOL
         | INT
