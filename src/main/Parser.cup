@@ -102,17 +102,16 @@ signo ::= SUM
         | MULT
         | MOD;
 value ::= ID
-        | INT
         | BOOL
         | CHAR
         | EMPTY                
         | array_value
         | aritmetic_expression;              // Tipo de valor que pueda contener una expresión
 aritmetic_expression ::= INT b_aritmetic_expression
-        | PARIZQ INT b_aritmetic_expression PARDER;
+        | PARIZQ INT b_aritmetic_expression PARDER c_aritmetic_expression;
 b_aritmetic_expression ::= signo aritmetic_expression
         | /*vacío*/;
-
+c_aritmetic_expression ::= b_aritmetic_expression;
 
 type ::= NUMBER
         | array_type

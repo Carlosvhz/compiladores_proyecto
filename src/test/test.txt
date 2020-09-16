@@ -9,7 +9,8 @@ function main() = {
 	if (numero == 10) then{
 		while (numero > 0){
 			number temp = numero
-			temp = 3+3+3+3+3+3	
+			temp = 3+3+3+3+3+3
+			temp = (3+3+3*(3+3)+3)	
 		}
 	}else{
 	}
