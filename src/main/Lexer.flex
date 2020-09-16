@@ -47,7 +47,9 @@ sbracketder = "]"
 delimeter = "|"
 
 // Operadores 
-oprel = "=="|"=/="|">"|"<"|">="|"<="|"&"|"<>"
+menor = "<"
+mayor = ">"
+oprel = "=="|"=/="|">="|"<="|"&"|"<>"|"<"|">"
 opsum = "+"
 opres = "-"
 opmult = "*"
@@ -91,7 +93,7 @@ comment = "#"
         {int}		        { System.out.println("INT"); return new Symbol(sym.INT,yycolumn,yyline,yytext()); }
         {character}		{ System.out.println("CHAR"); return new Symbol(sym.CHAR,yycolumn,yyline,yytext()); }
 	{bool}			{ System.out.println("BOOL"); return new Symbol(sym.BOOL,yycolumn,yyline,yytext()); }
-	
+
         {oprel}	                { System.out.println("OPREL"); return new Symbol(sym.OPREL,yycolumn,yyline,yytext()); }
 	{opsum}	                { System.out.println("SUM"); return new Symbol(sym.SUM,yycolumn,yyline,yytext()); }
         {opres}	                { System.out.println("RES"); return new Symbol(sym.RES,yycolumn,yyline,yytext()); }

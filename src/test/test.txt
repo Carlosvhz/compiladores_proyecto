@@ -1,5 +1,5 @@
 function main() = {
-	number id = 
+	array[array[number]] matriz
 	if (id == 'C') then {
 		if() then {
 			if() then {
@@ -14,4 +14,3 @@ function main() = {
 	
 	for (id | id < id | 2){} 
 }
-

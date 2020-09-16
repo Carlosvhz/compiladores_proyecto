@@ -24,9 +24,9 @@ parser code
 
 terminal String BOOL, CHAR, INT, EMPTY;
 terminal MAIN, IF, THEN, ELSE, ORELSE, FOR, WHILE, SWITCH, CASE, DEFAULT, FUNCTION, COMEBACK; 
-terminal BREAK, NUMBER, BOOLEAN, CHARACTER, ARRAY, INPUT, OUTPUT, OPREL, SUM, RES, MULT; 
+terminal BREAK, NUMBER, BOOLEAN, CHARACTER, INPUT, OUTPUT, OPREL, SUM, RES, MULT; 
 terminal DIV, MOD, SEMICOLON, COLON, COMMA, PARDER, PARIZQ, BRACKETDER, BRACKETIZQ; 
-terminal SBRACKETDER, SBRACKETIZQ, ASSIGNMENT, ID, DELIMETER;
+terminal SBRACKETDER, SBRACKETIZQ, ASSIGNMENT, ID, DELIMETER, ARRAY;
 
 
 // Principals non terminals
@@ -36,6 +36,7 @@ non terminal function;
 non terminal function_list;
 non terminal parameter;
 
+non terminal array_type;
 // Asignation and declaration
 non terminal type;
 non terminal simpleDeclaration;
@@ -88,8 +89,10 @@ value ::= INT
         | EMPTY;                // Tipo de valor que pueda contener una variable
 
 type ::= NUMBER
+        | array_type
         | BOOLEAN       
-        | CHARACTER;            // Tipo de variable que pude ser una variable
+        | CHARACTER;           // Tipo de variable que pude ser una variable
+array_type ::= ARRAY SBRACKETIZQ type SBRACKETDER;
 
 ifStatement ::= IF PARIZQ desicion PARDER THEN BRACKETIZQ body BRACKETDER; 
 whileStatement ::= WHILE PARIZQ desicion PARDER BRACKETIZQ body BRACKETDER;
