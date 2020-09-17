@@ -23,8 +23,8 @@ parser code
 
 
 terminal String BOOL, CHAR, INT, EMPTY;
-terminal MAIN, IF, THEN, ELSE, ORELSE, FOR, TO, WHILE, SWITCH, CASE, DEFAULT, FUNCTION, COMEBACK; 
-terminal BREAK, NUMBER, BOOLEAN, CHARACTER, INPUT, OUTPUT, OPREL, SUM, RES, MULT; 
+terminal MAIN, IF, THEN, ELSE, FOR, TO, WHILE, SWITCH, CASE, DEFAULT, FUNCTION, COMEBACK; 
+terminal NUMBER, BOOLEAN, CHARACTER, INPUT, OUTPUT, OPREL, SUM, RES, MULT; 
 terminal DIV, MOD, SEMICOLON, COLON, COMMA, PARDER, PARIZQ, BRACKETDER, BRACKETIZQ; 
 terminal SBRACKETDER, SBRACKETIZQ, ASSIGNMENT, ID, DELIMETER, ARRAY;
 
@@ -55,8 +55,13 @@ non terminal array_value;
 non terminal whileStatement;
 non terminal ifStatement;
 non terminal desicion; // Desición para While y If
+non terminal outputStatement;
+non terminal inputStatement;
 non terminal forStatement;
 non terminal switchStatement;
+non terminal switch_body;
+non terminal case_switch;
+non terminal b_case_switch;
 non terminal return;
 
 start with program;
@@ -67,7 +72,7 @@ program ::= main function_list | main;  // SI FUNCIONA >:C
 main ::= FUNCTION MAIN PARIZQ PARDER ASSIGNMENT BRACKETIZQ body BRACKETDER;
 
 function_list ::= FUNCTION ID PARIZQ parameter PARDER ASSIGNMENT BRACKETIZQ body BRACKETDER function |
-                  FUNCTION ID PARIZQ parameter PARDER ASSIGNMENT type BRACKETIZQ body BRACKETDER function;   // Este GLC permite múltiples funciones
+                  FUNCTION ID PARIZQ parameter PARDER ASSIGNMENT type BRACKETIZQ body return BRACKETDER function;   // Este GLC permite múltiples funciones
 function ::= function_list
         | /*vacío*/;
 
@@ -77,13 +82,14 @@ b_parameter ::= ID COLON type
         | ID COLON type COMMA parameter;
 
 body ::= proposition b_body 
-        | {::};    // Este GLC permite
+        | /*vacío*/;    // Este GLC permite
 b_body ::= body;    // múltiples proposiciones
 
 proposition ::= simpleDeclaration      
         | declaration_assign
         | assignment
-        | return
+        | outputStatement
+        | inputStatement
         | ifStatement
         | whileStatement
         | forStatement
@@ -106,11 +112,13 @@ value ::= ID
         | CHAR
         | EMPTY                
         | array_value
-        | aritmetic_expression;              // Tipo de valor que pueda contener una expresión
-aritmetic_expression ::= INT b_aritmetic_expression
+        | INT;              // Tipo de valor que pueda contener una expresión
+
+/* aritmetic_expression ::= INT b_aritmetic_expression
         | PARIZQ INT b_aritmetic_expression PARDER c_aritmetic_expression;
 b_aritmetic_expression ::= signo aritmetic_expression
-        | /*vacío*/;
+        | {::} ;*/
+
 c_aritmetic_expression ::= b_aritmetic_expression;
 
 type ::= NUMBER
@@ -121,8 +129,13 @@ array_type ::= ARRAY SBRACKETIZQ type SBRACKETDER;
 
 return ::= COMEBACK value;
 
+outputStatement ::= OUTPUT PARIZQ value PARDER;
+
+inputStatement ::= ID ASSIGNMENT INPUT PARIZQ PARDER;
+
 ifStatement ::= IF PARIZQ desicion PARDER THEN BRACKETIZQ body BRACKETDER
-        | IF PARIZQ desicion PARDER THEN BRACKETIZQ body BRACKETDER ELSE BRACKETIZQ body BRACKETDER; 
+        | IF PARIZQ desicion PARDER THEN BRACKETIZQ body BRACKETDER ELSE BRACKETIZQ body BRACKETDER
+        | IF PARIZQ desicion PARDER THEN BRACKETIZQ body BRACKETDER ELSE ifStatement;
 
 whileStatement ::= WHILE PARIZQ desicion PARDER BRACKETIZQ body BRACKETDER;
 desicion ::= BOOL
@@ -136,3 +149,9 @@ desicion ::= BOOL
 forStatement ::= FOR PARIZQ ID ASSIGNMENT INT TO INT DELIMETER INT PARDER BRACKETIZQ body BRACKETDER
         | FOR PARIZQ ID ASSIGNMENT ID TO INT DELIMETER INT PARDER BRACKETIZQ body BRACKETDER
         | FOR PARIZQ ID ASSIGNMENT ID TO ID DELIMETER INT PARDER BRACKETIZQ body BRACKETDER;
+
+switchStatement ::= SWITCH PARIZQ ID PARDER BRACKETIZQ switch_body BRACKETDER;
+switch_body ::=  case_switch DEFAULT COLON BRACKETIZQ body BRACKETDER;
+case_switch ::= CASE PARIZQ value PARDER COLON BRACKETIZQ body BRACKETDER b_case_switch 
+        | /*vacío*/; 
+b_case_switch ::= case_switch;

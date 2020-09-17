@@ -1,26 +1,57 @@
-function main() = {
-	number numero
-	numero = 3+(3+3)
-	character caracter = 'c'
-	boolean booleano
-	array[character] arreglo
-	array[array[number]] matriz 
 
-	if (numero == 10) then{
-		while (numero > 0){
-			number temp = numero
-			temp = 3+3+3+3+3+3
-			temp = (3+3+3*(3+3)+3)	
+function main() = {
+	
+	number numero_de_prueba
+	numero_de_prueba = 2
+
+	character caracter_de_prueba = 'c'
+	
+	boolean booleano_de_prueba
+	booleano_de_prueba = true
+	
+	array[character] arreglo_de_prueba
+	
+	array[array[number]] matriz_de_prueba
+
+	if (id < numero) then {
+		if (id == numero) then {
+		
+		}else if (id <> numero) then {
+		
+		}else{
+		
 		}
 	}else{
+		while (id >= numero){
+			switch (id) {
+				case (1):{
+				}
+				default:{
+				}
+			}
+		}
 	}
-	for (id = 0 to 10 | 1){}
+	for (id2 = id to 10 | 1 ){
+	
+	}
+	
+	id = input()
+	output(id)
 }
 
-function funcion1(numero:number, numero2:number, numero3:number) = number {
-	comeBack numero
+function funcion_sin_parametros()={
 }
 
-function funcion2(letra:character)={
+function funcion_con_parametros(numero1:number, numero2:number, numero3:number) = {
 
-}          
+}
+
+function funcion_con_retorno() = number{
+	comeBack empty
+}
+
+function funcion_con_parametros_retorno(numero1:number, numero2:number, numero3:number) = number {	
+	comeBack empty
+}
+
+

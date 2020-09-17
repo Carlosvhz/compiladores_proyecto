@@ -8,50 +8,48 @@ package main;
 /** CUP generated class containing symbol constants. */
 public class sym {
   /* terminals */
-  public static final int FUNCTION = 17;
-  public static final int ORELSE = 10;
-  public static final int MULT = 28;
+  public static final int FUNCTION = 16;
+  public static final int MULT = 26;
   public static final int CHAR = 3;
-  public static final int ASSIGNMENT = 40;
+  public static final int ASSIGNMENT = 38;
   public static final int EMPTY = 5;
-  public static final int OUTPUT = 24;
-  public static final int RES = 27;
-  public static final int INPUT = 23;
-  public static final int CASE = 15;
-  public static final int SBRACKETDER = 38;
+  public static final int OUTPUT = 22;
+  public static final int RES = 25;
+  public static final int INPUT = 21;
+  public static final int CASE = 14;
+  public static final int SBRACKETDER = 36;
   public static final int INT = 4;
-  public static final int COMEBACK = 18;
-  public static final int ARRAY = 43;
-  public static final int FOR = 11;
-  public static final int CHARACTER = 22;
-  public static final int SEMICOLON = 31;
+  public static final int COMEBACK = 17;
+  public static final int ARRAY = 41;
+  public static final int FOR = 10;
+  public static final int CHARACTER = 20;
+  public static final int SEMICOLON = 29;
   public static final int BOOL = 2;
-  public static final int COMMA = 33;
-  public static final int DELIMETER = 42;
-  public static final int DIV = 29;
-  public static final int OPREL = 25;
+  public static final int COMMA = 31;
+  public static final int DELIMETER = 40;
+  public static final int DIV = 27;
+  public static final int OPREL = 23;
   public static final int MAIN = 6;
   public static final int IF = 7;
-  public static final int ID = 41;
-  public static final int PARIZQ = 35;
+  public static final int ID = 39;
   public static final int EOF = 0;
-  public static final int BOOLEAN = 21;
-  public static final int BRACKETIZQ = 37;
+  public static final int BOOLEAN = 19;
+  public static final int PARIZQ = 33;
+  public static final int BRACKETIZQ = 35;
   public static final int error = 1;
-  public static final int NUMBER = 20;
-  public static final int MOD = 30;
-  public static final int BREAK = 19;
-  public static final int SWITCH = 14;
-  public static final int COLON = 32;
+  public static final int NUMBER = 18;
+  public static final int MOD = 28;
+  public static final int SWITCH = 13;
+  public static final int COLON = 30;
   public static final int ELSE = 9;
-  public static final int SBRACKETIZQ = 39;
-  public static final int TO = 12;
-  public static final int WHILE = 13;
-  public static final int DEFAULT = 16;
+  public static final int SBRACKETIZQ = 37;
+  public static final int TO = 11;
+  public static final int WHILE = 12;
+  public static final int DEFAULT = 15;
   public static final int THEN = 8;
-  public static final int SUM = 26;
-  public static final int PARDER = 34;
-  public static final int BRACKETDER = 36;
+  public static final int SUM = 24;
+  public static final int PARDER = 32;
+  public static final int BRACKETDER = 34;
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
@@ -63,7 +61,6 @@ public class sym {
   "IF",
   "THEN",
   "ELSE",
-  "ORELSE",
   "FOR",
   "TO",
   "WHILE",
@@ -72,7 +69,6 @@ public class sym {
   "DEFAULT",
   "FUNCTION",
   "COMEBACK",
-  "BREAK",
   "NUMBER",
   "BOOLEAN",
   "CHARACTER",

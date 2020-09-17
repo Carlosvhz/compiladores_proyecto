@@ -33,7 +33,6 @@ bool = true|false
 // Identifier 
 identifier = {characters}({digit}|{characters})*
 
-semicolon = ";"
 comma = ","
 colon = ":"
 
@@ -47,7 +46,7 @@ sbracketder = "]"
 delimeter = "|"
 
 // Operadores 
-oprel = "=="|"=/="|">="|"<="|"&"|"<>"|"<"|">"
+oprel = "=="|"=/="|">="|"<="|"&&"|"||"|"<>"|"<"|">"
 opsum = "+"
 opres = "-"
 opmult = "*"
@@ -68,7 +67,6 @@ comment = "#"
         "if"			{ System.out.println("IF"); return new Symbol(sym.IF, yycolumn, yyline, yytext());}
         "then"                  { System.out.println("THEN"); return new Symbol(sym.THEN, yycolumn, yyline, yytext());}
         "else"			{ System.out.println("ELSE"); return new Symbol(sym.ELSE, yycolumn, yyline, yytext());}
-        "or"			{ System.out.println("OR"); return new Symbol(sym.ORELSE, yycolumn, yyline, yytext());}
         "for"			{ System.out.println("FOR"); return new Symbol(sym.FOR, yycolumn, yyline, yytext());}
         "to"                    { System.out.println("TO"); return new Symbol(sym.TO, yycolumn, yyline, yytext());}
         "while"		        { System.out.println("WHILE"); return new Symbol(sym.WHILE, yycolumn, yyline, yytext());}
@@ -78,7 +76,6 @@ comment = "#"
         "default"		{ System.out.println("DEFAULT"); return new Symbol(sym.DEFAULT, yycolumn, yyline, yytext());}
         "function"		{ System.out.println("FUNCTION"); return new Symbol(sym.FUNCTION, yycolumn, yyline, yytext());}
         "comeBack"		{ System.out.println("COMEBACK"); return new Symbol(sym.COMEBACK, yycolumn, yyline, yytext());}
-        "break"		        { System.out.println("BREAK"); return new Symbol(sym.BREAK, yycolumn, yyline, yytext());}
         // Tipo de variable
         "number"		{ System.out.println("NUMBER"); return new Symbol(sym.NUMBER, yycolumn, yyline, yytext());}
         "boolean"		{ System.out.println("BOOLEAN"); return new Symbol(sym.BOOLEAN, yycolumn, yyline, yytext());}
@@ -100,7 +97,6 @@ comment = "#"
         {opdiv}	                { System.out.println("DIV"); return new Symbol(sym.DIV,yycolumn,yyline,yytext()); }
         {opmod}	                { System.out.println("MOD"); return new Symbol(sym.MOD,yycolumn,yyline,yytext()); }
 
-	{semicolon}		{ System.out.println("SEMICOLON"); return new Symbol(sym.SEMICOLON,yycolumn,yyline,yytext()); }
 	{colon}		        { System.out.println("COLON"); return new Symbol(sym.COLON,yycolumn,yyline,yytext()); }
 	{comma}			{ System.out.println("COMMA"); return new Symbol(sym.COMMA,yycolumn,yyline,yytext()); }
 	
