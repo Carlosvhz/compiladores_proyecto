@@ -6,8 +6,7 @@ import java.util.*;
 
 parser code 
 {:
-    public static Node root;
-
+    public static Node father;
     public int cont = 0;
 
     public void syntax_error(Symbol s){ 
@@ -24,7 +23,7 @@ parser code
 
 terminal String BOOL, CHAR, INT, EMPTY;
 terminal MAIN, IF, THEN, ELSE, FOR, TO, WHILE, SWITCH, CASE, DEFAULT, FUNCTION, COMEBACK; 
-terminal NUMBER, BOOLEAN, CHARACTER, INPUT, OUTPUT, OPREL, SUM, RES, MULT; 
+terminal NUMBER, BOOLEAN, CHARACTER, INPUT, OUTPUT, OPREL, SUM, RES, MULT, CALL; 
 terminal DIV, MOD, SEMICOLON, COLON, COMMA, PARDER, PARIZQ, BRACKETDER, BRACKETIZQ; 
 terminal SBRACKETDER, SBRACKETIZQ, ASSIGNMENT, ID, DELIMETER, ARRAY;
 
@@ -71,7 +70,29 @@ non terminal return;
 start with program;
 
 
-program ::= main function_list | main;  // SI FUNCIONA >:C
+program ::= main:i function_list:fi 
+        {:
+                Node node = new Node();
+                node.setTag("INITIALIZE");
+                node.setId(parser.cont);  
+                parser.cont++;
+
+                node.setChild( (Node) i );
+                node.setChild( (Node) fi );
+                parser.father = node;
+                RESULT = node;
+        :}
+        | main:i 
+        {:
+                Node node = new Node();
+                node.setTag("INITIALIZE");
+                NODE.setId(parser.cont);
+                parser.cont++;
+
+                node.setChild( (Node) i );
+                RESULT = node;
+        
+        :};  // SI FUNCIONA >:C
 
 main ::= FUNCTION MAIN PARIZQ PARDER ASSIGNMENT BRACKETIZQ body BRACKETDER;
 
@@ -99,9 +120,9 @@ proposition ::= simpleDeclaration
         | whileStatement
         | forStatement
         | switchStatement;      // Este GLC contiene los diferentes statements
-functionCall ::= ID PARIZQ PARDER
-        | ID PARIZQ funCall_parameter PARDER;
-        
+functionCall ::= CALL ID PARIZQ PARDER
+        | CALL ID PARIZQ funCall_parameter PARDER;
+
 funCall_parameter ::= b_funCall_parameter
         | value;
 b_funCall_parameter ::= value COMMA funCall_parameter;

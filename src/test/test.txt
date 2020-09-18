@@ -37,9 +37,9 @@ function main() = {
 	
 	id = input()
 	output(id)
-    llamada_funcion()
-    llamada_funcion(variable1)
-    llamada_funcion(variable1,variable2)
+    call llamada_funcion()
+    call llamada_funcion(variable1)
+    call llamada_funcion(variable1,variable2)
 }
 
 function funcion_sin_parametros()={

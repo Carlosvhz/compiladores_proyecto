@@ -27,6 +27,10 @@ public class Node {
         this.children = children;
     }
     
+    public void setChild (Node n){
+        children.add(n);
+    }
+
     public void setValue(String value) {
         this.value = value;
     }

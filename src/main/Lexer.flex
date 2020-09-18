@@ -72,6 +72,7 @@ comment = "#"
         "while"		        { System.out.println("WHILE"); return new Symbol(sym.WHILE, yycolumn, yyline, yytext());}
         "switch"		{ System.out.println("SWITCH"); return new Symbol(sym.SWITCH, yycolumn, yyline, yytext());}
         // Palabras reservadas
+        "call"                  { System.out.println("CALL"); return new Symbol(sym.CALL, yycolumn, yyline, yytext());}  
         "case"			{ System.out.println("CASE"); return new Symbol(sym.CASE, yycolumn, yyline, yytext());}  
         "default"		{ System.out.println("DEFAULT"); return new Symbol(sym.DEFAULT, yycolumn, yyline, yytext());}
         "function"		{ System.out.println("FUNCTION"); return new Symbol(sym.FUNCTION, yycolumn, yyline, yytext());}
