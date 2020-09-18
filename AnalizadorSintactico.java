@@ -364,7 +364,7 @@ public class AnalizadorSintactico extends java_cup.runtime.lr_parser {
 
 
 
-    public Node root = new Node();
+    public static Node father;
     public int cont = 0;
 
     public void syntax_error(Symbol s){ 
@@ -429,12 +429,13 @@ class CUP$AnalizadorSintactico$actions {
 		
                 Node node = new Node();
                 node.setTag("INITIALIZE");
-                node.setId(cont);  
-                cont++;
+                node.setId(parser.cont);  
+                parser.cont++;
 
                 node.setChild( (Node) i );
                 node.setChild( (Node) fi );
-
+                parser.father = node;
+                RESULT = node;
         
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("program",0, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-1)), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }
@@ -448,6 +449,14 @@ class CUP$AnalizadorSintactico$actions {
 		int iright = ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()).right;
 		Object i = (Object)((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.peek()).value;
 		
+                Node node = new Node();
+                node.setTag("INITIALIZE");
+                NODE.setId(parser.cont);
+                parser.cont++;
+
+                node.setChild( (Node) i );
+                RESULT = node;
+        
         
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("program",0, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }

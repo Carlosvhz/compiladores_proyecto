@@ -2,6 +2,7 @@ package main;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.StringReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -12,31 +13,60 @@ public class Cup_Compiler {
     public static void main(String[] args) {
         
         // Este codigo compila cambios de CUP y JFlex
-        Cup_Compiler compiler = new Cup_Compiler();
+        /* Cup_Compiler compiler = new Cup_Compiler();
         compiler.compile_files();
         boolean mvAL = move_file("Lexer.java");
-        boolean mvAS = move_file("AnalizadorSintactico.java");
-        boolean mvSym = move_file("sym.java");
+        boolean mvAS = move_file("Parser.java");
+        boolean mvSym = move_file("sym.java");*/
         
         
         // Esta función lo que hace es probar el CUP y Jflex a un archivo de texto 
         probandoLenguaje(); 
+        // AnalizadorSintactico p = new AnalizadorSintactico();
+        
     }
      
     public static void probandoLenguaje(){
         File archivo = new File("./src/test/test.txt");
+        
         try {
+            Parser p = new Parser(new Lexer(new FileReader(archivo)));
+    	if ((Lexer.errores == 0) && (Parser.errores == 0)) {
+      		Node root = Parser.father;
+      		Graficar(recorrido(root));
+      		System.out.println("AST Generadp");
+    	} else {
+    		System.out.println("No se genero el AST");
+    	}
+        } catch (Exception e) {
+        }
+        
+        /* try {
             String ST = new String(Files.readAllBytes(archivo.toPath()));
             System.out.println("Texto: \n"+ST);
             int cont = 1;
             Lexer lexico = new Lexer(new BufferedReader(new StringReader(ST)));
-            AnalizadorSintactico sintactico = new AnalizadorSintactico(lexico);
+            Parser sintactico = new Parser(lexico);
             
             sintactico.parse();
         } catch (Exception e) {
             System.out.println("Hubo un pedo en el parser ewe");
             System.out.println(e);
-        }
+        }*/
+        
+    }
+    
+    private static String recorrido(Node root) {
+  		String cuerpo = "";
+    	for (Node child : root.children) {
+    		// System.out.println("hola");
+      		if (!(child.getTag().equals("vacio"))) {
+        		cuerpo += "\"" + root.getId()+ ". " + root.getTag()+ " = " + root.getValue()+
+        			"\"->\""+ child.getId()+". " + child.getTag()+ " = " + child.getValue()+ "\""  + "\n";
+        		cuerpo += recorrido(child);
+      		}
+    	}
+    	return cuerpo;
     }
     
     public void compile_files() {
@@ -48,7 +78,7 @@ public class Cup_Compiler {
         SyntacticFile = "./src/main/Parser.cup";
         
         String[] LexicArray = {LexicFile};
-        String[] SyntacticArray = {"-parser", "AnalizadorSintactico", SyntacticFile};
+        String[] SyntacticArray = {"-parser", "Parser", SyntacticFile};
         jflex.Main.main(LexicArray);
         try {
             java_cup.Main.main(SyntacticArray);

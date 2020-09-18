@@ -8,6 +8,7 @@ parser code
 {:
     public static Node father;
     public int cont = 0;
+    public static int errores = 0;
 
     public void syntax_error(Symbol s){ 
        System.out.println("Error Sintáctico en la Línea " + (s.left) +
@@ -72,7 +73,7 @@ start with program;
 
 program ::= main:i function_list:fi 
         {:
-                Node node = new Node();
+                /* Node node = new Node();
                 node.setTag("INITIALIZE");
                 node.setId(parser.cont);  
                 parser.cont++;
@@ -80,13 +81,13 @@ program ::= main:i function_list:fi
                 node.setChild( (Node) i );
                 node.setChild( (Node) fi );
                 parser.father = node;
-                RESULT = node;
+                RESULT = node; */
         :}
         | main:i 
         {:
                 Node node = new Node();
                 node.setTag("INITIALIZE");
-                NODE.setId(parser.cont);
+                node.setId(parser.cont);
                 parser.cont++;
 
                 node.setChild( (Node) i );
