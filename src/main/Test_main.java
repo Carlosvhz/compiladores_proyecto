@@ -24,41 +24,26 @@ public class Test_main {
         
         
         // Esta función lo que hace es probar el CUP y Jflex a un archivo de texto 
-        probandoLenguaje(); 
-        // AnalizadorSintactico p = new AnalizadorSintactico();
+        test(); 
         
     }
      
-    public static void probandoLenguaje(){
-        File archivo = new File("./src/test/test.txt");
+    public static void test(){
         try {
+            File archivo = new File("./src/test/test.txt");
             Parser parser = new Parser(new Lexer(new FileReader(archivo)));
             parser.parse();
     	if (true) {
       		Node root = Parser.father;
-      		Graficar(recorrido(root));
-      		System.out.println("AST Generado");
+      		Graph(recorrido(root));
+      		System.out.println("AST Generado de manera exitosa");
     	} else {
-    		System.out.println("No se genero el AST");
+    		System.out.println("No se genero el AST, porfavor comprobar el archivo");
     	}
         } catch (Exception e) {
                System.out.println("Error en el main");
                System.out.println(e);
         }
-        
-        /* try {
-            String ST = new String(Files.readAllBytes(archivo.toPath()));
-            System.out.println("Texto: \n"+ST);
-            int cont = 1;
-            Lexer lexico = new Lexer(new BufferedReader(new StringReader(ST)));
-            Parser sintactico = new Parser(lexico);
-            
-            sintactico.parse();
-        } catch (Exception e) {
-            System.out.println("Hubo un pedo en el parser ewe");
-            System.out.println(e);
-        }*/
-        
     }
     
     private static String recorrido(Node root) {
@@ -74,10 +59,10 @@ public class Test_main {
     	return cuerpo;
     }
     
-    private static void Graficar(String cadena) {
+    private static void Graph(String cadena) {
         FileWriter fw = null;
     	PrintWriter pw = null;
-    	String archivo = "AST.dot";
+    	String archivo = "./src/AST/AST.dot";
     	try {
             fw = new FileWriter(archivo);
             pw = new PrintWriter(fw);
@@ -87,12 +72,6 @@ public class Test_main {
             fw.close();
     	} catch (Exception e) {
             System.out.println(e);
-    	}
-    	try {
-            String cmd = "dot -Tpng AST.dot -o fotoAST.png"; 
-            Runtime.getRuntime().exec(cmd);
-    	} catch (IOException ioe) {
-            System.out.println(ioe);
     	}
     }
     
