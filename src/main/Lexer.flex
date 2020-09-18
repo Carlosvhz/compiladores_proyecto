@@ -11,10 +11,11 @@ import java_cup.runtime.*;
 %column
 %standalone
 %cup
+/*
 %eofval{
-        System.out.println("FIN DEL ARCHIVO");
-        System.exit(0);
+        System.out.println(" ==> FIN DEL ARCHIVO <== ");
 %eofval}
+*/
 
 %{
 	public static int errores = 0;

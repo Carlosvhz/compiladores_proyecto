@@ -16,32 +16,34 @@ public class Test_main {
     public static void main(String[] args) {
         
         // Este codigo compila cambios de CUP y JFlex
-        Test_main compiler = new Test_main();
+        /* Test_main compiler = new Test_main();
         compiler.compile_files();
         boolean mvAL = move_file("Lexer.java");
         boolean mvAS = move_file("Parser.java");
-        boolean mvSym = move_file("sym.java");
+        boolean mvSym = move_file("sym.java"); */
         
         
         // Esta función lo que hace es probar el CUP y Jflex a un archivo de texto 
-        // probandoLenguaje(); 
+        probandoLenguaje(); 
         // AnalizadorSintactico p = new AnalizadorSintactico();
         
     }
      
     public static void probandoLenguaje(){
         File archivo = new File("./src/test/test.txt");
-        
         try {
-            Parser p = new Parser(new Lexer(new FileReader(archivo)));
-    	if ((Lexer.errores == 0) && (Parser.errores == 0)) {
+            Parser parser = new Parser(new Lexer(new FileReader(archivo)));
+            parser.parse();
+    	if (true) {
       		Node root = Parser.father;
       		Graficar(recorrido(root));
-      		System.out.println("AST Generadp");
+      		System.out.println("AST Generado");
     	} else {
     		System.out.println("No se genero el AST");
     	}
         } catch (Exception e) {
+               System.out.println("Error en el main");
+               System.out.println(e);
         }
         
         /* try {

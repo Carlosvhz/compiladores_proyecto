@@ -77,10 +77,11 @@ program ::= main:i function_list:fi
                 node.setTag("INITIALIZE");
                 node.setId(parser.cont);  
                 parser.cont++;
-
+       
                 node.setChild( (Node) i );
                 node.setChild( (Node) fi );
                 parser.father = node;
+
                 RESULT = node;
         :}
         | main:i 
