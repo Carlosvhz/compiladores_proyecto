@@ -432,9 +432,14 @@ class CUP$Parser$actions {
                 node.setTag("INITIALIZE");
                 node.setId(parser.cont);  
                 parser.cont++;
-
+                System.out.println("Estoy en el program, primera producción");
+                /*
                 node.setChild( (Node) i );
                 node.setChild( (Node) fi );
+                parser.father = node;
+                */
+                node.setChild( new Node("MAIN") );
+                node.setChild( new Node("FUNCTION_LIST") );
                 parser.father = node;
                 RESULT = node;
         

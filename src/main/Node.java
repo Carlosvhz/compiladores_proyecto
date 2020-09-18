@@ -18,6 +18,14 @@ public class Node {
     public int id;
     
     
+    public Node(){}
+    
+    public Node(String tag){
+        this.tag = tag;
+        this.id = 0;
+        this.value = "";
+    }
+
     // Sets
     public void setTag(String tag) {
         this.tag = tag;
