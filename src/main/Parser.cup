@@ -38,6 +38,10 @@ non terminal function_list;
 non terminal parameter;
 non terminal b_parameter;
 
+non terminal functionCall;
+non terminal funCall_parameter;
+non terminal b_funCall_parameter;
+
 // Asignation and declaration
 non terminal type;
 non terminal array_type;
@@ -88,13 +92,19 @@ b_body ::= body;    // múltiples proposiciones
 proposition ::= simpleDeclaration      
         | declaration_assign
         | assignment
+        | functionCall
         | outputStatement
         | inputStatement
         | ifStatement
         | whileStatement
         | forStatement
         | switchStatement;      // Este GLC contiene los diferentes statements
-
+functionCall ::= ID PARIZQ PARDER
+        | ID PARIZQ funCall_parameter PARDER;
+        
+funCall_parameter ::= b_funCall_parameter
+        | value;
+b_funCall_parameter ::= value COMMA funCall_parameter;
 
 simpleDeclaration ::= type ID;  // Declaración simple con el tipo de variable y la ID
 
@@ -117,9 +127,9 @@ value ::= ID
 /* aritmetic_expression ::= INT b_aritmetic_expression
         | PARIZQ INT b_aritmetic_expression PARDER c_aritmetic_expression;
 b_aritmetic_expression ::= signo aritmetic_expression
-        | {::} ;*/
+        | {::} ;
 
-c_aritmetic_expression ::= b_aritmetic_expression;
+c_aritmetic_expression ::= b_aritmetic_expression; */
 
 type ::= NUMBER
         | array_type
