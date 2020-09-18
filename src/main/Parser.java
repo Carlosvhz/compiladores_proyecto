@@ -450,13 +450,13 @@ class CUP$Parser$actions {
 		int iright = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
 		Object i = (Object)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
 		
-                Node node = new Node();
+                /* Node node = new Node();
                 node.setTag("INITIALIZE");
                 node.setId(parser.cont);
                 parser.cont++;
 
                 node.setChild( (Node) i );
-                RESULT = node;
+                RESULT = node; */
         
         
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("program",0, ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);

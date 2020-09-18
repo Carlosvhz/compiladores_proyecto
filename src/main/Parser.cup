@@ -85,13 +85,13 @@ program ::= main:i function_list:fi
         :}
         | main:i 
         {:
-                Node node = new Node();
+                /* Node node = new Node();
                 node.setTag("INITIALIZE");
                 node.setId(parser.cont);
                 parser.cont++;
 
                 node.setChild( (Node) i );
-                RESULT = node;
+                RESULT = node; */
         
         :};  // SI FUNCIONA >:C
 
