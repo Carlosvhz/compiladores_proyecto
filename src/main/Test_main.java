@@ -3,25 +3,28 @@ package main;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.StringReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class Cup_Compiler {
+public class Test_main {
     
     public static void main(String[] args) {
         
         // Este codigo compila cambios de CUP y JFlex
-        /* Cup_Compiler compiler = new Cup_Compiler();
+        Test_main compiler = new Test_main();
         compiler.compile_files();
         boolean mvAL = move_file("Lexer.java");
         boolean mvAS = move_file("Parser.java");
-        boolean mvSym = move_file("sym.java");*/
+        boolean mvSym = move_file("sym.java");
         
         
         // Esta función lo que hace es probar el CUP y Jflex a un archivo de texto 
-        probandoLenguaje(); 
+        // probandoLenguaje(); 
         // AnalizadorSintactico p = new AnalizadorSintactico();
         
     }
@@ -68,6 +71,29 @@ public class Cup_Compiler {
     	}
     	return cuerpo;
     }
+    
+    private static void Graficar(String cadena) {
+        FileWriter fw = null;
+    	PrintWriter pw = null;
+    	String archivo = "AST.dot";
+    	try {
+            fw = new FileWriter(archivo);
+            pw = new PrintWriter(fw);
+            pw.println("digraph G {");
+            pw.println(cadena);
+            pw.println("\n}");
+            fw.close();
+    	} catch (Exception e) {
+            System.out.println(e);
+    	}
+    	try {
+            String cmd = "dot -Tpng AST.dot -o fotoAST.png"; 
+            Runtime.getRuntime().exec(cmd);
+    	} catch (IOException ioe) {
+            System.out.println(ioe);
+    	}
+    }
+    
     
     public void compile_files() {
         String LexicFile = "";

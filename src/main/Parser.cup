@@ -73,7 +73,7 @@ start with program;
 
 program ::= main:i function_list:fi 
         {:
-                /* Node node = new Node();
+                Node node = new Node();
                 node.setTag("INITIALIZE");
                 node.setId(parser.cont);  
                 parser.cont++;
@@ -81,7 +81,7 @@ program ::= main:i function_list:fi
                 node.setChild( (Node) i );
                 node.setChild( (Node) fi );
                 parser.father = node;
-                RESULT = node; */
+                RESULT = node;
         :}
         | main:i 
         {:

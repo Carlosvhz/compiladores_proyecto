@@ -428,7 +428,7 @@ class CUP$Parser$actions {
 		int firight = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
 		Object fi = (Object)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
 		
-                /* Node node = new Node();
+                Node node = new Node();
                 node.setTag("INITIALIZE");
                 node.setId(parser.cont);  
                 parser.cont++;
@@ -436,7 +436,7 @@ class CUP$Parser$actions {
                 node.setChild( (Node) i );
                 node.setChild( (Node) fi );
                 parser.father = node;
-                RESULT = node; */
+                RESULT = node;
         
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("program",0, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
