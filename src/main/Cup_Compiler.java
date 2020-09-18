@@ -10,11 +10,16 @@ import java.nio.file.Paths;
 public class Cup_Compiler {
     
     public static void main(String[] args) {
-        /* Cup_Compiler compiler = new Cup_Compiler();
+        
+        // Este codigo compila cambios de CUP y JFlex
+        Cup_Compiler compiler = new Cup_Compiler();
         compiler.compile_files();
         boolean mvAL = move_file("Lexer.java");
         boolean mvAS = move_file("AnalizadorSintactico.java");
-        boolean mvSym = move_file("sym.java"); */
+        boolean mvSym = move_file("sym.java");
+        
+        
+        // Esta función lo que hace es probar el CUP y Jflex a un archivo de texto 
         probandoLenguaje(); 
     }
      
