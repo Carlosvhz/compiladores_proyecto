@@ -82,9 +82,8 @@ program ::= main:m function_list:fl
                 node.setChild( (Node) m );
                 
                 // FUNCTION_LIST
-                Node func_list = (Node) fl;
-                if(func_list!=null){
-                        node.setChild(func_list);
+                if(fl!=null){
+                        node.setChild((Node)fl);
                 }
 
                 parser.father = node;
@@ -103,11 +102,11 @@ main ::= FUNCTION MAIN:m PARIZQ PARDER ASSIGNMENT BRACKETIZQ body:b BRACKETDER
                 id.setTag("ID");
                 id.setId(parser.cont);
                 id.setValue((String) m);
-                parser.cont++;
                 node.setChild(id);
+                parser.cont++;
 
                 // BODY
-                // node.setChild( (Node) b );
+                if (b!=null) node.setChild( (Node) b );
 
                 parser.father = node;
                 RESULT = node;
@@ -119,14 +118,18 @@ function_list ::= function:f function_list:fl
                 Node node = new Node();
                 node.setTag("FUNCTION_LIST");
                 node.setId(parser.cont);
-                
-                // FUNCTION
                 parser.cont++;
+
+                // FUNCTION
                 node.setChild((Node)f);
-                
+
                 if(fl!=null){
                         node.setChild( ((Node)fl).getChildren() );                      
+                        parser.cont++;
+                }else{
+                        parser.cont++;
                 }
+
                 parser.father = node;
                 RESULT = node;
         :} 
@@ -145,16 +148,14 @@ function ::= FUNCTION ID:i PARIZQ parameter:p PARDER ASSIGNMENT BRACKETIZQ body:
                 id.setTag("ID");
                 id.setId(parser.cont);
                 id.setValue( (String) i);
-                parser.cont++;
                 node.setChild(id);
-
+                parser.cont++;
 
                 // PARAMETER
                 //node.setChild( (Node) p );
                 
                 // BODY
-                // node.setChild( (Node) b );
-
+                if (b!=null) node.setChild( (Node) b );
                 
                 parser.father = node;
                 RESULT = node;
@@ -172,9 +173,8 @@ function ::= FUNCTION ID:i PARIZQ parameter:p PARDER ASSIGNMENT BRACKETIZQ body:
                 id.setTag("ID");
                 id.setId(parser.cont);
                 id.setValue( (String) i);
-                parser.cont++;
                 node.setChild(id);
-
+                parser.cont++;
 
                 // PARAMETER
                 // node.setChild( (Node) p );
@@ -183,7 +183,7 @@ function ::= FUNCTION ID:i PARIZQ parameter:p PARDER ASSIGNMENT BRACKETIZQ body:
                 // node.setChild( (Node) t );
 
                 // BODY
-                // node.setChild( (Node) b );
+                if (b!=null) node.setChild( (Node) b );
 
                 // RETURN
                 // node.setChild( (Node) r);
@@ -196,7 +196,7 @@ parameter ::= b_parameter
 b_parameter ::= ID COLON type 
         | ID COLON type COMMA parameter;
 
-body ::= proposition:p b_body
+body ::= proposition:p body:b
         {:
                 // CURRENT NODE
                 Node node = new Node();
@@ -205,48 +205,307 @@ body ::= proposition:p b_body
                 parser.cont++;
 
                 // PROPOSITION
-                // node.setChild( (Node) p);
-                node.setChild( new Node("PROPOSITION") );
-
+                node.setChild( (Node) p );
+                
+                if(b!=null){
+                        node.setChild( ((Node)b).getChildren() );
+                        parser.cont++;                      
+                }else{
+                        parser.cont++;
+                }
+                
+                parser.father = node;
                 RESULT = node;
         :}
-        | {::};    // Este GLC permite
-b_body ::= body;    // múltiples proposiciones
+        | {:/*Vacío*/:}; // Este GLC permite múltiples proposiciones   
+proposition ::= type:t ID:i
+        {:      
+                Node node = new Node();
+                node.setTag("SIMPLE_DECLARATION");
+                node.setId(parser.cont);
+                parser.cont++;
 
-proposition ::= simpleDeclaration      
-        | declaration_assign
-        | assignment
-        | functionCall
-        | outputStatement
-        | inputStatement
-        | ifStatement
-        | whileStatement
-        | forStatement
-        | switchStatement;      // Este GLC contiene los diferentes statements
-functionCall ::= CALL ID PARIZQ PARDER
-        | CALL ID PARIZQ funCall_parameter PARDER;
+                // TYPE
+                node.setChild( (Node) t);
+                parser.cont++;
+
+                // ID
+                Node id = new Node();
+                id.setTag("ID");
+                id.setValue((String)i);
+                id.setId(parser.cont);
+                
+                node.setChild(id);
+                parser.cont++;
+
+                parser.father = node;
+                RESULT = node;
+        :} 
+        | type:t ID:i ASSIGNMENT:a value:v
+        {:
+                Node node = new Node();
+                node.setTag("DECLARATION_ASSIGNATION");
+                node.setId(parser.cont);
+                parser.cont++;
+
+                // TYPE
+                node.setChild( (Node) t);
+                parser.cont++;
+
+                // ID
+                Node id = new Node();
+                id.setTag("ID");
+                id.setValue( (String) i);
+                id.setId(parser.cont);
+                node.setChild(id);
+                parser.cont++;
+
+                // ASSIGNMENT
+                Node as = new Node();
+                as.setTag("ASSIGNMENT");
+                as.setValue( (String) a);
+                as.setId(parser.cont);
+                node.setChild(as);
+                parser.cont++;
+
+                // VALUE
+                node.setChild( (Node) v);
+                parser.cont++;
+
+                parser.father = node;
+                RESULT = node;     
+        :}
+        | ID:i ASSIGNMENT:a value:v
+        {:
+                Node node = new Node();
+                node.setTag("ASSIGNMENT");
+                node.setId(parser.cont);
+                parser.cont++;
+
+                // ID
+                Node id = new Node();
+                id.setTag("ID");
+                id.setValue( (String) i);
+                id.setId(parser.cont);
+                node.setChild(id);
+                parser.cont++;
+
+                // ASSIGNMENT
+                Node as = new Node();
+                as.setTag("ASSIGNMENT");
+                as.setValue( (String) a);
+                as.setId(parser.cont);
+                node.setChild(as);
+                parser.cont++;
+
+                // VALUE
+                node.setChild( (Node) v);
+                parser.cont++;
+
+                parser.father = node;
+                RESULT = node;   
+        :}
+        | CALL ID:i PARIZQ PARDER 
+        {:
+                Node node = new Node();
+                node.setTag("FUNCTION_CALL");
+                node.setId(parser.cont);
+                parser.cont++;
+
+                // CALL
+                Node call = new Node();
+                call.setTag("CALL");
+                call.setId(parser.cont);
+                node.setChild(call);
+                parser.cont++;
+
+                // ID
+                Node id = new Node();
+                id.setTag("ID");
+                id.setValue((String)i);
+                id.setId(parser.cont);
+                node.setChild(id);
+                parser.cont++;
+
+                parser.father = node;
+                RESULT = node;   
+        :}
+        | CALL ID:i PARIZQ funCall_parameter:f PARDER
+        {:
+                Node node = new Node();
+                node.setTag("FUNCTION_CALL");
+                node.setId(parser.cont);
+                parser.cont++;
+
+                // CALL
+                Node call = new Node();
+                call.setTag("CALL");
+                call.setId(parser.cont);
+                node.setChild(call);
+                parser.cont++;
+
+                // ID
+                Node id = new Node();
+                id.setTag("ID");
+                id.setValue((String)i);
+                id.setId(parser.cont);
+                node.setChild(id);
+                parser.cont++;
+
+                // PARAMETERS
+
+
+                parser.father = node;
+                RESULT = node; 
+        :}
+        | outputStatement 
+        {:
+                Node node = new Node();
+                node.setTag("OUTPUT");
+                node.setId(parser.cont);
+                parser.cont++;
+
+                // SIMPLE_DECLARATION
+                // node.setChild( (Node) sp);
+                node.setChild(new Node(":V"));
+
+                parser.father = node;
+                RESULT = node;
+        :}
+        | inputStatement 
+        {:
+                Node node = new Node();
+                node.setTag("INPUT");
+                node.setId(parser.cont);
+                parser.cont++;
+
+                // SIMPLE_DECLARATION
+                // node.setChild( (Node) sp);
+                node.setChild(new Node(":V"));
+
+                parser.father = node;
+                RESULT = node;
+        :}
+        | ifStatement 
+        {:
+                Node node = new Node();
+                node.setTag("IF");
+                node.setId(parser.cont);
+                parser.cont++;
+
+                // SIMPLE_DECLARATION
+                // node.setChild( (Node) sp);
+                node.setChild(new Node(":V"));
+
+                parser.father = node;
+                RESULT = node;
+        :}
+        | whileStatement 
+        {:
+                Node node = new Node();
+                node.setTag("WHILE");
+                node.setId(parser.cont);
+                parser.cont++;
+
+                // SIMPLE_DECLARATION
+                // node.setChild( (Node) sp);
+                node.setChild(new Node(":V"));
+
+                parser.father = node;
+                RESULT = node;
+        :}
+        | forStatement 
+        {:
+                Node node = new Node();
+                node.setTag("FOR");
+                node.setId(parser.cont);
+                parser.cont++;
+
+                // SIMPLE_DECLARATION
+                // node.setChild( (Node) sp);
+                node.setChild(new Node(":V"));
+
+                parser.father = node;
+                RESULT = node;
+        :}
+        | switchStatement 
+        {:      
+                Node node = new Node();
+                node.setTag("SWTICH");
+                node.setId(parser.cont);
+                parser.cont++;
+
+                // SIMPLE_DECLARATION
+                // node.setChild( (Node) sp);
+                node.setChild(new Node(":V"));
+
+                parser.father = node;
+                RESULT = node;
+        :} ;      // Este GLC contiene los diferentes statements
 
 funCall_parameter ::= b_funCall_parameter
         | value;
 b_funCall_parameter ::= value COMMA funCall_parameter;
-
-simpleDeclaration ::= type ID;  // Declaración simple con el tipo de variable y la ID
-
-declaration_assign ::= type ID ASSIGNMENT value;        // Declaración con asignación incluida
-
-assignment ::= ID ASSIGNMENT value;     // Solamente asignación
 
 signo ::= SUM
         | RES
         | DIV
         | MULT
         | MOD;
-value ::= ID
-        | BOOL
-        | CHAR
-        | EMPTY                
-        | array_value
-        | INT;              // Tipo de valor que pueda contener una expresión
+value ::= ID:id
+        {:
+                Node node = new Node();
+                node.setTag("VALUE ID");
+                node.setValue((String)id);
+                node.setId(parser.cont);
+                parser.cont++;
+
+                RESULT = node;
+        :}
+        | BOOL:b
+        {:
+                Node node = new Node();
+                node.setTag("VALUE BOOL");
+                node.setValue((String)b);
+                node.setId(parser.cont);
+                parser.cont++;
+
+                RESULT = node;
+        :}
+        | CHAR:c
+        {:
+                Node node = new Node();
+                node.setTag("VALUE CHAR");
+                node.setValue((String)c);
+                node.setId(parser.cont);
+                parser.cont++;
+
+                RESULT = node;
+        :}
+        | EMPTY:e
+        {:
+                Node node = new Node();
+                node.setTag("VALUE EMPTY");
+                node.setValue((String)e);
+                node.setId(parser.cont);
+                parser.cont++;
+
+                RESULT = node;
+        :}                
+        | array_value:av
+        {:
+
+        :}
+        | INT:i
+        {:
+                Node node = new Node();
+                node.setTag("VALUE INT");
+                node.setValue((String)i);
+                node.setId(parser.cont);
+                parser.cont++;
+
+                RESULT = node;
+        :};              // Tipo de valor que pueda contener una expresión
 
 /* aritmetic_expression ::= INT b_aritmetic_expression
         | PARIZQ INT b_aritmetic_expression PARDER c_aritmetic_expression;
@@ -255,10 +514,40 @@ b_aritmetic_expression ::= signo aritmetic_expression
 
 c_aritmetic_expression ::= b_aritmetic_expression; */
 
-type ::= NUMBER
-        | array_type
-        | BOOLEAN       
-        | CHARACTER;           // Tipo de variable que pude ser una variable
+type ::= NUMBER:n
+        {:
+                Node node = new Node();
+                node.setTag("TYPE");
+                node.setValue((String)n);
+                node.setId(parser.cont);
+                parser.cont++;
+
+                RESULT = node;
+        :}
+        | array_type:a
+        {:
+                
+        :}
+        | BOOLEAN:b
+        {:
+                Node node = new Node();
+                node.setTag("TYPE");
+                node.setValue((String)b);
+                node.setId(parser.cont);
+                parser.cont++;
+
+                RESULT = node;
+        :}       
+        | CHARACTER:c
+        {:
+                Node node = new Node();
+                node.setTag("TYPE");
+                node.setValue((String)c);
+                node.setId(parser.cont);
+                parser.cont++;
+
+                RESULT = node;
+        :};           // Tipo de variable que pude ser una variable
 array_type ::= ARRAY SBRACKETIZQ type SBRACKETDER;
 
 return ::= COMEBACK value;

@@ -1,5 +1,8 @@
 function main() = {
-    
+    number id
+    number id = 2000
+    id = int
+    call bbbb()
 }
 
 function bbbbb() = {

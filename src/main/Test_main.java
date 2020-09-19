@@ -22,7 +22,6 @@ public class Test_main {
         boolean mvAS = move_file("Parser.java");
         boolean mvSym = move_file("sym.java");
         
-        
         // Esta función lo que hace es probar el CUP y Jflex a un archivo de texto 
         test(); 
         
@@ -51,9 +50,18 @@ public class Test_main {
     	for (Node child : root.children) {
       		if (!(child.getTag().equals("vacio"))) {
         		
-                cuerpo += "\"" + root.getId()+ ". " + root.getTag()+ " = " + root.getValue()+
-        			"\"->\""+ child.getId()+". " + child.getTag()+ " = " + child.getValue()+ "\""  + "\n";
-        		
+                if (root.getValue()!=null) 
+                    cuerpo += "\""+root.getId()+". "+ root.getTag()+" = " + root.getValue();
+                else 
+                    cuerpo += "\""+root.getId()+". "+ root.getTag()+"\"->\"";
+
+                if (child.getValue()!=null)
+                    cuerpo += child.getId()+". "+child.getTag()+" = "+child.getValue()+"\""+"\n";
+
+                else 
+                    cuerpo += child.getId()+". "+child.getTag()+"\""+"\n";
+                
+                
                 cuerpo += recorrido(child);
       		}
     	}

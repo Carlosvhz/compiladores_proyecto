@@ -25,7 +25,7 @@ import java_cup.runtime.*;
 special_characters = "^"|@|"$"|#|&|"%"|"'"|"?"|"!"|"_"
 
 // Values
-digit = [0-9]
+digit = [0-9] | -[0-9]
 int = {digit}+
 characters = [a-z]|[A-Z]|"_"
 character = '({characters}|{digit}|{special_characters}|" ")'
