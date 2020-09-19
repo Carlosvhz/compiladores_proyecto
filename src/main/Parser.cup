@@ -71,45 +71,146 @@ non terminal return;
 start with program;
 
 
-program ::= main:i function_list:fi 
-        {:
+program ::= main:m function_list:fl
+        {:      // CURRENT NODE
                 Node node = new Node();
-                node.setTag("INITIALIZE");
+                node.setTag("INIT");
                 node.setId(parser.cont);  
                 parser.cont++;
-       
-                node.setChild( (Node) i );
-                node.setChild( (Node) fi );
-                parser.father = node;
+                
+                // MAIN
+                node.setChild( (Node) m );
+                
+                // FUNCTION_LIST
+                Node func_list = (Node) fl;
+                if(func_list!=null){
+                        node.setChild(func_list);
+                }
 
+                parser.father = node;
                 RESULT = node;
-        :}
-        | main:i 
-        {:
-                /* Node node = new Node();
-                node.setTag("INITIALIZE");
+        :};
+
+main ::= FUNCTION MAIN:m PARIZQ PARDER ASSIGNMENT BRACKETIZQ body:b BRACKETDER
+        {:      // CURRENT NODE
+                Node node = new Node();
+                node.setTag("MAIN");
                 node.setId(parser.cont);
                 parser.cont++;
 
-                node.setChild( (Node) i );
-                RESULT = node; */
-        
-        :};  // SI FUNCIONA >:C
+                // ID
+                Node id = new Node();
+                id.setTag("ID");
+                id.setId(parser.cont);
+                id.setValue((String) m);
+                parser.cont++;
+                node.setChild(id);
 
-main ::= FUNCTION MAIN PARIZQ PARDER ASSIGNMENT BRACKETIZQ body BRACKETDER;
+                // BODY
+                // node.setChild( (Node) b );
 
-function_list ::= FUNCTION ID PARIZQ parameter PARDER ASSIGNMENT BRACKETIZQ body BRACKETDER function |
-                  FUNCTION ID PARIZQ parameter PARDER ASSIGNMENT type BRACKETIZQ body return BRACKETDER function;   // Este GLC permite múltiples funciones
-function ::= function_list
-        | /*vacío*/;
+                parser.father = node;
+                RESULT = node;
+        :};
+
+function_list ::= function:f function_list:fl
+        {:      
+                // CURRENT NODE
+                Node node = new Node();
+                node.setTag("FUNCTION_LIST");
+                node.setId(parser.cont);
+                
+                // FUNCTION
+                parser.cont++;
+                node.setChild((Node)f);
+                
+                if(fl!=null){
+                        node.setChild( ((Node)fl).getChildren() );                      
+                }
+                parser.father = node;
+                RESULT = node;
+        :} 
+        | {:
+
+        :}; // Este GLC permite múltiples funciones
+function ::= FUNCTION ID:i PARIZQ parameter:p PARDER ASSIGNMENT BRACKETIZQ body:b BRACKETDER
+        {:      // CURRENT NODE
+                Node node = new Node();
+                node.setTag("FUNCTION");
+                node.setId(parser.cont);
+                parser.cont++;
+
+                // ID
+                Node id = new Node();
+                id.setTag("ID");
+                id.setId(parser.cont);
+                id.setValue( (String) i);
+                parser.cont++;
+                node.setChild(id);
+
+
+                // PARAMETER
+                //node.setChild( (Node) p );
+                
+                // BODY
+                // node.setChild( (Node) b );
+
+                
+                parser.father = node;
+                RESULT = node;
+        :}
+        | FUNCTION ID:i PARIZQ parameter:p PARDER ASSIGNMENT type:t BRACKETIZQ body:b return:r BRACKETDER
+        {:
+                // CURRENT NODE
+                Node node = new Node();
+                node.setTag("FUNCTION");
+                node.setId(parser.cont);
+                parser.cont++;
+
+                // ID
+                Node id = new Node();
+                id.setTag("ID");
+                id.setId(parser.cont);
+                id.setValue( (String) i);
+                parser.cont++;
+                node.setChild(id);
+
+
+                // PARAMETER
+                // node.setChild( (Node) p );
+                
+                // RETURN TYPE
+                // node.setChild( (Node) t );
+
+                // BODY
+                // node.setChild( (Node) b );
+
+                // RETURN
+                // node.setChild( (Node) r);
+
+                RESULT = node;
+        :};
 
 parameter ::= b_parameter 
         | /*vacío*/;        // GLC para el parámetro que contienen las funciones  
 b_parameter ::= ID COLON type 
         | ID COLON type COMMA parameter;
 
-body ::= proposition b_body 
-        | /*vacío*/;    // Este GLC permite
+body ::= proposition:p b_body
+        {:
+                // CURRENT NODE
+                Node node = new Node();
+                node.setTag("BODY");
+                node.setId(parser.cont);
+                parser.cont++;
+
+                // PROPOSITION
+                // node.setChild( (Node) p);
+                node.setChild( new Node("PROPOSITION") );
+
+                RESULT = node;
+        :}
+        | {::};    // Este GLC permite
 b_body ::= body;    // múltiples proposiciones
 
 proposition ::= simpleDeclaration      

@@ -1,6 +1,11 @@
 digraph G {
-"0. INITIALIZE = null"->"0. MAIN = "
-"0. INITIALIZE = null"->"0. FUNCTION_LIST = "
+"8. INIT = null"->"0. MAIN = null"
+"0. MAIN = null"->"1. ID = main"
+"8. INIT = null"->"7. FUNCTION_LIST = null"
+"7. FUNCTION_LIST = null"->"2. FUNCTION = null"
+"2. FUNCTION = null"->"3. ID = bbbbb"
+"7. FUNCTION_LIST = null"->"4. FUNCTION = null"
+"4. FUNCTION = null"->"5. ID = asdasdsa"
 
 
 }
