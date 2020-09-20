@@ -1,16 +1,73 @@
 function main() = {
     number id
-    number id = 2000
-    id = int
+    number id = 'z'
+    id = -2
     call bbbb()
+    call funcion(21, 22)
+    output(123)
+    id = input()
+    if (id<id) then {
+        number id
+        number id = 'z'
+        id = -2
+        call bbbb()
+        call funcion(21, 22)
+        output(123)
+        id = input()
+    }else if (true) then {
+        while (id<3) then {
+
+        }
+    }
+    for(id = id to 10 | 1) then {}
+
 }
 
 function bbbbb() = {
-    
+    number id
+    number id = 'z'
+    id = -2
+    call bbbb()
+    call funcion(21, 22)
+    output(123)
+    id = input()
+    if (id<id) then {
+        number id
+        number id = 'z'
+        id = -2
+        call bbbb()
+        call funcion(21, 22)
+        
+        output(123)
+        id = input()
+    }else if (true) then {
+        while (id<3) then {
+
+        }
+    }
+    for(id = id to 10 | 1) then {}
 }
 
-function asdasdsa() = {
-    
+function asdasdsa(id:number, id:character) = {
+    number id
+    number id = 'z'
+    id = -2
+    call bbbb()
+    call funcion(21, 22)
+    output(123)
+    id = input()
+    if (id<id) then {
+        number id
+        number id = 'z'
+        id = -2
+        call bbbb()
+        call funcion(21, 22)
+        output(123)
+        id = input()
+    }else if (true) then {
+        while (id<3) then {
+
+        }
+    }
+    for(id = id to 10 | 1) then {}
 }
-
-

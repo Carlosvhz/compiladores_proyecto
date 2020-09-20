@@ -80,11 +80,9 @@ program ::= main:m function_list:fl
                 
                 // MAIN
                 node.setChild( (Node) m );
-                
+
                 // FUNCTION_LIST
-                if(fl!=null){
-                        node.setChild((Node)fl);
-                }
+                if(fl!=null) node.setChild((Node)fl);
 
                 parser.father = node;
                 RESULT = node;
@@ -103,10 +101,10 @@ main ::= FUNCTION MAIN:m PARIZQ PARDER ASSIGNMENT BRACKETIZQ body:b BRACKETDER
                 id.setId(parser.cont);
                 id.setValue((String) m);
                 node.setChild(id);
-                parser.cont++;
 
                 // BODY
                 if (b!=null) node.setChild( (Node) b );
+                
 
                 parser.father = node;
                 RESULT = node;
@@ -125,11 +123,7 @@ function_list ::= function:f function_list:fl
 
                 if(fl!=null){
                         node.setChild( ((Node)fl).getChildren() );                      
-                        parser.cont++;
-                }else{
-                        parser.cont++;
                 }
-
                 parser.father = node;
                 RESULT = node;
         :} 
@@ -147,12 +141,12 @@ function ::= FUNCTION ID:i PARIZQ parameter:p PARDER ASSIGNMENT BRACKETIZQ body:
                 Node id = new Node();
                 id.setTag("ID");
                 id.setId(parser.cont);
+                parser.cont++;
                 id.setValue( (String) i);
                 node.setChild(id);
-                parser.cont++;
 
                 // PARAMETER
-                //node.setChild( (Node) p );
+                if (p!=null) node.setChild( (Node) p );
                 
                 // BODY
                 if (b!=null) node.setChild( (Node) b );
@@ -164,7 +158,7 @@ function ::= FUNCTION ID:i PARIZQ parameter:p PARDER ASSIGNMENT BRACKETIZQ body:
         {:
                 // CURRENT NODE
                 Node node = new Node();
-                node.setTag("FUNCTION");
+                node.setTag("FUNCTION_WITH_RETURN");
                 node.setId(parser.cont);
                 parser.cont++;
 
@@ -172,12 +166,12 @@ function ::= FUNCTION ID:i PARIZQ parameter:p PARDER ASSIGNMENT BRACKETIZQ body:
                 Node id = new Node();
                 id.setTag("ID");
                 id.setId(parser.cont);
+                parser.cont++;
                 id.setValue( (String) i);
                 node.setChild(id);
-                parser.cont++;
-
+                
                 // PARAMETER
-                // node.setChild( (Node) p );
+                // if (p!=null) node.setChild( (Node) p );
                 
                 // RETURN TYPE
                 // node.setChild( (Node) t );
@@ -191,14 +185,69 @@ function ::= FUNCTION ID:i PARIZQ parameter:p PARDER ASSIGNMENT BRACKETIZQ body:
                 RESULT = node;
         :};
 
-parameter ::= b_parameter 
-        | /*vacío*/;        // GLC para el parámetro que contienen las funciones  
-b_parameter ::= ID COLON type 
-        | ID COLON type COMMA parameter;
+parameter ::= b_parameter:b parameter:p
+        {:
+                // PROPOSITION
+                Node node = new Node();
+                node.setTag("PARAMETER_LIST");
+                node.setId(parser.cont);
+                parser.cont++;
+
+                // PROPOSITION
+                node.setChild( (Node) b );
+        
+                if(p!=null) node.setChild( ((Node)p).getChildren() );
+
+                parser.father = node;
+                RESULT = node;
+        :}
+        | {:/*vacío*/:};        // GLC para el parámetro que contienen las funciones  
+b_parameter ::= ID:i COLON type:t 
+        {:
+                Node node = new Node();
+                node.setTag("PARAMETER");
+                node.setId(parser.cont++);
+                parser.cont++;
+
+                // ID
+                Node id = new Node();
+                id.setTag("ID");
+                id.setValue( (String) i);
+                id.setId(parser.cont++);
+                parser.cont++;
+                
+                node.setChild(id);
+
+                // TYPE
+                node.setChild( (Node)t);
+
+                RESULT = node;
+        :}
+        | ID:i COLON type:t COMMA 
+        {:
+                Node node = new Node();
+                node.setTag("PARAMETER");
+                node.setId(parser.cont++);
+                parser.cont++;
+
+                // ID
+                Node id = new Node();
+                id.setTag("ID");
+                id.setValue( (String) i);
+                id.setId(parser.cont++);
+                parser.cont++;
+                
+                node.setChild(id);
+
+                // TYPE
+                node.setChild( (Node)t);
+
+                RESULT = node;
+        :};
 
 body ::= proposition:p body:b
         {:
-                // CURRENT NODE
+                // PROPOSITION
                 Node node = new Node();
                 node.setTag("BODY");
                 node.setId(parser.cont);
@@ -209,17 +258,14 @@ body ::= proposition:p body:b
                 
                 if(b!=null){
                         node.setChild( ((Node)b).getChildren() );
-                        parser.cont++;                      
-                }else{
-                        parser.cont++;
                 }
-                
                 parser.father = node;
                 RESULT = node;
         :}
         | {:/*Vacío*/:}; // Este GLC permite múltiples proposiciones   
 proposition ::= type:t ID:i
         {:      
+                // TYPE ID
                 Node node = new Node();
                 node.setTag("SIMPLE_DECLARATION");
                 node.setId(parser.cont);
@@ -227,22 +273,22 @@ proposition ::= type:t ID:i
 
                 // TYPE
                 node.setChild( (Node) t);
-                parser.cont++;
 
                 // ID
                 Node id = new Node();
                 id.setTag("ID");
                 id.setValue((String)i);
                 id.setId(parser.cont);
-                
-                node.setChild(id);
                 parser.cont++;
+
+                node.setChild(id);
 
                 parser.father = node;
                 RESULT = node;
         :} 
         | type:t ID:i ASSIGNMENT:a value:v
         {:
+                // TYPE ID = VALUE
                 Node node = new Node();
                 node.setTag("DECLARATION_ASSIGNATION");
                 node.setId(parser.cont);
@@ -250,33 +296,32 @@ proposition ::= type:t ID:i
 
                 // TYPE
                 node.setChild( (Node) t);
-                parser.cont++;
 
                 // ID
                 Node id = new Node();
                 id.setTag("ID");
                 id.setValue( (String) i);
                 id.setId(parser.cont);
-                node.setChild(id);
                 parser.cont++;
+                node.setChild(id);
 
                 // ASSIGNMENT
                 Node as = new Node();
                 as.setTag("ASSIGNMENT");
                 as.setValue( (String) a);
                 as.setId(parser.cont);
-                node.setChild(as);
                 parser.cont++;
+                node.setChild(as);
 
                 // VALUE
                 node.setChild( (Node) v);
-                parser.cont++;
 
                 parser.father = node;
                 RESULT = node;     
         :}
         | ID:i ASSIGNMENT:a value:v
         {:
+                // ID = VALUE
                 Node node = new Node();
                 node.setTag("ASSIGNMENT");
                 node.setId(parser.cont);
@@ -288,25 +333,24 @@ proposition ::= type:t ID:i
                 id.setValue( (String) i);
                 id.setId(parser.cont);
                 node.setChild(id);
-                parser.cont++;
 
                 // ASSIGNMENT
                 Node as = new Node();
                 as.setTag("ASSIGNMENT");
                 as.setValue( (String) a);
                 as.setId(parser.cont);
-                node.setChild(as);
                 parser.cont++;
+                node.setChild(as);
 
                 // VALUE
                 node.setChild( (Node) v);
-                parser.cont++;
 
                 parser.father = node;
                 RESULT = node;   
         :}
         | CALL ID:i PARIZQ PARDER 
         {:
+                // CALL FUNCTION()
                 Node node = new Node();
                 node.setTag("FUNCTION_CALL");
                 node.setId(parser.cont);
@@ -316,22 +360,23 @@ proposition ::= type:t ID:i
                 Node call = new Node();
                 call.setTag("CALL");
                 call.setId(parser.cont);
-                node.setChild(call);
                 parser.cont++;
+                node.setChild(call);
 
                 // ID
                 Node id = new Node();
                 id.setTag("ID");
                 id.setValue((String)i);
                 id.setId(parser.cont);
-                node.setChild(id);
                 parser.cont++;
+                node.setChild(id);
 
                 parser.father = node;
                 RESULT = node;   
         :}
         | CALL ID:i PARIZQ funCall_parameter:f PARDER
         {:
+                // CALL FUNCTION( VALUE, VALUE2, VALUE3 )
                 Node node = new Node();
                 node.setTag("FUNCTION_CALL");
                 node.setId(parser.cont);
@@ -341,92 +386,120 @@ proposition ::= type:t ID:i
                 Node call = new Node();
                 call.setTag("CALL");
                 call.setId(parser.cont);
-                node.setChild(call);
                 parser.cont++;
+                node.setChild(call);
 
                 // ID
                 Node id = new Node();
                 id.setTag("ID");
                 id.setValue((String)i);
                 id.setId(parser.cont);
-                node.setChild(id);
                 parser.cont++;
+                node.setChild(id);
 
                 // PARAMETERS
-
-
+                node.setChild( (Node) f);
+                
                 parser.father = node;
                 RESULT = node; 
         :}
-        | outputStatement 
-        {:
+        | OUTPUT:ou PARIZQ value:v PARDER 
+        {:      
+                // output(ID)
                 Node node = new Node();
-                node.setTag("OUTPUT");
+                node.setTag("OUTPUT_STATEMENT");
                 node.setId(parser.cont);
                 parser.cont++;
 
-                // SIMPLE_DECLARATION
-                // node.setChild( (Node) sp);
-                node.setChild(new Node(":V"));
+                // OUTPUT
+                Node output = new Node();
+                output.setTag("OUTPUT");
+                output.setValue( (String) ou);
+                output.setId(parser.cont);
+                parser.cont++;
+                node.setChild(output);
+
+                // VALUE
+                node.setChild((Node)v);
 
                 parser.father = node;
                 RESULT = node;
         :}
-        | inputStatement 
+        | ID:i ASSIGNMENT:a INPUT:ip PARIZQ PARDER 
         {:
+                // id = input()
                 Node node = new Node();
-                node.setTag("INPUT");
+                node.setTag("INPUT_STATEMENT");
                 node.setId(parser.cont);
                 parser.cont++;
 
-                // SIMPLE_DECLARATION
-                // node.setChild( (Node) sp);
-                node.setChild(new Node(":V"));
+                // ID
+                Node id = new Node();
+                id.setTag("ID");
+                id.setId(parser.cont);
+                id.setValue( (String) i);
+                parser.cont++;
+                node.setChild(id);
+
+                // ASSIGNMENT
+                Node assignment = new Node();
+                assignment.setTag("ASSIGNMENT");
+                assignment.setValue( (String) a);
+                assignment.setId(parser.cont);
+                parser.cont++;
+                node.setChild(assignment);
+
+                // INPUT
+                Node input = new Node();
+                input.setTag("INPUT");
+                input.setValue( (String) ip);
+                input.setId(parser.cont);
+                parser.cont++;
+                node.setChild(input);
 
                 parser.father = node;
                 RESULT = node;
         :}
-        | ifStatement 
+        | ifStatement: i
         {:
+                RESULT = (Node)i;
+        :}
+        | WHILE:w PARIZQ desicion:d PARDER THEN:t BRACKETIZQ body:b BRACKETDER 
+        {:
+                // while () then {}
                 Node node = new Node();
-                node.setTag("IF");
+                node.setTag("WHILE_STATEMENT");
                 node.setId(parser.cont);
                 parser.cont++;
 
-                // SIMPLE_DECLARATION
-                // node.setChild( (Node) sp);
-                node.setChild(new Node(":V"));
+                // WHILE
+                Node wh_s = new Node();
+                wh_s.setTag("WHILE");
+                wh_s.setValue( (String) w);
+                wh_s.setId(parser.cont);
+                parser.cont++;
+                node.setChild(wh_s);
+
+                // DESICION
+                // node.setChild((Node)d);
+
+                // THEN
+                Node th = new Node();
+                th.setTag("THEN");
+                th.setValue( (String) t);
+                th.setId(parser.cont);
+                parser.cont++;
+                node.setChild(th);
+
+                // BODY
+                if (b!=null) node.setChild( (Node) b );
 
                 parser.father = node;
                 RESULT = node;
         :}
-        | whileStatement 
+        | forStatement:f 
         {:
-                Node node = new Node();
-                node.setTag("WHILE");
-                node.setId(parser.cont);
-                parser.cont++;
-
-                // SIMPLE_DECLARATION
-                // node.setChild( (Node) sp);
-                node.setChild(new Node(":V"));
-
-                parser.father = node;
-                RESULT = node;
-        :}
-        | forStatement 
-        {:
-                Node node = new Node();
-                node.setTag("FOR");
-                node.setId(parser.cont);
-                parser.cont++;
-
-                // SIMPLE_DECLARATION
-                // node.setChild( (Node) sp);
-                node.setChild(new Node(":V"));
-
-                parser.father = node;
-                RESULT = node;
+                RESULT = (Node)f;
         :}
         | switchStatement 
         {:      
@@ -443,9 +516,34 @@ proposition ::= type:t ID:i
                 RESULT = node;
         :} ;      // Este GLC contiene los diferentes statements
 
-funCall_parameter ::= b_funCall_parameter
-        | value;
-b_funCall_parameter ::= value COMMA funCall_parameter;
+funCall_parameter ::= b_funCall_parameter:b funCall_parameter:fl
+        {:
+                Node node = new Node();
+                node.setTag("FUNCTION_CALL_PARAMETERS");
+                node.setId(parser.cont);
+                parser.cont++;
+
+                node.setChild( (Node)b);
+                
+                node.setChild( ((Node)fl).getChildren() );
+
+                RESULT = node;
+        :}
+        | value:v
+        {:
+                Node node = new Node();
+                node.setTag("FUNCTION_CALL_PARAMETERS");
+                node.setId(parser.cont);
+                parser.cont++;
+
+                node.setChild((Node)v);
+        
+                RESULT = node;
+        :};
+b_funCall_parameter ::= value:v COMMA 
+        {:      
+                RESULT = (Node) v;
+        :};
 
 signo ::= SUM
         | RES
@@ -455,7 +553,7 @@ signo ::= SUM
 value ::= ID:id
         {:
                 Node node = new Node();
-                node.setTag("VALUE ID");
+                node.setTag("VALUE");
                 node.setValue((String)id);
                 node.setId(parser.cont);
                 parser.cont++;
@@ -465,7 +563,7 @@ value ::= ID:id
         | BOOL:b
         {:
                 Node node = new Node();
-                node.setTag("VALUE BOOL");
+                node.setTag("VALUE");
                 node.setValue((String)b);
                 node.setId(parser.cont);
                 parser.cont++;
@@ -475,7 +573,7 @@ value ::= ID:id
         | CHAR:c
         {:
                 Node node = new Node();
-                node.setTag("VALUE CHAR");
+                node.setTag("VALUE");
                 node.setValue((String)c);
                 node.setId(parser.cont);
                 parser.cont++;
@@ -485,7 +583,7 @@ value ::= ID:id
         | EMPTY:e
         {:
                 Node node = new Node();
-                node.setTag("VALUE EMPTY");
+                node.setTag("VALUE");
                 node.setValue((String)e);
                 node.setId(parser.cont);
                 parser.cont++;
@@ -499,7 +597,7 @@ value ::= ID:id
         | INT:i
         {:
                 Node node = new Node();
-                node.setTag("VALUE INT");
+                node.setTag("VALUE");
                 node.setValue((String)i);
                 node.setId(parser.cont);
                 parser.cont++;
@@ -513,6 +611,227 @@ b_aritmetic_expression ::= signo aritmetic_expression
         | {::} ;
 
 c_aritmetic_expression ::= b_aritmetic_expression; */
+
+forStatement ::= 
+        FOR:f PARIZQ ID ASSIGNMENT INT TO INT DELIMETER INT PARDER THEN:t BRACKETIZQ body:b BRACKETDER
+        {:
+                // for ( id = 0 to 10 | 1) then {}
+                Node node = new Node();
+                node.setTag("FOR_STATEMENT");
+                node.setId(parser.cont);
+                parser.cont++;
+
+                // FOR
+                Node for_s = new Node();
+                for_s.setTag("FOR");
+                for_s.setValue( (String) f);
+                for_s.setId(parser.cont);
+                parser.cont++;
+                node.setChild(for_s);
+
+                // FOR_PARAMETERS
+                // node.setChild((Node)d);
+
+                // THEN
+                Node th = new Node();
+                th.setTag("THEN");
+                th.setValue( (String) t);
+                th.setId(parser.cont);
+                parser.cont++;
+                node.setChild(th);
+
+                // BODY
+                if (b!=null) node.setChild( (Node) b );
+
+                parser.father = node;
+                RESULT = node;
+        :}
+        | FOR:f PARIZQ ID ASSIGNMENT ID TO INT DELIMETER INT PARDER THEN:t BRACKETIZQ body:b BRACKETDER
+        {:
+                // for ( id = id to 10 | 1) then {}
+                Node node = new Node();
+                node.setTag("FOR_STATEMENT");
+                node.setId(parser.cont);
+                parser.cont++;
+
+                // FOR
+                Node for_s = new Node();
+                for_s.setTag("FOR");
+                for_s.setValue( (String) f);
+                for_s.setId(parser.cont);
+                parser.cont++;
+                node.setChild(for_s);
+
+                // FOR_PARAMETERS
+                // node.setChild((Node)d);
+
+                // THEN
+                Node th = new Node();
+                th.setTag("THEN");
+                th.setValue( (String) t);
+                th.setId(parser.cont);
+                parser.cont++;
+                node.setChild(th);
+
+                // BODY
+                if (b!=null) node.setChild( (Node) b );
+
+                parser.father = node;
+                RESULT = node;
+        :}
+        | FOR:f PARIZQ ID ASSIGNMENT ID TO ID DELIMETER INT PARDER THEN:t BRACKETIZQ body:b BRACKETDER
+        {:
+                // for ( id = id to id | 1) then {}
+                Node node = new Node();
+                node.setTag("FOR_STATEMENT");
+                node.setId(parser.cont);
+                parser.cont++;
+
+                // FOR
+                Node for_s = new Node();
+                for_s.setTag("FOR");
+                for_s.setValue( (String) f);
+                for_s.setId(parser.cont);
+                parser.cont++;
+                node.setChild(for_s);
+
+                // FOR_PARAMETERS
+                // node.setChild((Node)d);
+
+                // THEN
+                Node th = new Node();
+                th.setTag("THEN");
+                th.setValue( (String) t);
+                th.setId(parser.cont);
+                parser.cont++;
+                node.setChild(th);
+
+                // BODY
+                if (b!=null) node.setChild( (Node) b );
+
+                parser.father = node;
+                RESULT = node;
+        :};
+
+ifStatement ::= IF:i PARIZQ desicion:d PARDER THEN:t BRACKETIZQ body:b BRACKETDER
+        {:
+                // if () then {}
+                Node node = new Node();
+                node.setTag("IF_STATEMENT");
+                node.setId(parser.cont);
+                parser.cont++;
+
+                // IF
+                Node if_s = new Node();
+                if_s.setTag("IF");
+                if_s.setValue( (String) i);
+                if_s.setId(parser.cont);
+                parser.cont++;
+                node.setChild(if_s);
+
+                // DESICION
+                // node.setChild((Node)d);
+
+                // THEN
+                Node th = new Node();
+                th.setTag("THEN");
+                th.setValue( (String) t);
+                th.setId(parser.cont);
+                parser.cont++;
+                node.setChild(th);
+
+                // BODY
+                if (b!=null) node.setChild( (Node) b );
+
+                parser.father = node;
+                RESULT = node;
+        :}
+        | IF:i PARIZQ desicion:d PARDER THEN:t BRACKETIZQ body:b BRACKETDER ELSE:e BRACKETIZQ body:bo BRACKETDER
+        {:
+                // if () then {} else {}
+                Node node = new Node();
+                node.setTag("IF_STATEMENT");
+                node.setId(parser.cont);
+                parser.cont++;
+
+                // IF
+                Node if_s = new Node();
+                if_s.setTag("IF");
+                if_s.setValue( (String) i);
+                if_s.setId(parser.cont);
+                parser.cont++;
+                node.setChild(if_s);
+
+                // DESICION
+                // node.setChild((Node)d);
+
+                // THEN
+                Node th = new Node();
+                th.setTag("THEN");
+                th.setValue( (String) t);
+                th.setId(parser.cont);
+                parser.cont++;
+                node.setChild(th);
+
+                // BODY
+                if (b!=null) node.setChild( (Node) b );
+
+                // ELSE
+                Node es = new Node();
+                es.setTag("ELSE");
+                es.setValue( (String) e);
+                es.setId(parser.cont);
+                parser.cont++;
+                node.setChild(es);
+
+                if (bo!=null) node.setChild( (Node) bo );
+
+                parser.father = node;
+                RESULT = node;
+        :}
+        | IF:i PARIZQ desicion:d PARDER THEN:t BRACKETIZQ body:b BRACKETDER ELSE:e ifStatement:ie
+        {:
+                // if () then {} else if () then {}
+                Node node = new Node();
+                node.setTag("IF_STATEMENT");
+                node.setId(parser.cont);
+                parser.cont++;
+
+                // IF
+                Node if_s = new Node();
+                if_s.setTag("IF");
+                if_s.setValue( (String) i);
+                if_s.setId(parser.cont);
+                parser.cont++;
+                node.setChild(if_s);
+
+                // DESICION
+                // node.setChild((Node)d);
+
+                // THEN
+                Node th = new Node();
+                th.setTag("THEN");
+                th.setValue( (String) t);
+                th.setId(parser.cont);
+                parser.cont++;
+                node.setChild(th);
+
+                // BODY
+                if (b!=null) node.setChild( (Node) b );
+
+                // ELSE
+                Node es = new Node();
+                es.setTag("ELSE_IF");
+                es.setValue( (String) e);
+                es.setId(parser.cont);
+                parser.cont++;
+                node.setChild(es);
+
+                node.setChild((Node)ie);
+
+                parser.father = node;
+                RESULT = node;
+        :};
 
 type ::= NUMBER:n
         {:
@@ -552,26 +871,36 @@ array_type ::= ARRAY SBRACKETIZQ type SBRACKETDER;
 
 return ::= COMEBACK value;
 
-outputStatement ::= OUTPUT PARIZQ value PARDER;
-
-inputStatement ::= ID ASSIGNMENT INPUT PARIZQ PARDER;
-
-ifStatement ::= IF PARIZQ desicion PARDER THEN BRACKETIZQ body BRACKETDER
-        | IF PARIZQ desicion PARDER THEN BRACKETIZQ body BRACKETDER ELSE BRACKETIZQ body BRACKETDER
-        | IF PARIZQ desicion PARDER THEN BRACKETIZQ body BRACKETDER ELSE ifStatement;
-
-whileStatement ::= WHILE PARIZQ desicion PARDER BRACKETIZQ body BRACKETDER;
 desicion ::= BOOL
-        | INT
-        | ID
-        | ID OPREL INT
-        | ID OPREL CHAR
-        | ID OPREL BOOL
-        | ID OPREL ID;
+        {:
 
-forStatement ::= FOR PARIZQ ID ASSIGNMENT INT TO INT DELIMETER INT PARDER BRACKETIZQ body BRACKETDER
-        | FOR PARIZQ ID ASSIGNMENT ID TO INT DELIMETER INT PARDER BRACKETIZQ body BRACKETDER
-        | FOR PARIZQ ID ASSIGNMENT ID TO ID DELIMETER INT PARDER BRACKETIZQ body BRACKETDER;
+        :}
+        | INT
+        {:
+        
+        :}
+        | ID
+        {:
+        
+        :}
+        | ID OPREL INT
+        {:
+        
+        :}
+        | ID OPREL CHAR
+        {:
+        
+        :}
+        | ID OPREL BOOL
+        {:
+        
+        :}
+        | ID OPREL ID
+        {:
+        
+        :};
+
+
 
 switchStatement ::= SWITCH PARIZQ ID PARDER BRACKETIZQ switch_body BRACKETDER;
 switch_body ::=  case_switch DEFAULT COLON BRACKETIZQ body BRACKETDER;

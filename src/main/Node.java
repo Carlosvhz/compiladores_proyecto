@@ -63,7 +63,7 @@ public class Node {
     }
     
     public ArrayList<Node> getChildren(){
-        return children;
+        return this.children;
     }
     
     public String getValue(){

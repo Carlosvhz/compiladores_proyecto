@@ -26,7 +26,7 @@ special_characters = "^"|@|"$"|#|&|"%"|"'"|"?"|"!"|"_"
 
 // Values
 digit = [0-9] | -[0-9]
-int = {digit}+
+integer = {digit}+
 characters = [a-z]|[A-Z]|"_"
 character = '({characters}|{digit}|{special_characters}|" ")'
 bool = true|false
@@ -88,7 +88,7 @@ comment = "#"
         "output"		{ System.out.println("OUTPUT"); return new Symbol(sym.OUTPUT, yycolumn, yyline, yytext());}
 
         "empty"		        { System.out.println("EMPTY"); return new Symbol(sym.EMPTY,yycolumn,yyline,yytext()); }   
-        {int}		        { System.out.println("INT"); return new Symbol(sym.INT,yycolumn,yyline,yytext()); }
+        {integer}	        { System.out.println("INT"); return new Symbol(sym.INT,yycolumn,yyline,yytext()); }
         {character}		{ System.out.println("CHAR"); return new Symbol(sym.CHAR,yycolumn,yyline,yytext()); }
 	{bool}			{ System.out.println("BOOL"); return new Symbol(sym.BOOL,yycolumn,yyline,yytext()); }
         
