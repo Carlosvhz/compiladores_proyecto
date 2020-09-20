@@ -121,9 +121,8 @@ function_list ::= function:f function_list:fl
                 // FUNCTION
                 node.setChild((Node)f);
 
-                if(fl!=null){
-                        node.setChild( ((Node)fl).getChildren() );                      
-                }
+                if(fl!=null) node.setChild( ((Node)fl).getChildren() );                      
+                
                 parser.father = node;
                 RESULT = node;
         :} 
@@ -171,16 +170,24 @@ function ::= FUNCTION ID:i PARIZQ parameter:p PARDER ASSIGNMENT BRACKETIZQ body:
                 node.setChild(id);
                 
                 // PARAMETER
-                // if (p!=null) node.setChild( (Node) p );
+                if (p!=null) node.setChild( (Node) p );
                 
                 // RETURN TYPE
-                // node.setChild( (Node) t );
+                node.setChild( (Node) t );
 
                 // BODY
-                if (b!=null) node.setChild( (Node) b );
-
-                // RETURN
-                // node.setChild( (Node) r);
+                if (b!=null) {
+                        Node n = (Node)b;
+                        n.setChild((Node)r);
+                        node.setChild(n);
+                }else{
+                        Node bo = new Node();
+                        bo.setTag("BODY");
+                        bo.setId(parser.cont);
+                        parser.cont++;
+                        bo.setChild((Node)r);
+                        node.setChild(bo);
+                }
 
                 RESULT = node;
         :};
@@ -481,7 +488,7 @@ proposition ::= type:t ID:i
                 node.setChild(wh_s);
 
                 // DESICION
-                // node.setChild((Node)d);
+                node.setChild((Node)d);
 
                 // THEN
                 Node th = new Node();
@@ -553,7 +560,7 @@ signo ::= SUM
 value ::= ID:id
         {:
                 Node node = new Node();
-                node.setTag("VALUE");
+                node.setTag("ID");
                 node.setValue((String)id);
                 node.setId(parser.cont);
                 parser.cont++;
@@ -563,7 +570,7 @@ value ::= ID:id
         | BOOL:b
         {:
                 Node node = new Node();
-                node.setTag("VALUE");
+                node.setTag("BOOLEAN");
                 node.setValue((String)b);
                 node.setId(parser.cont);
                 parser.cont++;
@@ -573,7 +580,7 @@ value ::= ID:id
         | CHAR:c
         {:
                 Node node = new Node();
-                node.setTag("VALUE");
+                node.setTag("CHARACTER");
                 node.setValue((String)c);
                 node.setId(parser.cont);
                 parser.cont++;
@@ -583,7 +590,7 @@ value ::= ID:id
         | EMPTY:e
         {:
                 Node node = new Node();
-                node.setTag("VALUE");
+                node.setTag("EMPTY");
                 node.setValue((String)e);
                 node.setId(parser.cont);
                 parser.cont++;
@@ -597,7 +604,7 @@ value ::= ID:id
         | INT:i
         {:
                 Node node = new Node();
-                node.setTag("VALUE");
+                node.setTag("NUMBER");
                 node.setValue((String)i);
                 node.setId(parser.cont);
                 parser.cont++;
@@ -730,7 +737,7 @@ ifStatement ::= IF:i PARIZQ desicion:d PARDER THEN:t BRACKETIZQ body:b BRACKETDE
                 node.setChild(if_s);
 
                 // DESICION
-                // node.setChild((Node)d);
+                node.setChild((Node)d);
 
                 // THEN
                 Node th = new Node();
@@ -763,7 +770,7 @@ ifStatement ::= IF:i PARIZQ desicion:d PARDER THEN:t BRACKETIZQ body:b BRACKETDE
                 node.setChild(if_s);
 
                 // DESICION
-                // node.setChild((Node)d);
+                node.setChild((Node)d);
 
                 // THEN
                 Node th = new Node();
@@ -806,7 +813,7 @@ ifStatement ::= IF:i PARIZQ desicion:d PARDER THEN:t BRACKETIZQ body:b BRACKETDE
                 node.setChild(if_s);
 
                 // DESICION
-                // node.setChild((Node)d);
+                node.setChild((Node)d);
 
                 // THEN
                 Node th = new Node();
@@ -873,37 +880,57 @@ type ::= NUMBER:n
         :};           // Tipo de variable que pude ser una variable
 array_type ::= ARRAY SBRACKETIZQ type SBRACKETDER;
 
-return ::= COMEBACK value;
+return ::= COMEBACK:c PARIZQ value:v PARDER
+        {:
+                Node node = new Node();
+                node.setTag("RETURN_STATEMENT");
+                node.setId(parser.cont);
+                parser.cont++;
 
-desicion ::= BOOL
-        {:
+                Node co = new Node();
+                co.setTag("COMEBACK");
+                co.setValue((String)c);
+                co.setId(parser.cont);
+                parser.cont++;
 
-        :}
-        | INT
-        {:
-        
-        :}
-        | ID
-        {:
-        
-        :}
-        | ID OPREL INT
-        {:
-        
-        :}
-        | ID OPREL CHAR
-        {:
-        
-        :}
-        | ID OPREL BOOL
-        {:
-        
-        :}
-        | ID OPREL ID
-        {:
-        
+                node.setChild(co);
+
+                node.setChild((Node)v);
+
+                RESULT = node;
         :};
 
+desicion ::= value:v1 OPREL:o value:v2
+        {:
+                Node node = new Node();
+                node.setTag("DECISION");
+                node.setId(parser.cont);
+                parser.cont++;
+
+                node.setChild((Node)v1);
+                
+                Node op = new Node();
+                op.setTag("RELATIONAL_OPERATOR");
+                op.setValue((String)o);
+                op.setId(parser.cont);
+                parser.cont++;
+
+                node.setChild(op);
+                
+                node.setChild((Node)v2);
+
+                RESULT = node;
+        :}
+        | value: v
+        {:      Node node = new Node();
+                node.setTag("DECISION");
+                node.setId(parser.cont);
+                parser.cont++;
+
+                node.setChild((Node)v);
+                RESULT = node;
+        :};
+              
 
 
 switchStatement ::= SWITCH PARIZQ ID PARDER BRACKETIZQ switch_body BRACKETDER;
