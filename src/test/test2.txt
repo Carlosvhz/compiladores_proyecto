@@ -1,10 +1,15 @@
-function main() = {
-}
+function main() ={
 
-function id() = number{
-    number id = 0
-    if(id == 0) then {
-        output(id)
+    switch (id) then {
+        case (1):{
+            output(1)
+        }
+        case (id2):{
+            output(2)
+        }
+        case (id3):{
+            output(3)
+        }
+        default :{}
     }
-    comeBack(23)
 }

@@ -38,15 +38,12 @@ non terminal function_list;
 non terminal parameter;
 non terminal b_parameter;
 
-non terminal functionCall;
 non terminal funCall_parameter;
 non terminal b_funCall_parameter;
 
 // Asignation and declaration
 non terminal type;
 non terminal array_type;
-non terminal simpleDeclaration;
-non terminal declaration_assign;
 non terminal assignment;
 non terminal value;
 non terminal aritmetic_expression ;
@@ -54,18 +51,17 @@ non terminal b_aritmetic_expression;
 non terminal c_aritmetic_expression;
 non terminal sign;
 non terminal array_value;
+non terminal case_switch_list;
 
 // Statements
-non terminal whileStatement;
+non terminal else_n;
 non terminal ifStatement;
 non terminal desicion; // Desición para While y If
 non terminal elseIf;
-non terminal inputStatement;
+non terminal for_parameter;
 non terminal forStatement;
-non terminal switchStatement;
 non terminal switch_body;
 non terminal case_switch;
-non terminal b_case_switch;
 non terminal return;
 
 start with program;
@@ -228,7 +224,7 @@ b_parameter ::= ID:i COLON type:t
 
                 // TYPE
                 node.setChild( (Node)t);
-
+                
                 parser.father = node;
                 RESULT = node;
         :}
@@ -515,20 +511,94 @@ proposition ::= type:t ID:i
                 parser.father = node;
                 RESULT = node;
         :}
-        | switchStatement 
+        | SWITCH PARIZQ ID:i PARDER THEN:t BRACKETIZQ switch_body:sb BRACKETDER 
         {:      
                 Node node = new Node();
-                node.setTag("SWTICH");
+                node.setTag("SWITCH_STATEMENT");
                 node.setId(parser.cont);
                 parser.cont++;
+                // SWITCH
+                Node sw = new Node();
+                sw.setTag("SWITCH");
+                sw.setId(parser.cont);
+                parser.cont++;
 
-                // SIMPLE_DECLARATION
-                // node.setChild( (Node) sp);
-                node.setChild(new Node(":V"));
+                node.setChild(sw);
+                // ID
+                Node id = new Node();
+                id.setTag("ID");
+                id.setValue((String)i);
+                id.setId(parser.cont);
+                parser.cont++;
+
+                node.setChild(id);
+                
+                Node th = new Node();
+                th.setTag("THEN");
+                th.setId(parser.cont);
+                parser.cont++;
+
+                node.setChild(th);
+
+                // SWTICH BODY
+                node.setChild((Node)sb);
 
                 parser.father = node;
                 RESULT = node;
         :} ;      // Este GLC contiene los diferentes statements
+
+switch_body ::=  case_switch_list:c DEFAULT COLON BRACKETIZQ body:b BRACKETDER
+        {:
+                Node nodo = new Node();
+                nodo.setTag("SWITCH_BODY");
+                nodo.setId(parser.cont);
+                parser.cont++;
+
+                if (c!=null) nodo.setChild( ((Node)c).getChildren() );
+
+                // DEFAULT CASE
+                Node d_case = new Node();
+                d_case.setTag("DEFAULT_CASE");
+                d_case.setId(parser.cont++);
+                parser.cont++;
+                
+                if (b!=null) d_case.setChild((Node)b);
+                
+                nodo.setChild(d_case);
+
+                parser.father = nodo;
+                RESULT = nodo;
+        :};
+
+case_switch_list ::=  case_switch:c  case_switch_list:cl
+        {:
+                Node node = new Node();
+                node.setTag("CASE_LIST");
+                node.setId(parser.cont++);
+                parser.cont++;
+
+                node.setChild( (Node) c);
+
+                if (cl!=null) node.setChild( ((Node)cl).getChildren() );
+
+                parser.father = node;
+                RESULT = node;
+        :}
+        | /*vacío*/; 
+case_switch ::= CASE PARIZQ value:v PARDER COLON BRACKETIZQ body:b BRACKETDER
+        {:
+                Node node = new Node();
+                node.setTag("CASE");
+                node.setId(parser.cont);
+                parser.cont++;
+
+                node.setChild( (Node) v);    
+
+                if(b!=null) node.setChild( (Node)b );  
+
+                parser.father = node;
+                RESULT = node;          
+        :};
 
 funCall_parameter ::= b_funCall_parameter:b funCall_parameter:fl
         {:
@@ -560,7 +630,7 @@ b_funCall_parameter ::= value:v COMMA
         {:      
                 Node node = (Node)v;
                 parser.father = node;
-                RESULT = Node;
+                RESULT = node;
         :};
 
 sign ::= SUM:s
@@ -674,9 +744,60 @@ b_aritmetic_expression ::= sign aritmetic_expression
         | {::} ;
 
 c_aritmetic_expression ::= b_aritmetic_expression; */
+for_parameter ::= ID:i ASSIGNMENT:a value:v1 TO:t value:v2 DELIMETER value:v3
+        {:
+                // NODO PADRE
+                Node node = new Node();
+                node.setTag("FOR_PARAMETER");
+                node.setId(parser.cont);
+                parser.cont++;
 
-forStatement ::= 
-        FOR:f PARIZQ ID ASSIGNMENT INT TO INT DELIMETER INT PARDER THEN:t BRACKETIZQ body:b BRACKETDER
+                // ASIGNMENT (NODO HIJO)
+                Node assig = new Node();
+                assig.setTag("ASSIGNMENT");
+                assig.setId(parser.cont);
+                parser.cont++;
+
+                        // ID
+                Node id = new Node();
+                id.setTag("ID");
+                id.setValue( (String) i);
+                id.setId(parser.cont);
+                parser.cont++;
+                assig.setChild(id);
+
+                        // ASSIGNMENT
+                Node as_sign = new Node();
+                as_sign.setTag("ASSIGNMENT");
+                as_sign.setValue( (String) a);
+                as_sign.setId(parser.cont);
+                parser.cont++;
+                assig.setChild(as_sign);
+
+                        // VALUE
+                assig.setChild( (Node) v1);
+
+                node.setChild(assig);
+
+                // TO
+                Node to = new Node();
+                to.setTag("TO");
+                to.setValue((String)t);
+                to.setId(parser.cont);
+                parser.cont++;
+                node.setChild(to);
+
+                // VALUE 2
+                node.setChild((Node)v2);
+
+                // VALUE 3
+                node.setChild((Node)v3);
+
+                parser.father = node;
+                RESULT = node;
+        :};
+
+forStatement ::= FOR:f PARIZQ for_parameter:d PARDER THEN:t BRACKETIZQ body:b BRACKETDER
         {:
                 // for ( id = 0 to 10 | 1) then {}
                 Node node = new Node();
@@ -693,73 +814,7 @@ forStatement ::=
                 node.setChild(for_s);
 
                 // FOR_PARAMETERS
-                // node.setChild((Node)d);
-
-                // THEN
-                Node th = new Node();
-                th.setTag("THEN");
-                th.setValue( (String) t);
-                th.setId(parser.cont);
-                parser.cont++;
-                node.setChild(th);
-
-                // BODY
-                if (b!=null) node.setChild( (Node) b );
-
-                parser.father = node;
-                RESULT = node;
-        :}
-        | FOR:f PARIZQ ID ASSIGNMENT ID TO INT DELIMETER INT PARDER THEN:t BRACKETIZQ body:b BRACKETDER
-        {:
-                // for ( id = id to 10 | 1) then {}
-                Node node = new Node();
-                node.setTag("FOR_STATEMENT");
-                node.setId(parser.cont);
-                parser.cont++;
-
-                // FOR
-                Node for_s = new Node();
-                for_s.setTag("FOR");
-                for_s.setValue( (String) f);
-                for_s.setId(parser.cont);
-                parser.cont++;
-                node.setChild(for_s);
-
-                // FOR_PARAMETERS
-                // node.setChild((Node)d);
-
-                // THEN
-                Node th = new Node();
-                th.setTag("THEN");
-                th.setValue( (String) t);
-                th.setId(parser.cont);
-                parser.cont++;
-                node.setChild(th);
-
-                // BODY
-                if (b!=null) node.setChild( (Node) b );
-
-                parser.father = node;
-                RESULT = node;
-        :}
-        | FOR:f PARIZQ ID ASSIGNMENT ID TO ID DELIMETER INT PARDER THEN:t BRACKETIZQ body:b BRACKETDER
-        {:
-                // for ( id = id to id | 1) then {}
-                Node node = new Node();
-                node.setTag("FOR_STATEMENT");
-                node.setId(parser.cont);
-                parser.cont++;
-
-                // FOR
-                Node for_s = new Node();
-                for_s.setTag("FOR");
-                for_s.setValue( (String) f);
-                for_s.setId(parser.cont);
-                parser.cont++;
-                node.setChild(for_s);
-
-                // FOR_PARAMETERS
-                // node.setChild((Node)d);
+                node.setChild((Node)d);
 
                 // THEN
                 Node th = new Node();
@@ -809,7 +864,7 @@ ifStatement ::= IF:i PARIZQ desicion:d PARDER THEN:t BRACKETIZQ body:b BRACKETDE
                 parser.father = node;
                 RESULT = node;
         :}
-        | IF:i PARIZQ desicion:d PARDER THEN:t BRACKETIZQ body:b BRACKETDER ELSE:e BRACKETIZQ body:bo BRACKETDER
+        | IF:i PARIZQ desicion:d PARDER THEN:t BRACKETIZQ body:b BRACKETDER else_n:e
         {:
                 // if () then {} else {}
                 Node node = new Node();
@@ -840,14 +895,7 @@ ifStatement ::= IF:i PARIZQ desicion:d PARDER THEN:t BRACKETIZQ body:b BRACKETDE
                 if (b!=null) node.setChild( (Node) b );
 
                 // ELSE
-                Node es = new Node();
-                es.setTag("ELSE");
-                es.setValue( (String) e);
-                es.setId(parser.cont);
-                parser.cont++;
-                node.setChild(es);
-
-                if (bo!=null) node.setChild( (Node) bo );
+                node.setChild( (Node) e);
 
                 parser.father = node;
                 RESULT = node;
@@ -888,6 +936,17 @@ ifStatement ::= IF:i PARIZQ desicion:d PARDER THEN:t BRACKETIZQ body:b BRACKETDE
                 parser.father = node;
                 RESULT = node;
         :};
+else_n ::=  ELSE:e BRACKETIZQ body:b BRACKETDER
+        {:
+                Node node = new Node();
+                node.setTag("ELSE");
+                node.setId(parser.cont);
+                parser.cont++;
+                if (b!=null) node.setChild( (Node) b );
+
+                parser.father = node;
+                RESULT = node;
+        :};
 
 elseIf ::= ELSE ifStatement:i
         {:
@@ -913,7 +972,13 @@ type ::= NUMBER:n
         :}
         | array_type:a
         {:
-                
+                Node node = new Node();
+                node.setTag("TYPE");
+                node.setValue( ((Node)a).getValue() );
+                node.setId(parser.cont);
+                parser.cont++;
+
+                RESULT = node;
         :}
         | BOOLEAN:b
         {:
@@ -935,7 +1000,14 @@ type ::= NUMBER:n
 
                 RESULT = node;
         :};           // Tipo de variable que pude ser una variable
-array_type ::= ARRAY SBRACKETIZQ type SBRACKETDER;
+array_type ::= ARRAY SBRACKETIZQ type:t SBRACKETDER
+        {:
+                Node node = new Node();
+                node.setValue("array["+((Node)t).getValue()+"]");
+                
+                parser.father = node;
+                RESULT = node;
+        :};
 
 return ::= COMEBACK:c PARIZQ value:v PARDER
         {:
@@ -989,11 +1061,3 @@ desicion ::= value:v1 OPREL:o value:v2
                 node.setChild((Node)v);
                 RESULT = node;
         :};
-              
-
-
-switchStatement ::= SWITCH PARIZQ ID PARDER BRACKETIZQ switch_body BRACKETDER;
-switch_body ::=  case_switch DEFAULT COLON BRACKETIZQ body BRACKETDER;
-case_switch ::= CASE PARIZQ value PARDER COLON BRACKETIZQ body BRACKETDER b_case_switch 
-        | /*vacío*/; 
-b_case_switch ::= case_switch;
