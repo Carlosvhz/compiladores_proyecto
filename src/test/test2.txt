@@ -2,5 +2,9 @@ function main() = {
 }
 
 function id() = number{
+    number id = 0
+    if(id == 0) then {
+        output(id)
+    }
     comeBack(23)
 }

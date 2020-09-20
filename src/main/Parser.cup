@@ -52,7 +52,7 @@ non terminal value;
 non terminal aritmetic_expression ;
 non terminal b_aritmetic_expression;
 non terminal c_aritmetic_expression;
-non terminal signo;
+non terminal sign;
 non terminal array_value;
 
 // Statements
@@ -189,6 +189,7 @@ function ::= FUNCTION ID:i PARIZQ parameter:p PARDER ASSIGNMENT BRACKETIZQ body:
                         node.setChild(bo);
                 }
 
+                parser.father = node;
                 RESULT = node;
         :};
 
@@ -228,6 +229,7 @@ b_parameter ::= ID:i COLON type:t
                 // TYPE
                 node.setChild( (Node)t);
 
+                parser.father = node;
                 RESULT = node;
         :}
         | ID:i COLON type:t COMMA 
@@ -249,6 +251,7 @@ b_parameter ::= ID:i COLON type:t
                 // TYPE
                 node.setChild( (Node)t);
 
+                parser.father = node;
                 RESULT = node;
         :};
 
@@ -469,7 +472,9 @@ proposition ::= type:t ID:i
         :}
         | ifStatement: i
         {:
-                RESULT = (Node)i;
+                Node node = (Node)i;
+                parser.father = node;
+                RESULT = node;
         :}
         | WHILE:w PARIZQ desicion:d PARDER THEN:t BRACKETIZQ body:b BRACKETDER 
         {:
@@ -506,7 +511,9 @@ proposition ::= type:t ID:i
         :}
         | forStatement:f 
         {:
-                RESULT = (Node)f;
+                Node node = (Node)f;
+                parser.father = node;
+                RESULT = node;
         :}
         | switchStatement 
         {:      
@@ -534,6 +541,7 @@ funCall_parameter ::= b_funCall_parameter:b funCall_parameter:fl
                 
                 node.setChild( ((Node)fl).getChildren() );
 
+                parser.father = node;
                 RESULT = node;
         :}
         | value:v
@@ -545,18 +553,66 @@ funCall_parameter ::= b_funCall_parameter:b funCall_parameter:fl
 
                 node.setChild((Node)v);
         
+                parser.father = node;
                 RESULT = node;
         :};
 b_funCall_parameter ::= value:v COMMA 
         {:      
-                RESULT = (Node) v;
+                Node node = (Node)v;
+                parser.father = node;
+                RESULT = Node;
         :};
 
-signo ::= SUM
-        | RES
-        | DIV
-        | MULT
-        | MOD;
+sign ::= SUM:s
+        {:
+                Node node = new Node();
+                node.setTag("SIGN");
+                node.setValue((String)s);
+                node.setId(parser.cont);
+                parser.cont++;
+
+                RESULT = node;
+        :}
+        | RES:r
+        {:
+                Node node = new Node();
+                node.setTag("SIGN");
+                node.setValue((String)r);
+                node.setId(parser.cont);
+                parser.cont++;
+
+                RESULT = node;
+        :}
+        | DIV:d
+        {:
+                Node node = new Node();
+                node.setTag("SIGN");
+                node.setValue((String)d);
+                node.setId(parser.cont);
+                parser.cont++;
+
+                RESULT = node;
+        :}
+        | MULT:m 
+        {:
+                Node node = new Node();
+                node.setTag("SIGN");
+                node.setValue((String)m);
+                node.setId(parser.cont);
+                parser.cont++;
+
+                RESULT = node;
+        :}
+        | MOD:mo
+        {:
+                Node node = new Node();
+                node.setTag("SIGN");
+                node.setValue((String)mo);
+                node.setId(parser.cont);
+                parser.cont++;
+
+                RESULT = node;
+        :};
 value ::= ID:id
         {:
                 Node node = new Node();
@@ -614,7 +670,7 @@ value ::= ID:id
 
 /* aritmetic_expression ::= INT b_aritmetic_expression
         | PARIZQ INT b_aritmetic_expression PARDER c_aritmetic_expression;
-b_aritmetic_expression ::= signo aritmetic_expression
+b_aritmetic_expression ::= sign aritmetic_expression
         | {::} ;
 
 c_aritmetic_expression ::= b_aritmetic_expression; */
@@ -841,6 +897,7 @@ elseIf ::= ELSE ifStatement:i
                 node.setChild( ((Node)i).getChildren() );
                 parser.cont++;
 
+                parser.father = node;
                 RESULT = node;
         :};
 
@@ -897,6 +954,7 @@ return ::= COMEBACK:c PARIZQ value:v PARDER
 
                 node.setChild((Node)v);
 
+                parser.father = node;
                 RESULT = node;
         :};
 
@@ -919,6 +977,7 @@ desicion ::= value:v1 OPREL:o value:v2
                 
                 node.setChild((Node)v2);
 
+                parser.father = node;
                 RESULT = node;
         :}
         | value: v
