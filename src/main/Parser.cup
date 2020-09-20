@@ -59,7 +59,7 @@ non terminal array_value;
 non terminal whileStatement;
 non terminal ifStatement;
 non terminal desicion; // Desición para While y If
-non terminal outputStatement;
+non terminal elseIf;
 non terminal inputStatement;
 non terminal forStatement;
 non terminal switchStatement;
@@ -789,7 +789,7 @@ ifStatement ::= IF:i PARIZQ desicion:d PARDER THEN:t BRACKETIZQ body:b BRACKETDE
                 parser.father = node;
                 RESULT = node;
         :}
-        | IF:i PARIZQ desicion:d PARDER THEN:t BRACKETIZQ body:b BRACKETDER ELSE:e ifStatement:ie
+        | IF:i PARIZQ desicion:d PARDER THEN:t BRACKETIZQ body:b BRACKETDER elseIf:ei
         {:
                 // if () then {} else if () then {}
                 Node node = new Node();
@@ -819,17 +819,21 @@ ifStatement ::= IF:i PARIZQ desicion:d PARDER THEN:t BRACKETIZQ body:b BRACKETDE
                 // BODY
                 if (b!=null) node.setChild( (Node) b );
 
-                // ELSE
-                Node es = new Node();
-                es.setTag("ELSE_IF");
-                es.setValue( (String) e);
-                es.setId(parser.cont);
-                parser.cont++;
-                node.setChild(es);
-
-                node.setChild((Node)ie);
+                // ELSE IF
+                node.setChild((Node)  ei);
 
                 parser.father = node;
+                RESULT = node;
+        :};
+
+elseIf ::= ELSE ifStatement:i
+        {:
+                Node node = new Node();
+                node.setTag("ELSE_IF");
+                node.setId(parser.cont);
+                node.setChild( ((Node)i).getChildren() );
+                parser.cont++;
+
                 RESULT = node;
         :};
 
