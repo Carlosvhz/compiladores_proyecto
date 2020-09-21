@@ -1561,7 +1561,6 @@ class CUP$Parser$actions {
                 Node node = new Node();
                 node.setValue("["+((Node)av).getValue()+"]");
                 
-                parser.father = node;
                 RESULT = node;
        
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("array_value",19, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
@@ -2055,7 +2054,6 @@ class CUP$Parser$actions {
                 Node node = new Node();
                 node.setValue("array["+((Node)t).getValue()+"]");
                 
-                parser.father = node;
                 RESULT = node;
         
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("array_type",12, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-3)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);

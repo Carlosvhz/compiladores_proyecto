@@ -751,7 +751,6 @@ array_value ::= SBRACKETIZQ b_array_value:av SBRACKETDER
                 Node node = new Node();
                 node.setValue("["+((Node)av).getValue()+"]");
                 
-                parser.father = node;
                 RESULT = node;
        :};
 b_array_value ::= c_array_value:c b_array_value:b
@@ -1043,7 +1042,6 @@ array_type ::= ARRAY SBRACKETIZQ type:t SBRACKETDER
                 Node node = new Node();
                 node.setValue("array["+((Node)t).getValue()+"]");
                 
-                parser.father = node;
                 RESULT = node;
         :};
 
