@@ -51,6 +51,8 @@ non terminal b_aritmetic_expression;
 non terminal c_aritmetic_expression;
 non terminal sign;
 non terminal array_value;
+non terminal b_array_value;
+non terminal c_array_value;
 non terminal case_switch_list;
 
 // Statements
@@ -725,7 +727,13 @@ value ::= ID:id
         :}                
         | array_value:av
         {:
-
+                Node node = new Node();
+                node.setTag("ARRAY");
+                node.setValue(((Node)av).getValue());
+                node.setId(parser.cont);
+                parser.cont++;
+                
+                RESULT = node;
         :}
         | INT:i
         {:
@@ -738,12 +746,42 @@ value ::= ID:id
                 RESULT = node;
         :};              // Tipo de valor que pueda contener una expresión
 
+array_value ::= SBRACKETIZQ b_array_value:av SBRACKETDER
+        {:
+                Node node = new Node();
+                node.setValue("["+((Node)av).getValue()+"]");
+                
+                parser.father = node;
+                RESULT = node;
+       :};
+b_array_value ::= c_array_value:c b_array_value:b
+        {:
+                Node node = new Node();
+                node.setValue( ((Node)c).getValue() + ((Node)b).getValue());
+
+                RESULT = node;
+        :}
+        | value:v
+        {:
+                Node node = new Node();
+                node.setValue(((Node)v).getValue());
+
+                RESULT = node;
+        :};
+c_array_value ::= value:v COMMA
+        {:
+                Node node = new Node();
+                node.setValue( ((Node)v).getValue() + ", ");
+
+                RESULT = node;
+        :};
+
 /* aritmetic_expression ::= INT b_aritmetic_expression
         | PARIZQ INT b_aritmetic_expression PARDER c_aritmetic_expression;
 b_aritmetic_expression ::= sign aritmetic_expression
         | {::} ;
-
 c_aritmetic_expression ::= b_aritmetic_expression; */
+
 for_parameter ::= ID:i ASSIGNMENT:a value:v1 TO:t value:v2 DELIMETER value:v3
         {:
                 // NODO PADRE
