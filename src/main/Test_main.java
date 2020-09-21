@@ -16,16 +16,16 @@ public class Test_main {
     public static void main(String[] args) {
         
         // Este codigo compila cambios de CUP y JFlex
-        /* Test_main compiler = new Test_main();
+        Test_main compiler = new Test_main();
         compiler.compile_files();
         boolean mvAL = move_file("Lexer.java");
         boolean mvAS = move_file("Parser.java");
-        boolean mvSym = move_file("sym.java"); */
+        boolean mvSym = move_file("sym.java"); 
         
         // Esta función lo que hace es probar el CUP y Jflex a un archivo de texto 
         test(); 
-        
-    }
+         
+   }
      
     public static void test(){
         try {

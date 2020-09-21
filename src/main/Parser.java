@@ -1518,13 +1518,7 @@ class CUP$Parser$actions {
 		int avright = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
 		Object av = (Object)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
 		
-                Node node = new Node();
-                node.setTag("ARRAY");
-                node.setValue(((Node)av).getValue());
-                node.setId(parser.cont);
-                parser.cont++;
-                
-                RESULT = node;
+                RESULT = (Node)av;
         
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("value",14, ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
@@ -1554,12 +1548,16 @@ class CUP$Parser$actions {
           case 42: // array_value ::= SBRACKETIZQ b_array_value SBRACKETDER 
             {
               Object RESULT =null;
-		int avleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).left;
-		int avright = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).right;
-		Object av = (Object)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-1)).value;
+		int bleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).left;
+		int bright = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).right;
+		Object b = (Object)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-1)).value;
 		
                 Node node = new Node();
-                node.setValue("["+((Node)av).getValue()+"]");
+                node.setTag("ARRAY_VALUE");
+                node.setId(parser.cont);
+                parser.cont++;
+                // node.setValue("["+((Node)av).getValue()+"]");
+                node.setChild( ((Node)b).getChildren() );
                 
                 RESULT = node;
        
@@ -1579,7 +1577,12 @@ class CUP$Parser$actions {
 		Object b = (Object)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
 		
                 Node node = new Node();
-                node.setValue( ((Node)c).getValue() + ((Node)b).getValue());
+                node.setId(parser.cont);
+                parser.cont++;
+
+                // node.setValue( ((Node)c).getValue() + ((Node)b).getValue());
+                node.setChild(((Node)c));
+                node.setChild(((Node)b).getChildren());
 
                 RESULT = node;
         
@@ -1596,7 +1599,8 @@ class CUP$Parser$actions {
 		Object v = (Object)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
 		
                 Node node = new Node();
-                node.setValue(((Node)v).getValue());
+
+                node.setChild((Node)v);
 
                 RESULT = node;
         
@@ -1612,10 +1616,7 @@ class CUP$Parser$actions {
 		int vright = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).right;
 		Object v = (Object)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-1)).value;
 		
-                Node node = new Node();
-                node.setValue( ((Node)v).getValue() + ", ");
-
-                RESULT = node;
+                RESULT = (Node)v;
         
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("c_array_value",21, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }

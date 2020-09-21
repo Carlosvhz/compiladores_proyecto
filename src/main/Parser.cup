@@ -727,13 +727,7 @@ value ::= ID:id
         :}                
         | array_value:av
         {:
-                Node node = new Node();
-                node.setTag("ARRAY");
-                node.setValue(((Node)av).getValue());
-                node.setId(parser.cont);
-                parser.cont++;
-                
-                RESULT = node;
+                RESULT = (Node)av;
         :}
         | INT:i
         {:
@@ -746,33 +740,40 @@ value ::= ID:id
                 RESULT = node;
         :};              // Tipo de valor que pueda contener una expresión
 
-array_value ::= SBRACKETIZQ b_array_value:av SBRACKETDER
+array_value ::= SBRACKETIZQ b_array_value:b SBRACKETDER
         {:
                 Node node = new Node();
-                node.setValue("["+((Node)av).getValue()+"]");
+                node.setTag("ARRAY_VALUE");
+                node.setId(parser.cont);
+                parser.cont++;
+                // node.setValue("["+((Node)av).getValue()+"]");
+                node.setChild( ((Node)b).getChildren() );
                 
                 RESULT = node;
        :};
 b_array_value ::= c_array_value:c b_array_value:b
         {:
                 Node node = new Node();
-                node.setValue( ((Node)c).getValue() + ((Node)b).getValue());
+                node.setId(parser.cont);
+                parser.cont++;
+
+                // node.setValue( ((Node)c).getValue() + ((Node)b).getValue());
+                node.setChild(((Node)c));
+                node.setChild(((Node)b).getChildren());
 
                 RESULT = node;
         :}
         | value:v
         {:
                 Node node = new Node();
-                node.setValue(((Node)v).getValue());
+
+                node.setChild((Node)v);
 
                 RESULT = node;
         :};
 c_array_value ::= value:v COMMA
         {:
-                Node node = new Node();
-                node.setValue( ((Node)v).getValue() + ", ");
-
-                RESULT = node;
+                RESULT = (Node)v;
         :};
 
 /* aritmetic_expression ::= INT b_aritmetic_expression
