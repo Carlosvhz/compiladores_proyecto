@@ -22,16 +22,10 @@ function main() = {
 		
 		}
 	}else{
-		while (id >= numero){
-			switch (id) {
-				case (1):{
-				}
-				default:{
-				}
-			}
+		while (id >= numero) then{
 		}
 	}
-	for (id2 = id to 10 | 1 ){
+	for (id2 = id to 10 | 1 ) then{
 	
 	}
 	
@@ -50,11 +44,11 @@ function funcion_con_parametros(numero1:number, numero2:number, numero3:number) 
 }
 
 function funcion_con_retorno() = number{
-	comeBack empty
+	comeBack (empty)
 }
 
 function funcion_con_parametros_retorno(numero1:number, numero2:number, numero3:number) = number {	
-	comeBack empty
+	comeBack (empty)
 }
 
 

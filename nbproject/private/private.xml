@@ -5,8 +5,10 @@
         <group>
             <file>file:/C:/Users/carlo/Desktop/Dolor%20y%20desesperación/Compiladores%20I/compiladores_proyecto/src/main/Lexer.flex</file>
             <file>file:/C:/Users/carlo/Desktop/Dolor%20y%20desesperación/Compiladores%20I/compiladores_proyecto/src/main/Parser.cup</file>
-            <file>file:/C:/Users/carlo/Desktop/Dolor%20y%20desesperación/Compiladores%20I/compiladores_proyecto/src/main/AnalizadorSintactico.java</file>
-            <file>file:/C:/Users/carlo/Desktop/Dolor%20y%20desesperación/Compiladores%20I/compiladores_proyecto/src/main/Cup_Compiler.java</file>
+            <file>file:/C:/Users/carlo/Desktop/Dolor%20y%20desesperación/Compiladores%20I/compiladores_proyecto/src/main/Parser.java</file>
+            <file>file:/C:/Users/carlo/Desktop/Dolor%20y%20desesperación/Compiladores%20I/compiladores_proyecto/src/main/main.java</file>
+            <file>file:/C:/Users/carlo/Desktop/Dolor%20y%20desesperación/Compiladores%20I/compiladores_proyecto/src/main/Node.java</file>
+            <file>file:/C:/Users/carlo/Desktop/Dolor%20y%20desesperación/Compiladores%20I/compiladores_proyecto/src/main/Test_main.java</file>
             <file>file:/C:/Users/carlo/Desktop/Dolor%20y%20desesperación/Compiladores%20I/compiladores_proyecto/src/main/sym.java</file>
         </group>
     </open-files>

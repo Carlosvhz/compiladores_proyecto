@@ -16,10 +16,11 @@ public class Node {
     public ArrayList<Node> children = new ArrayList<>();
     public String value;
     public int id;
-    
+    public Node father;
     
     public Node(){}
     
+    // Constructor para hacer pruebas, no utilizarlo para hacer codigo bien hecho >:v !!!!!!!!!
     public Node(String tag){
         this.tag = tag;
         this.id = 0;
@@ -31,12 +32,21 @@ public class Node {
         this.tag = tag;
     }
     
+    public void setFather(Node father){
+        this.father = father;
+    }
+
     public void setChildren(ArrayList children) {
         this.children = children;
     }
     
+    
     public void setChild (Node n){
         children.add(n);
+    }
+
+    public void setChild(ArrayList<Node> c) {
+        children.addAll(c);
     }
 
     public void setValue(String value) {
@@ -53,7 +63,7 @@ public class Node {
     }
     
     public ArrayList<Node> getChildren(){
-        return children;
+        return this.children;
     }
     
     public String getValue(){
@@ -62,5 +72,9 @@ public class Node {
     
     public int getId(){
         return id;
+    }
+
+    public String toString(){
+        return "Tag: "+tag+" | Cantidad de hijos: "+children.size();
     }
 }
