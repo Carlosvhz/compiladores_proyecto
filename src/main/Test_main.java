@@ -16,21 +16,20 @@ public class Test_main {
     public static void main(String[] args) {
         
         // Este codigo compila cambios de CUP y JFlex
-        /* Test_main compiler = new Test_main();
+        Test_main compiler = new Test_main();
         compiler.compile_files();
         boolean mvAL = move_file("Lexer.java");
         boolean mvAS = move_file("Parser.java");
-        boolean mvSym = move_file("sym.java"); */
-        
+        boolean mvSym = move_file("sym.java");
         
         // Esta función lo que hace es probar el CUP y Jflex a un archivo de texto 
         test(); 
-        
-    }
+         
+   }
      
     public static void test(){
         try {
-            File archivo = new File("./src/test/test.txt");
+            File archivo = new File("./src/test/test2.txt");
             Parser parser = new Parser(new Lexer(new FileReader(archivo)));
             parser.parse();
     	if (true) {
@@ -49,11 +48,21 @@ public class Test_main {
     private static String recorrido(Node root) {
   		String cuerpo = "";
     	for (Node child : root.children) {
-    		// System.out.println("hola");
       		if (!(child.getTag().equals("vacio"))) {
-        		cuerpo += "\"" + root.getId()+ ". " + root.getTag()+ " = " + root.getValue()+
-        			"\"->\""+ child.getId()+". " + child.getTag()+ " = " + child.getValue()+ "\""  + "\n";
-        		cuerpo += recorrido(child);
+        		
+                if (root.getValue()!=null) 
+                    cuerpo += "\""+root.getId()+". "+ root.getTag()+" = " + root.getValue();
+                else 
+                    cuerpo += "\""+root.getId()+". "+ root.getTag()+"\"->\"";
+
+                if (child.getValue()!=null)
+                    cuerpo += child.getId()+". "+child.getTag()+" = "+child.getValue()+"\""+"\n";
+
+                else 
+                    cuerpo += child.getId()+". "+child.getTag()+"\""+"\n";
+                
+                
+                cuerpo += recorrido(child);
       		}
     	}
     	return cuerpo;
