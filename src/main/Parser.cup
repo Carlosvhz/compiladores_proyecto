@@ -8,17 +8,75 @@ parser code
 {:
     public static Node father;
     public int cont = 0;
-    public static int errores = 0;
+    public static int SyntacticErrors = 0;
 
+    public String token_from_id(int id) {
+        //Se ejecuta por medio de SYM:JAVA
+        switch(id) {
+            case 0: return "EOF";
+            case 1: return "error";
+            case 2: return "BOOL";
+            case 3: return "CHAR";
+            case 4: return "INT";
+            case 5: return "EMPTY";
+            case 6: return "ID";
+            case 7: return "PARIZQ";
+            case 8: return "PARDER";
+            case 9: return "SBRACKETIZQ";
+            case 10: return "SBRACKETDER";
+            case 11: return "BRACKETIZQ";
+            case 12: return "BRACKETDER";
+            case 13: return "COLON";
+            case 14: return "ASSIGNMENT";
+            case 15: return "DELIMETER";
+            case 16: return "COMMA";
+            case 17: return "OPREL";
+            case 18: return "SUM";
+            case 19: return "RES";
+            case 20: return "MULT";
+            case 21: return "DIV";
+            case 22: return "MOD";
+            case 23: return "ARRAY";
+            case 24: return "CASE";
+            case 25: return "IF";
+            case 26: return "WHILE";
+            case 27: return "FOR";
+            case 28: return "ELSE";
+            case 29: return "FUNCTION";
+            case 30: return "TO";
+            case 31: return "INPUT";
+            case 32: return "OUTPUT";
+            case 33: return "DEFAULT";
+            case 34: return "SWITCH";
+            case 35: return "NUMBER";
+            case 36: return "BOOLEAN";
+            case 37: return "CHARACTER";
+            case 38: return "THEN";
+            case 39: return "COMEBACK";
+            case 40: return "CALL";
+            case 41: return "MAIN";
+        }
+    }
+    
     public void syntax_error(Symbol s){ 
-       System.out.println("Error Sintáctico en la Línea " + (s.left) +
-        " Columna "+s.right+ ". No se esperaba este componente: " +s.value+".");
-       System.out.println("Sintaxis truena");
-    } 
-
-    /* public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{
-        System.out.println("CUP detecto un error de syntaxis en " + s.left + " column " + s.right);
-    } */
+        report_error("Error Sintáctico en la Línea " + (s.left) +
+        " Columna " + s.right + ". Se esperaba este componente: " + s.value + "\n", null);
+        
+        SyntacticErrors++;
+        List tokens_expected = expected_token_ids();
+        if (tokens_expected.size() != 0) {
+            int id;
+            System.out.println("Se esperaba: ");
+            for (int i = 0; i < tokens_expected.size(); i++) {
+                id = (int) tokens_expected.get(i);
+                if (i == tokens_expected.size() - 1) {
+	            System.out.println(token_from_id(id));
+                } else {
+                    System.out.print(token_from_id(id) + " | ");
+                }
+            }
+        }    
+    }
 :}
 
 
@@ -178,7 +236,10 @@ function_list ::= function:f function_list:fl
                 parser.father = node;
                 RESULT = node;
         :} 
-        | {:/*vacío*/:}; 
+        | {:/*vacío*/:}
+        | error function_list {:
+            System.out.println("Function list error");
+        :}; 
 
 
 
@@ -237,6 +298,9 @@ function ::= FUNCTION ID:i PARIZQ parameter:p PARDER ASSIGNMENT BRACKETIZQ body:
 
                 parser.father = node;
                 RESULT = node;
+        :}
+        | error BRACKETDER {:
+            System.out.println("Function construction flawed");
         :};
 
 
@@ -409,6 +473,9 @@ proposition ::= simpleDeclaration: s
                 Node node = (Node)s;
                 parser.father = node;
                 RESULT = node;
+        :}
+        | error {:
+            System.out.println("Segmentation Fault. Error en creación de proposition");
         :};
 
 
@@ -442,6 +509,9 @@ simpleDeclaration ::= type:t ID:i
 
                 parser.father = node;
                 RESULT = node;
+        :}
+        | error DELIMETER {:
+            System.out.println("Declaration Fault");
         :};
 
 
@@ -1522,6 +1592,9 @@ func_proposition ::= simpleDeclaration: s
                 Node node = (Node)s;
                 parser.father = node;
                 RESULT = node;
+        :}
+        | error {:
+            System.out.println("Segmentation Fault. Error en creacion de proposition");
         :};
 
 
