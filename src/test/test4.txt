@@ -1,0 +1,4 @@
+function main() = {
+	String hola {}
+	number id = 10
+}
