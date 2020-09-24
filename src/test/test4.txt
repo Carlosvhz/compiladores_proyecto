@@ -1,3 +1,4 @@
 function main() = {
-	#pollo 3#
+	String hola {}
+	number id = 10
 }

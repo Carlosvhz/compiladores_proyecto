@@ -1,6 +1,10 @@
 digraph G {
-"1. INIT"->"0. MAIN"
-"0. MAIN"->"1. ID = main"
+"5. INIT"->"4. MAIN"
+"4. MAIN"->"5. ID = main"
+"4. MAIN"->"3. BODY"
+"3. BODY"->"1. SIMPLE_DECLARATION"
+"1. SIMPLE_DECLARATION"->"0. TYPE = Number"
+"1. SIMPLE_DECLARATION"->"2. ID = hola"
 
 
 }

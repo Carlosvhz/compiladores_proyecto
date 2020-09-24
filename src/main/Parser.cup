@@ -217,6 +217,9 @@ main ::= FUNCTION MAIN:m PARIZQ PARDER ASSIGNMENT BRACKETIZQ body:b BRACKETDER
 
                 parser.father = node;
                 RESULT = node;
+        :}
+        | error {:
+            System.out.println("Error encontrado en function main.");
         :};
 
 // Este GLC contiene la lista de funciones
@@ -401,7 +404,10 @@ body ::= proposition:p body:b
                 parser.father = node;
                 RESULT = node;
         :}
-        | {:/*Vacío*/:};
+        | {:/*Vacío*/:}
+        | error {:
+            System.out.println("");
+        :};
 
 
 

@@ -35,7 +35,6 @@ public class main extends javax.swing.JFrame {
     		System.out.println("No se genero el AST, porfavor comprobar el archivo");
     	}
         } catch (Exception e) {
-               System.out.println("Error en el main");
                System.out.println(e);
         }
     }
