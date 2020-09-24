@@ -100,6 +100,7 @@ public class main extends javax.swing.JFrame {
         boolean executed = false;
         File file = new File(FileName);
         if (file.exists()) {
+            
             System.out.println("\n*** Moviendo " + file + " ***");
             Path currentRelativePath = Paths.get("");
             String NewDir = currentRelativePath.toAbsolutePath().toString()
