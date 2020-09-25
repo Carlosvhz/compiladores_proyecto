@@ -1,4 +1,3 @@
 function main() = {
-	String hola {}
-	number id = 10
+	#number id;#
 }

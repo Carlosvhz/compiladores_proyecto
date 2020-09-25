@@ -92,7 +92,7 @@ public class main extends javax.swing.JFrame {
         try {
             java_cup.Main.main(SyntacticArray);
         } catch (Exception e) {
-            System.out.println("Han sido generados correctamente");
+            System.out.println(e);
         }
     }
 

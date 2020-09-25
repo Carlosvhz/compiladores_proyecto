@@ -3,8 +3,8 @@ digraph G {
 "4. MAIN"->"5. ID = main"
 "4. MAIN"->"3. BODY"
 "3. BODY"->"1. SIMPLE_DECLARATION"
-"1. SIMPLE_DECLARATION"->"0. TYPE = Number"
-"1. SIMPLE_DECLARATION"->"2. ID = hola"
+"1. SIMPLE_DECLARATION"->"0. TYPE = number"
+"1. SIMPLE_DECLARATION"->"2. ID = id"
 
 
 }
