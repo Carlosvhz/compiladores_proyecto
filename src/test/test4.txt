@@ -1,3 +1,7 @@
 function main() = {
-	#number id;#
+	if (id <> id) then {
+
+
+	}
+
 }

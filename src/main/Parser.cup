@@ -559,7 +559,8 @@ declarationAssignment ::=  type:t ID:i ASSIGNMENT:a value:v
 
                 parser.father = node;
                 RESULT = node;     
-        :};
+        :}
+        | type:t error ASSIGNMENT:a value:v;
 
 
 
@@ -634,7 +635,9 @@ functionCall ::= CALL ID:i PARIZQ PARDER
 
                 parser.father = node;
                 RESULT = node;   
-        :};
+        :}
+        | CALL error PARIZQ PARDER 
+        | CALL ID:i error PARDER;
 
 
 
@@ -673,7 +676,9 @@ functionCallParameter ::= CALL ID:i PARIZQ funCall_parameter:f PARDER
                 
                 parser.father = node;
                 RESULT = node; 
-        :};
+        :}
+        | CALL error PARIZQ funCall_parameter:f PARDER
+        | CALL ID:i error funCall_parameter:f PARDER;
 
 
 
@@ -705,7 +710,8 @@ outputStatement ::= OUTPUT:ou PARIZQ value:v PARDER
 
                 parser.father = node;
                 RESULT = node;
-        :};
+        :}
+        | OUTPUT:ou error value:v PARDER ;
 
 
 
@@ -751,7 +757,11 @@ inputStatement ::= ID:i ASSIGNMENT:a INPUT:ip PARIZQ PARDER
 
                 parser.father = node;
                 RESULT = node;
-        :};
+        :}
+        | ID:i error INPUT:ip PARIZQ PARDER 
+        | ID:i ASSIGNMENT:a error PARIZQ PARDER 
+        | ID:i ASSIGNMENT:a INPUT:ip error PARDER ;
+
 
 
 
@@ -865,7 +875,23 @@ ifStatement ::= IF:i PARIZQ desicion:d PARDER THEN:t BRACKETIZQ body:b BRACKETDE
 
                 parser.father = node;
                 RESULT = node;
-        :};
+        :}
+        | IF:i error desicion:d PARDER THEN:t BRACKETIZQ body:b BRACKETDER
+        | IF:i PARIZQ desicion:d error THEN:t BRACKETIZQ body:b BRACKETDER
+        | IF:i PARIZQ desicion:d PARDER error BRACKETIZQ body:b BRACKETDER
+        | IF:i PARIZQ desicion:d PARDER THEN:t error body:b BRACKETDER
+
+        | IF:i error desicion:d PARDER THEN:t BRACKETIZQ body:b BRACKETDER else_n:e
+        | IF:i PARIZQ desicion:d error THEN:t BRACKETIZQ body:b BRACKETDER else_n:e
+        | IF:i PARIZQ desicion:d PARDER THEN:t error body:b BRACKETDER else_n:e
+        | IF:i PARIZQ desicion:d PARDER error BRACKETIZQ body:b BRACKETDER else_n:e
+        | IF:i PARIZQ desicion:d PARDER THEN:t BRACKETIZQ body:b error else_n:e
+
+        | IF:i error desicion:d PARDER THEN:t BRACKETIZQ body:b BRACKETDER elseIf:ei
+        | IF:i PARIZQ desicion:d error THEN:t BRACKETIZQ body:b BRACKETDER elseIf:ei
+        | IF:i PARIZQ desicion:d PARDER error BRACKETIZQ body:b BRACKETDER elseIf:ei
+        | IF:i PARIZQ desicion:d PARDER THEN:t error body:b BRACKETDER elseIf:ei
+        | IF:i PARIZQ desicion:d PARDER THEN:t BRACKETIZQ body:b error elseIf:ei;
 else_n ::=  ELSE:e BRACKETIZQ body:b BRACKETDER
         {:
                 Node node = new Node();
@@ -930,7 +956,11 @@ whileStatement ::= WHILE:w PARIZQ desicion:d PARDER THEN:t BRACKETIZQ body:b BRA
 
                 parser.father = node;
                 RESULT = node;
-        :};
+        :}
+        | WHILE:w error desicion:d PARDER THEN:t BRACKETIZQ body:b BRACKETDER
+        | WHILE:w PARIZQ desicion:d error THEN:t BRACKETIZQ body:b BRACKETDER
+        | WHILE:w PARIZQ desicion:d PARDER error BRACKETIZQ body:b BRACKETDER
+        | WHILE:w PARIZQ desicion:d PARDER THEN:t error body:b BRACKETDER;
 
 
 
@@ -973,7 +1003,11 @@ forStatement ::= FOR:f PARIZQ for_parameter:d PARDER THEN:t BRACKETIZQ body:b BR
 
                 parser.father = node;
                 RESULT = node;
-        :};
+        :}
+        | FOR:f error for_parameter:d PARDER THEN:t BRACKETIZQ body:b BRACKETDER
+        | FOR:f PARIZQ for_parameter:d error THEN:t BRACKETIZQ body:b BRACKETDER
+        | FOR:f PARIZQ for_parameter:d PARDER error BRACKETIZQ body:b BRACKETDER
+        | FOR:f PARIZQ for_parameter:d PARDER THEN:t error body:b BRACKETDER;
 for_parameter ::= ID:i ASSIGNMENT:a value:v1 TO:t value:v2 DELIMETER value:v3
         {:
                 // NODO PADRE
@@ -1025,7 +1059,10 @@ for_parameter ::= ID:i ASSIGNMENT:a value:v1 TO:t value:v2 DELIMETER value:v3
 
                 parser.father = node;
                 RESULT = node;
-        :};
+        :}
+        | ID:i error value:v1 TO:t value:v2 DELIMETER value:v3
+        | ID:i ASSIGNMENT:a value:v1 error value:v2 DELIMETER value:v3
+        | ID:i ASSIGNMENT:a value:v1 TO:t value:v2 error value:v3;
 
 
 
@@ -1070,7 +1107,12 @@ switchStatement ::= SWITCH PARIZQ ID:i PARDER THEN:t BRACKETIZQ switch_body:sb B
 
                 parser.father = node;
                 RESULT = node;
-        :};
+        :}
+        | SWITCH error ID:i PARDER THEN:t BRACKETIZQ switch_body:sb BRACKETDER 
+        | SWITCH PARIZQ error PARDER THEN:t BRACKETIZQ switch_body:sb BRACKETDER 
+        | SWITCH PARIZQ ID:i error THEN:t BRACKETIZQ switch_body:sb BRACKETDER 
+        | SWITCH PARIZQ ID:i PARDER error BRACKETIZQ switch_body:sb BRACKETDER 
+        | SWITCH PARIZQ ID:i PARDER THEN:t error switch_body:sb BRACKETDER ;
 // Aqui está el cuerpo del swithcase que contiene su lista de casos y por default su case default
 switch_body ::=  case_switch_list:c DEFAULT COLON BRACKETIZQ body:b BRACKETDER
         {:
@@ -1093,7 +1135,10 @@ switch_body ::=  case_switch_list:c DEFAULT COLON BRACKETIZQ body:b BRACKETDER
 
                 parser.father = nodo;
                 RESULT = nodo;
-        :};
+        :}
+        | case_switch_list:c error COLON BRACKETIZQ body:b BRACKETDER
+        | case_switch_list:c DEFAULT error BRACKETIZQ body:b BRACKETDER
+        | case_switch_list:c DEFAULT COLON error body:b BRACKETDER;
 // Lista de casos que pueda tener un switch
 case_switch_list ::=  case_switch:c  case_switch_list:cl
         {:
@@ -1124,7 +1169,11 @@ case_switch ::= CASE PARIZQ value:v PARDER COLON BRACKETIZQ body:b BRACKETDER
 
                 parser.father = node;
                 RESULT = node;          
-        :};
+        :}
+        | CASE error value:v PARDER COLON BRACKETIZQ body:b BRACKETDER
+        | CASE PARIZQ value:v error COLON BRACKETIZQ body:b BRACKETDER
+        | CASE PARIZQ value:v PARDER error BRACKETIZQ body:b BRACKETDER
+        | CASE PARIZQ value:v PARDER COLON error body:b BRACKETDER;
 
 
 
@@ -1166,7 +1215,8 @@ b_funCall_parameter ::= value:v COMMA
                 Node node = (Node)v;
                 parser.father = node;
                 RESULT = node;
-        :};
+        :}
+        | value:v error ;
 
 
 
@@ -1226,7 +1276,8 @@ sign ::= SUM:s
                 parser.cont++;
 
                 RESULT = node;
-        :};
+        :}
+        | error;
 
 
 
@@ -1295,7 +1346,8 @@ value ::= ID:id
         | aritmetic_expression
         {:
         
-        :};
+        :}
+        | error;
 /* aritmetic_expression ::= b_aritmetic_expression sign b_aritmetic_expression
         | PARIZQ b_aritmetic_expression sign b_aritmetic_expression PARDER;
 b_aritmetic_expression ::= INT
@@ -1311,7 +1363,8 @@ array_value ::= SBRACKETIZQ b_array_value:b SBRACKETDER
                 node.setChild( ((Node)b).getChildren() );
                 
                 RESULT = node;
-       :};
+       :}
+       |  SBRACKETIZQ b_array_value:b error;
 b_array_value ::= c_array_value:c b_array_value:b
         {:
                 Node node = new Node();
@@ -1392,7 +1445,8 @@ array_type ::= ARRAY SBRACKETIZQ type:t SBRACKETDER
                 node.setValue("array["+((Node)t).getValue()+"]");
                 
                 RESULT = node;
-        :};
+        :}
+        | ARRAY error type:t SBRACKETDER;
 
 
 
@@ -1422,7 +1476,8 @@ return ::= COMEBACK:c PARIZQ value:v PARDER
 
                 parser.father = node;
                 RESULT = node;
-        :};
+        :}
+        | COMEBACK:c error value:v PARDER;
 
 
 
@@ -1711,7 +1766,20 @@ func_ifStatement ::= IF:i PARIZQ desicion:d PARDER THEN:t BRACKETIZQ func_body:b
 
                 parser.father = node;
                 RESULT = node;
-        :};
+        :}
+        | IF:i error desicion:d PARDER THEN:t BRACKETIZQ func_body:b BRACKETDER
+        | IF:i PARIZQ desicion:d error THEN:t BRACKETIZQ func_body:b BRACKETDER
+        | IF:i PARIZQ desicion:d PARDER THEN:t error func_body:b BRACKETDER
+        
+        | IF:i error desicion:d PARDER THEN:t BRACKETIZQ func_body:b BRACKETDER func_else_n:e
+        | IF:i PARIZQ desicion:d error THEN:t BRACKETIZQ func_body:b BRACKETDER func_else_n:e
+        | IF:i PARIZQ desicion:d PARDER THEN:t error func_body:b BRACKETDER func_else_n:e
+        | IF:i PARIZQ desicion:d PARDER THEN:t BRACKETIZQ func_body:b error func_else_n:e
+        
+        | IF:i error desicion:d PARDER THEN:t BRACKETIZQ func_body:b BRACKETDER func_elseIf:ei
+        | IF:i PARIZQ desicion:d error THEN:t BRACKETIZQ func_body:b BRACKETDER func_elseIf:ei
+        | IF:i PARIZQ desicion:d PARDER THEN:t error func_body:b BRACKETDER func_elseIf:ei
+        | IF:i PARIZQ desicion:d PARDER THEN:t BRACKETIZQ func_body:b error func_elseIf:ei;
 func_else_n ::=  ELSE:e BRACKETIZQ func_body:b BRACKETDER
         {:
                 Node node = new Node();
@@ -1722,7 +1790,8 @@ func_else_n ::=  ELSE:e BRACKETIZQ func_body:b BRACKETDER
 
                 parser.father = node;
                 RESULT = node;
-        :};
+        :}
+        | ELSE:e error func_body:b BRACKETDER;
 func_elseIf ::= ELSE func_ifStatement:i
         {:
                 Node node = new Node();
@@ -1776,7 +1845,11 @@ func_whileStatement ::= WHILE:w PARIZQ desicion:d PARDER THEN:t BRACKETIZQ func_
 
                 parser.father = node;
                 RESULT = node;
-        :};
+        :}
+        | WHILE:w error desicion:d PARDER THEN:t BRACKETIZQ func_body:b BRACKETDER 
+        | WHILE:w PARIZQ desicion:d error THEN:t BRACKETIZQ func_body:b BRACKETDER 
+        | WHILE:w PARIZQ desicion:d PARDER error BRACKETIZQ func_body:b BRACKETDER 
+        | WHILE:w PARIZQ desicion:d PARDER THEN:t error func_body:b BRACKETDER ;
 
 
 
@@ -1819,7 +1892,11 @@ func_forStatement ::= FOR:f PARIZQ func_for_parameter:d PARDER THEN:t BRACKETIZQ
 
                 parser.father = node;
                 RESULT = node;
-        :};
+        :}
+        | FOR:f error func_for_parameter:d PARDER THEN:t BRACKETIZQ func_body:b BRACKETDER
+        | FOR:f PARIZQ func_for_parameter:d error THEN:t BRACKETIZQ func_body:b BRACKETDER
+        | FOR:f PARIZQ func_for_parameter:d PARDER error BRACKETIZQ func_body:b BRACKETDER
+        | FOR:f PARIZQ func_for_parameter:d PARDER THEN:t error func_body:b BRACKETDER;
 func_for_parameter ::= ID:i ASSIGNMENT:a value:v1 TO:t value:v2 DELIMETER value:v3
         {:
                 // NODO PADRE
@@ -1871,7 +1948,10 @@ func_for_parameter ::= ID:i ASSIGNMENT:a value:v1 TO:t value:v2 DELIMETER value:
 
                 parser.father = node;
                 RESULT = node;
-        :};
+        :}
+        |  ID:i error value:v1 TO:t value:v2 DELIMETER value:v3
+        |  ID:i ASSIGNMENT:a value:v1 error value:v2 DELIMETER value:v3
+        |  ID:i ASSIGNMENT:a value:v1 TO:t value:v2 error value:v3;
 
 
 
@@ -1916,9 +1996,14 @@ func_switchStatement ::= SWITCH PARIZQ ID:i PARDER THEN:t BRACKETIZQ func_switch
 
                 parser.father = node;
                 RESULT = node;
-        :};
+        :}
+        |  SWITCH error ID:i PARDER THEN:t BRACKETIZQ func_switch_body:sb BRACKETDER 
+        |  SWITCH PARIZQ error PARDER THEN:t BRACKETIZQ func_switch_body:sb BRACKETDER 
+        |  SWITCH PARIZQ ID:i error THEN:t BRACKETIZQ func_switch_body:sb BRACKETDER 
+        |  SWITCH PARIZQ ID:i PARDER error BRACKETIZQ func_switch_body:sb BRACKETDER 
+        |  SWITCH PARIZQ ID:i PARDER THEN:t error func_switch_body:sb BRACKETDER ;
 // Aqui está el cuerpo del swithcase que contiene su lista de casos y por default su case default
-func_switch_body ::=  func_case_switch_list:c DEFAULT COLON BRACKETIZQ func_body:b BRACKETDER
+func_switch_body ::= func_case_switch_list:c DEFAULT COLON BRACKETIZQ func_body:b BRACKETDER
         {:
                 Node nodo = new Node();
                 nodo.setTag("SWITCH_BODY");
@@ -1939,7 +2024,10 @@ func_switch_body ::=  func_case_switch_list:c DEFAULT COLON BRACKETIZQ func_body
 
                 parser.father = nodo;
                 RESULT = nodo;
-        :};
+        :}
+        |  func_case_switch_list:c error COLON BRACKETIZQ func_body:b BRACKETDER
+        |  func_case_switch_list:c DEFAULT error BRACKETIZQ func_body:b BRACKETDER
+        |  func_case_switch_list:c DEFAULT COLON error func_body:b BRACKETDER;
 // Lista de casos que pueda tener un switch
 func_case_switch_list ::=  func_case_switch:c  func_case_switch_list:cl
         {:
@@ -1970,4 +2058,8 @@ func_case_switch ::= CASE PARIZQ value:v PARDER COLON BRACKETIZQ func_body:b BRA
 
                 parser.father = node;
                 RESULT = node;          
-        :};
+        :}
+        |  CASE error value:v PARDER COLON BRACKETIZQ func_body:b BRACKETDER
+        |  CASE PARIZQ value:v error COLON BRACKETIZQ func_body:b BRACKETDER
+        |  CASE PARIZQ value:v PARDER error BRACKETIZQ func_body:b BRACKETDER
+        |  CASE PARIZQ value:v PARDER COLON error func_body:b BRACKETDER;

@@ -1,10 +1,14 @@
 digraph G {
-"5. INIT"->"4. MAIN"
-"4. MAIN"->"5. ID = main"
-"4. MAIN"->"3. BODY"
-"3. BODY"->"1. SIMPLE_DECLARATION"
-"1. SIMPLE_DECLARATION"->"0. TYPE = number"
-"1. SIMPLE_DECLARATION"->"2. ID = id"
+"9. INIT"->"8. MAIN"
+"8. MAIN"->"9. ID = main"
+"8. MAIN"->"7. BODY"
+"7. BODY"->"4. IF_STATEMENT"
+"4. IF_STATEMENT"->"5. IF = if"
+"4. IF_STATEMENT"->"2. DECISION"
+"2. DECISION"->"0. ID = id"
+"2. DECISION"->"3. RELATIONAL_OPERATOR = <>"
+"2. DECISION"->"1. ID = id"
+"4. IF_STATEMENT"->"6. THEN = then"
 
 
 }
