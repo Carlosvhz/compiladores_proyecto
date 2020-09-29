@@ -1,7 +1,0 @@
-
-
-function main() = {
-	
-	number num1 = call sizeOf(array1)
-}
-
