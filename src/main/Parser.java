@@ -1270,7 +1270,7 @@ public class Parser extends java_cup.runtime.lr_parser {
 
     public static Node father;
     public int cont = 0;
-    
+    public static ArrayList<String> errores;
     boolean errorFlag = false;
 
     int fila;
@@ -1288,7 +1288,8 @@ public class Parser extends java_cup.runtime.lr_parser {
 	public void report_error(String message, Object info) {
         System.err.print("Syntax error: " ); 
         expected();
-        System.err.println("pero se encontro el token \'" + ((Symbol)info).value + "\' en la Linea: " + (((Symbol)info).left + 1) + ", Columna: " + (((Symbol)info).right + 1) + ". " ); 
+        String error = "pero se encontro el token \'" + ((Symbol)info).value + "\' en la Linea: " + (((Symbol)info).left + 1) + ", Columna: " + (((Symbol)info).right + 1) + ". ";
+        errores.add(error);
         errorFlag = true;
     }
 
@@ -1296,7 +1297,8 @@ public class Parser extends java_cup.runtime.lr_parser {
 	public void syntax_error(Symbol s){
         System.err.println("\nError Sintactico: " ); 
         expected();
-        System.err.println("\tpero se encontro el token \'" + sym.terminalNames[s.sym] + "\'\n\tLinea: " + (s.left + 1) + "\tColumna: " + (s.right + 1) + "\n" ); 
+        String error = "\tpero se encontro el token \'" + sym.terminalNames[s.sym] + "\'\n\tLinea: " + (s.left + 1) + "\tColumna: " + (s.right + 1) + "\n" ;
+        errores.add(error);
         errorFlag = true;
 	}
 
@@ -1318,12 +1320,14 @@ public class Parser extends java_cup.runtime.lr_parser {
                     expected_tokens += terminal_name + " , ";
                 }
         }
-        System.err.println("\tSe esperaba uno de los siguientes tokens: [" + expected_tokens + "] ");
+        String error = "\tSe esperaba uno de los siguientes tokens: [" + expected_tokens + "] ";
+        errores.add(error);
     }
 
     public void report_fatal_error(String message, Object info) {
         errorFlag = true;
-        throw new Error("Error Fatal:\nNo se pudo recuperar del problema.");
+        String error = "Error Fatal:\nNo se pudo recuperar del problema.";
+        errores.add(error);
     }
 
     public void unrecovered_syntax_error(Symbol s) {
