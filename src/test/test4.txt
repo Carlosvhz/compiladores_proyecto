@@ -1,4 +1,7 @@
 function main() = {
-	String hola {}
-	number id = 10
+	if (id <> id) then {
+
+
+	}
+
 }

@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import javax.swing.JFileChooser;
 
 public class main extends javax.swing.JFrame {
@@ -22,17 +23,24 @@ public class main extends javax.swing.JFrame {
         initComponents();
     }
     
-    public static void test(){
+    public void test(){
         try {
             File archivo = newfile;
             Parser parser = new Parser(new Lexer(new FileReader(archivo)));
             parser.parse();
     	if (true) {
       		Node root = Parser.father;
-      		Graph(recorrido(root));
-      		System.out.println("AST Generado de manera exitosa");
+                ArrayList<String> errores = Parser.errores;
+                if (errores!=null) {
+                    for(String error : errores) {
+                        output.setText(error);
+                    }
+                }else{ 
+                    Graph(recorrido(root));
+                   output.setText("AST Generado de manera exitosa");
+                }
     	} else {
-    		System.out.println("No se genero el AST, porfavor comprobar el archivo");
+                output.setText("No se genero el AST, porfavor comprobar el archivo");
     	}
         } catch (Exception e) {
                System.out.println(e);
@@ -92,7 +100,7 @@ public class main extends javax.swing.JFrame {
         try {
             java_cup.Main.main(SyntacticArray);
         } catch (Exception e) {
-            System.out.println("Han sido generados correctamente");
+            System.out.println(e);
         }
     }
 
@@ -234,12 +242,12 @@ public class main extends javax.swing.JFrame {
             try {
                 // What to do with the file, e.g. display it in a TextArea
                 input.read(new FileReader(file.getAbsolutePath()), null);
-                
+                output.setText("");
             } catch (IOException ex) {
                 System.out.println("Conflicto al acceder al archivo " + file.getAbsolutePath());
             }
         } else {
-            System.out.println("El acceso al archvio fue cancelado por el usuario.");
+            System.out.println("El acceso al archivo fue cancelado por el usuario.");
         }
     }//GEN-LAST:event_OpenActionPerformed
 
@@ -257,7 +265,7 @@ public class main extends javax.swing.JFrame {
 
     private void btn_cupMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_cupMouseClicked
         try {
-
+            output.setText("");
             test();
         } catch (Exception ex) {
             System.out.println("No se pudo acceder al archivo.");
