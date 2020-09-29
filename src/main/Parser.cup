@@ -8,7 +8,6 @@ parser code
 {:
     public static Node father;
     public int cont = 0;
-    public static ArrayList<String> errores;
     boolean errorFlag = false;
 
     int fila;
@@ -26,8 +25,7 @@ parser code
 	public void report_error(String message, Object info) {
         System.err.print("Syntax error: " ); 
         expected();
-        String error = "pero se encontro el token \'" + ((Symbol)info).value + "\' en la Linea: " + (((Symbol)info).left + 1) + ", Columna: " + (((Symbol)info).right + 1) + ". ";
-        errores.add(error);
+        System.err.print("pero se encontro el token \'" + ((Symbol)info).value + "\' en la Linea: " + (((Symbol)info).left + 1) + ", Columna: " + (((Symbol)info).right + 1) + ". ");
         errorFlag = true;
     }
 
@@ -35,8 +33,7 @@ parser code
 	public void syntax_error(Symbol s){
         System.err.println("\nError Sintactico: " ); 
         expected();
-        String error = "\tpero se encontro el token \'" + sym.terminalNames[s.sym] + "\'\n\tLinea: " + (s.left + 1) + "\tColumna: " + (s.right + 1) + "\n" ;
-        errores.add(error);
+        System.err.print("\tpero se encontro el token \'" + sym.terminalNames[s.sym] + "\'\n\tLinea: " + (s.left + 1) + "\tColumna: " + (s.right + 1) + "\n");
         errorFlag = true;
 	}
 
@@ -58,14 +55,12 @@ parser code
                     expected_tokens += terminal_name + " , ";
                 }
         }
-        String error = "\tSe esperaba uno de los siguientes tokens: [" + expected_tokens + "] ";
-        errores.add(error);
+        System.err.print("\tSe esperaba uno de los siguientes tokens: [" + expected_tokens + "] ");
     }
 
     public void report_fatal_error(String message, Object info) {
         errorFlag = true;
-        String error = "Error Fatal:\nNo se pudo recuperar del problema.";
-        errores.add(error);
+        System.err.print("Error Fatal:\nNo se pudo recuperar del problema.");
     }
 
     public void unrecovered_syntax_error(Symbol s) {
@@ -564,8 +559,74 @@ declarationAssignment ::=  type:t ID:i ASSIGNMENT:a value:v
                 parser.father = node;
                 RESULT = node;     
         :}
-        | type:t error ASSIGNMENT:a value:v;
+        | type:t ID:i ASSIGNMENT:a functionCall:f
+        {:
+                // TYPE ID = VALUE
+                Node node = new Node();
+                node.setTag("DECLARATION_ASSIGNATION");
+                node.setId(parser.cont);
+                parser.cont++;
 
+                // TYPE
+                node.setChild( (Node) t);
+
+                // ID
+                Node id = new Node();
+                id.setTag("ID");
+                id.setValue( (String) i);
+                id.setId(parser.cont);
+                parser.cont++;
+                node.setChild(id);
+
+                // ASSIGNMENT
+                Node as = new Node();
+                as.setTag("ASSIGNMENT");
+                as.setValue( (String) a);
+                as.setId(parser.cont);
+                parser.cont++;
+                node.setChild(as);
+
+                // function Call
+                node.setChild( (Node) f);
+
+                parser.father = node;
+                RESULT = node;   
+        :}
+        | type:t ID:i ASSIGNMENT:a functionCallParameter:f
+        {:
+                // TYPE ID = VALUE
+                Node node = new Node();
+                node.setTag("DECLARATION_ASSIGNATION");
+                node.setId(parser.cont);
+                parser.cont++;
+
+                // TYPE
+                node.setChild( (Node) t);
+
+                // ID
+                Node id = new Node();
+                id.setTag("ID");
+                id.setValue( (String) i);
+                id.setId(parser.cont);
+                parser.cont++;
+                node.setChild(id);
+
+                // ASSIGNMENT
+                Node as = new Node();
+                as.setTag("ASSIGNMENT");
+                as.setValue( (String) a);
+                as.setId(parser.cont);
+                parser.cont++;
+                node.setChild(as);
+
+                // function Call
+                node.setChild( (Node) f);
+
+                parser.father = node;
+                RESULT = node;   
+        :}
+        | type:t error ASSIGNMENT:a value:v
+        | type:t error ASSIGNMENT:a functionCall:f;
 
 
 
@@ -603,8 +664,67 @@ assignment ::= ID:i ASSIGNMENT:a value:v
 
                 parser.father = node;
                 RESULT = node;   
-        :};
+        :}
+        | ID:i ASSIGNMENT:a functionCall:f 
+        {:
+                // ID = VALUE
+                Node node = new Node();
+                node.setTag("ASSIGNMENT");
+                node.setId(parser.cont);
+                parser.cont++;
 
+                // ID
+                Node id = new Node();
+                id.setTag("ID");
+                id.setValue( (String) i);
+                id.setId(parser.cont);
+                node.setChild(id);
+
+                // ASSIGNMENT
+                Node as = new Node();
+                as.setTag("ASSIGNMENT");
+                as.setValue( (String) a);
+                as.setId(parser.cont);
+                parser.cont++;
+                node.setChild(as);
+
+                // FUNCTION CALL
+                node.setChild( (Node) f);
+
+                parser.father = node;
+                RESULT = node;  
+        :}
+        | ID:i ASSIGNMENT:a functionCallParameter:f 
+        {:
+                // ID = VALUE
+                Node node = new Node();
+                node.setTag("ASSIGNMENT");
+                node.setId(parser.cont);
+                parser.cont++;
+
+                // ID
+                Node id = new Node();
+                id.setTag("ID");
+                id.setValue( (String) i);
+                id.setId(parser.cont);
+                node.setChild(id);
+
+                // ASSIGNMENT
+                Node as = new Node();
+                as.setTag("ASSIGNMENT");
+                as.setValue( (String) a);
+                as.setId(parser.cont);
+                parser.cont++;
+                node.setChild(as);
+
+                // FUNCTION CALL
+                node.setChild( (Node) f);
+
+                parser.father = node;
+                RESULT = node;  
+        :}
+        | ID:i error value:v
+        | ID:i error functionCall:f;
 
 
 

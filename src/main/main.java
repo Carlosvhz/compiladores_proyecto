@@ -28,22 +28,11 @@ public class main extends javax.swing.JFrame {
             File archivo = newfile;
             Parser parser = new Parser(new Lexer(new FileReader(archivo)));
             parser.parse();
-    	if (true) {
-      		Node root = Parser.father;
-                ArrayList<String> errores = Parser.errores;
-                if (errores!=null) {
-                    for(String error : errores) {
-                        output.setText(error);
-                    }
-                }else{ 
-                    Graph(recorrido(root));
-                   output.setText("AST Generado de manera exitosa");
-                }
-    	} else {
-                output.setText("No se genero el AST, porfavor comprobar el archivo");
-    	}
+            Node root = Parser.father;
+            Graph(recorrido(root));
+            output.setText("AST Generado de manera exitosa");
         } catch (Exception e) {
-               System.out.println(e);
+            output.setText("Hubo un error sintáctico\nNo se genero el AST, porfavor comprobar el archivo");
         }
     }
     
