@@ -1,7 +1,3 @@
 function main() = {
-	if (id <> id) then {
-
-
-	}
-
+    number id = 3+3*3
 }

@@ -104,6 +104,7 @@ non terminal value;
 non terminal aritmetic_expression ;
 non terminal b_aritmetic_expression;
 non terminal c_aritmetic_expression;
+non terminal d_aritmetic_expression;
 
 non terminal array_value;
 non terminal b_array_value;
@@ -413,6 +414,10 @@ body ::= proposition:p body:b
         | {:/*Vacío*/:};
 
 
+
+
+
+
 // =======================================================>
 // ============ Proposiciones ============================>
 // =======================================================>
@@ -627,6 +632,7 @@ declarationAssignment ::=  type:t ID:i ASSIGNMENT:a value:v
         :}
         | type:t error ASSIGNMENT:a value:v
         | type:t error ASSIGNMENT:a functionCall:f;
+
 
 
 
@@ -1348,68 +1354,6 @@ b_funCall_parameter ::= value:v COMMA
 
 
 // =======================================================>
-// ======================== Signos =======================>
-// =======================================================>
-// Signos como + o -
-sign ::= SUM:s
-        {:
-                Node node = new Node();
-                node.setTag("SIGN");
-                node.setValue((String)s);
-                node.setId(parser.cont);
-                parser.cont++;
-
-                RESULT = node;
-        :}
-        | RES:r
-        {:
-                Node node = new Node();
-                node.setTag("SIGN");
-                node.setValue((String)r);
-                node.setId(parser.cont);
-                parser.cont++;
-
-                RESULT = node;
-        :}
-        | DIV:d
-        {:
-                Node node = new Node();
-                node.setTag("SIGN");
-                node.setValue((String)d);
-                node.setId(parser.cont);
-                parser.cont++;
-
-                RESULT = node;
-        :}
-        | MULT:m 
-        {:
-                Node node = new Node();
-                node.setTag("SIGN");
-                node.setValue((String)m);
-                node.setId(parser.cont);
-                parser.cont++;
-
-                RESULT = node;
-        :}
-        | MOD:mo
-        {:
-                Node node = new Node();
-                node.setTag("SIGN");
-                node.setValue((String)mo);
-                node.setId(parser.cont);
-                parser.cont++;
-
-                RESULT = node;
-        :}
-        | error;
-
-
-
-
-
-
-
-// =======================================================>
 // ========================= Valores =====================>
 // =======================================================>
 // Tipos de valores que pueda tener una variable
@@ -1457,7 +1401,72 @@ value ::= ID:id
         {:
                 RESULT = (Node)av;
         :}
-        | INT:i
+        | aritmetic_expression:a
+        {:
+                RESULT = (Node)a;
+        :}
+        | error;
+aritmetic_expression ::= aritmetic_expression:a SUM:s b_aritmetic_expression:b
+        {:
+                Node node = new Node();
+                node.setTag("SUMA");
+                node.setId(parser.cont);
+                parser.cont++;
+
+                node.setChild( (Node)a );
+                node.setChild( (Node)b );
+
+                parser.father = node;
+                RESULT = node;
+        :}
+        | aritmetic_expression:a RES:r b_aritmetic_expression:b
+        {:
+                Node node = new Node();
+                node.setTag("RESTA");
+                node.setId(parser.cont);
+                parser.cont++;
+
+                node.setChild( (Node)a );
+                node.setChild( (Node)b );
+
+                parser.father = node;
+                RESULT = node;
+        :}
+        | b_aritmetic_expression:b 
+        {:
+                RESULT = (Node)b;
+        :};
+b_aritmetic_expression ::= b_aritmetic_expression:b MULT:t c_aritmetic_expression:c
+        {:
+                Node node = new Node();
+                node.setTag("MULTIPLICACIÓN");
+                node.setId(parser.cont);
+                parser.cont++;
+
+                node.setChild( (Node)b );
+                node.setChild( (Node)c );
+
+                parser.father = node;
+                RESULT = node;   
+        :}
+        | b_aritmetic_expression:b DIV:div c_aritmetic_expression:c
+        {:
+                Node node = new Node();
+                node.setTag("DIVISIÓN");
+                node.setId(parser.cont);
+                parser.cont++;
+
+                node.setChild( (Node)b );
+                node.setChild( (Node)c );
+
+                parser.father = node;
+                RESULT = node;  
+        :}
+        | c_aritmetic_expression:c
+        {:
+                RESULT = (Node)c;
+        :};
+c_aritmetic_expression ::= INT:i
         {:
                 Node node = new Node();
                 node.setTag("NUMBER");
@@ -1465,17 +1474,13 @@ value ::= ID:id
                 node.setId(parser.cont);
                 parser.cont++;
 
+                parser.father = node;
                 RESULT = node;
         :}
-        | aritmetic_expression
+        | PARIZQ:i aritmetic_expression:b PARDER:d
         {:
-        
-        :}
-        | error;
-/* aritmetic_expression ::= b_aritmetic_expression sign b_aritmetic_expression
-        | PARIZQ b_aritmetic_expression sign b_aritmetic_expression PARDER;
-b_aritmetic_expression ::= INT
-        | aritmetic_expression ; */
+                RESULT = (Node)b;
+        :};
 // Este es el valor de un arreglo o una matriz
 array_value ::= SBRACKETIZQ b_array_value:b SBRACKETDER
         {:
