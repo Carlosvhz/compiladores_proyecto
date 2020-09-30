@@ -1,0 +1,12 @@
+function main () = {
+	character m = 'm'
+	boolean state = true
+	number num = 10
+	for (m = 1 to 5|4) then {
+		output(m)
+		#Revisando el estado del bool#
+		while (state == true) then {
+			output(num)
+		}
+	}
+}

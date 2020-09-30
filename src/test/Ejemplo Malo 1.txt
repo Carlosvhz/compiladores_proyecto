@@ -1,0 +1,9 @@
+function main () = {
+	number = 10
+	character h = 'h'
+	if (n > 5) then {
+		output(n)
+	} else if (n < 5) then {
+		output(h)
+	}
+}

@@ -1,0 +1,15 @@
+function main() = {
+    if(id > 23) then {
+    }
+}
+
+
+function func1 () = number{
+    if (id<>id) then {
+        comeBack(id)
+    }
+    for (id = 2 to 10 | 1) then {
+        comeback(23)
+    }
+    comeBack(id)
+}

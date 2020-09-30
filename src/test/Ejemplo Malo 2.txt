@@ -1,4 +1,3 @@
-
 function main() = {
     if(id > 23) then {
     }
@@ -13,4 +12,5 @@ function func1 () = number{
         comeback(23)
     }
     comeBack(id)
+    #Devolviendo tokens
 }

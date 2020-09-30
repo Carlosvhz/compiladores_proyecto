@@ -1,0 +1,20 @@
+function main () = {
+	number num = 3
+	number num2 = 5
+	number num3 = 0
+	char a = ‘a’
+	array[number] lista = [1,2,3,4]
+
+	if (5 < num) then {
+		output(num2)
+	} else if (5 > num) {
+		call imprimir()
+	} else {
+		output(num3)
+	}
+}
+
+function imprimir () = {
+	bool verif = true
+	output(verif)
+}
